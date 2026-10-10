@@ -1482,6 +1482,50 @@
   }
 }
 
+    
+/* =========================================
+   WEALTHTHESHAPER LOGO — CENTERED & BIGGER
+========================================= */
+
+.animated-logo {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  padding: 20px 0;
+  text-align: center;
+
+  /* Keep the logo still */
+  animation: none !important;
+  transform: none !important;
+}
+
+.animated-logo img {
+  display: block;
+  width: 150px;
+  max-width: 80%;
+  height: auto;
+  margin: 0 auto;
+  object-fit: contain;
+
+  animation: none !important;
+  transform: none !important;
+}
+
+/* Bigger logo on laptop */
+@media (min-width: 768px) {
+  .animated-logo img {
+    width: 180px;
+  }
+}
+
+/* Comfortable size on mobile */
+@media (max-width: 767px) {
+  .animated-logo img {
+    width: 140px;
+  }
+}
 
 
   </style>
