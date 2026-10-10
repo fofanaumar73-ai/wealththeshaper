@@ -660,6 +660,18 @@ removeServiceImageBtn.addEventListener("click", () => {
 
 let editingServiceId = null;
 let currentServiceImageUrl = null;
+    selectedServiceImageFile = null;
+serviceImageFile.value = "";
+
+if (serviceImagePreviewUrl) {
+  URL.revokeObjectURL(serviceImagePreviewUrl);
+  serviceImagePreviewUrl = null;
+}
+
+serviceImagePreview.removeAttribute("src");
+serviceImagePreviewContainer.hidden = true;
+
+document.getElementById("saveServiceBtn").textContent = "Save Service";
     
 // Load services from Supabase
 async function loadServices() {
