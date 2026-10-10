@@ -642,9 +642,11 @@ serviceImageFile.addEventListener("change", () => {
   serviceImagePreviewContainer.hidden = false;
 });
 
+
 removeServiceImageBtn.addEventListener("click", () => {
   serviceImageFile.value = "";
   selectedServiceImageFile = null;
+  currentServiceImageUrl = null;
 
   if (serviceImagePreviewUrl) {
     URL.revokeObjectURL(serviceImagePreviewUrl);
@@ -654,6 +656,7 @@ removeServiceImageBtn.addEventListener("click", () => {
   serviceImagePreview.removeAttribute("src");
   serviceImagePreviewContainer.hidden = true;
 });
+
 
 let editingServiceId = null;
 let currentServiceImageUrl = null;
