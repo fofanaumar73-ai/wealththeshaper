@@ -476,13 +476,35 @@
       placeholder="Describe this service"
     ></textarea>
 
-    <label for="serviceImage">Image URL (optional)</label>
-    <input
-      type="url"
-      id="serviceImage"
-      maxlength="2048"
-      placeholder="https://example.com/image.jpg"
-    >
+    
+<label for="serviceImageFile">Service Image (optional)</label>
+<input
+  type="file"
+  id="serviceImageFile"
+  accept="image/jpeg,image/png,image/webp"
+/>
+
+<div id="serviceImagePreviewContainer" hidden>
+  <img
+    id="serviceImagePreview"
+    alt="Selected service image preview"
+    style="display:block;max-width:240px;width:100%;margin-top:12px;border-radius:10px;"
+  />
+
+  <button
+    type="button"
+    id="removeServiceImageBtn"
+    class="secondary-button"
+    style="margin-top:10px;"
+  >
+    Remove Selected Image
+  </button>
+</div>
+
+<p class="muted" style="margin-top:8px;">
+  JPG, PNG or WebP. Maximum size: 5 MB.
+</p>
+
 
     <label for="serviceOrder">Display Order</label>
     <input
