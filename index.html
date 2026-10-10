@@ -1569,8 +1569,24 @@
     </div>
   </div>
 
-  <script>
+  
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+
     "use strict";
+
+  
+const SUPABASE_URL =
+  "https://leneltfdgtjkyziqulol.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_vEZoz6jKtXzMhlxVH27O9A_kuibGnl2";
+
+const supabase = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
+
 
     /* =========================
        SERVICE CONTENT
