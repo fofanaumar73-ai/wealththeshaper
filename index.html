@@ -1611,13 +1611,6 @@ async function loadPublicServices() {
       }
     }
 
-    document.querySelectorAll(".learn-more").forEach(button => {
-      button.addEventListener("click", () => {
-        const index = Number(button.dataset.service);
-        openServiceDetails(index);
-      });
-    });
-
     modalClose.addEventListener("click", closeServiceDetails);
 
     modal.addEventListener("click", event => {
@@ -1649,12 +1642,6 @@ async function loadPublicServices() {
       // This route will work after we create the client portal.
       window.location.href = "client/login.html?" + params.toString();
     }
-
-    document.querySelectorAll(".book-service").forEach(button => {
-      button.addEventListener("click", () => {
-        startBooking(Number(button.dataset.service));
-      });
-    });
 
     modalBook.addEventListener("click", () => {
       if (selectedServiceIndex !== null) {
