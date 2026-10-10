@@ -259,5 +259,60 @@
       </p>
     </section>
   </main>
+
+  
+<script type="module">
+  import { createClient } from
+    "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+  const SUPABASE_URL =
+    "https://leneltfdgtjkyziqulol.supabase.co";
+
+  const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_vEZoz6jKtXzMhlxVH27O9A_kuibGnl2";
+
+  const supabase = createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+  // Hide the dashboard while access is checked.
+  document.documentElement.style.visibility = "hidden";
+
+  async function protectAdminDashboard() {
+    try {
+      const {
+        data: { session },
+        error: sessionError
+      } = await supabase.auth.getSession();
+
+      if (sessionError || !session) {
+        window.location.replace("login.html");
+        return;
+      }
+
+      const {
+        data: isAdmin,
+        error: adminError
+      } = await supabase.rpc("is_wealththeshaper_admin");
+
+      if (adminError || isAdmin !== true) {
+        await supabase.auth.signOut();
+        window.location.replace("login.html");
+        return;
+      }
+
+      // Reveal the dashboard only after authorization succeeds.
+      document.documentElement.style.visibility = "visible";
+    } catch {
+      window.location.replace("login.html");
+    }
+  }
+
+  protectAdminDashboard();
+</script>
 </body>
 </html>
+
+
+
