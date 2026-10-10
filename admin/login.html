@@ -1,0 +1,347 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Admin Login | WealthTheShaper</title>
+
+  <style>
+    :root {
+      --red: #e32636;
+      --bg: #09090d;
+      --panel: #17151b;
+      --text: #ffffff;
+      --muted: #aaa7b1;
+      --border: rgba(255, 255, 255, 0.13);
+      --purple: #ad55f5;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 65px 20px 35px;
+      background:
+        radial-gradient(
+          circle at 50% 15%,
+          rgba(143, 58, 189, 0.13),
+          transparent 38%
+        ),
+        var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    /* Holds the floating logo and login card */
+    .login-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 430px;
+    }
+
+    /* Floating logo above the card */
+    .floating-logo {
+      position: absolute;
+      top: -67px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
+      padding: 5px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(190, 150, 255, 0.45);
+      box-shadow:
+        0 0 18px rgba(173, 85, 245, 0.22),
+        0 0 35px rgba(173, 85, 245, 0.12),
+        inset 0 0 10px rgba(255, 255, 255, 0.05);
+      animation: gentleFloat 3.2s ease-in-out infinite;
+      z-index: 2;
+    }
+
+    @keyframes gentleFloat {
+      0%, 100% {
+        transform: translate(-50%, 0);
+      }
+
+      50% {
+        transform: translate(-50%, -12px);
+      }
+    }
+
+    /* Login card */
+    .login-card {
+      width: 100%;
+      padding: 85px 35px 35px;
+      background: rgba(23, 21, 27, 0.96);
+      border: 1px solid var(--border);
+      border-radius: 25px;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.32);
+    }
+
+    .eyebrow {
+      margin-bottom: 17px;
+      color: #c16aff;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 18px;
+      font-size: 34px;
+      line-height: 1.2;
+      text-align: center;
+    }
+
+    .intro {
+      margin-bottom: 32px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 22px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 11px;
+      color: #e2dfe5;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    input {
+      display: block;
+      width: 100%;
+      padding: 16px;
+      color: var(--text);
+      background: #100f13;
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      border-radius: 12px;
+      outline: none;
+      font-size: 14px;
+      transition: border-color 0.25s ease;
+    }
+
+    input:focus {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 3px rgba(173, 85, 245, 0.10);
+    }
+
+    .login-button {
+      width: 100%;
+      min-height: 53px;
+      margin-top: 2px;
+      padding: 14px;
+      color: white;
+      background: linear-gradient(110deg, #b55cf4, #853ac7);
+      border: none;
+      border-radius: 13px;
+      box-shadow: 0 10px 25px rgba(147, 64, 204, 0.18);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    .login-button:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    .login-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    #message {
+      margin-top: 18px;
+      font-size: 13px;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    .back-link {
+      display: block;
+      margin-top: 34px;
+      color: var(--muted);
+      text-align: center;
+      text-decoration: none;
+      font-size: 13px;
+      transition: color 0.2s ease;
+    }
+
+    .back-link:hover {
+      color: white;
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 65px 9px 25px;
+      }
+
+      .floating-logo {
+        width: 96px;
+        height: 96px;
+        top: -60px;
+      }
+
+      .login-card {
+        padding: 78px 25px 30px;
+        border-radius: 23px;
+      }
+
+      h1 {
+        font-size: 30px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .floating-logo {
+        animation: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="login-wrapper">
+
+    <!-- Floating WealthTheShaper logo -->
+    <img
+      src="../image/wealth.png"
+      alt="WealthTheShaper logo"
+      class="floating-logo"
+    >
+
+    <!-- Login card -->
+    <main class="login-card">
+
+      <p class="eyebrow">PRIVATE AREA</p>
+
+      <h1>Admin Login</h1>
+
+      <p class="intro">
+        Sign in to manage your WealthTheShaper website.
+      </p>
+
+      <form id="loginForm">
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Enter your email"
+            autocomplete="username"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+            required
+          >
+        </div>
+
+        <button
+          type="submit"
+          class="login-button"
+          id="loginButton"
+        >
+          Login
+        </button>
+
+        <p id="message" role="status" aria-live="polite"></p>
+
+      </form>
+
+      <a href="../index.html" class="back-link">
+        ← Back to WealthTheShaper
+      </a>
+
+    </main>
+  </div>
+
+  <!-- Supabase authentication -->
+  <script type="module">
+    import { createClient } from
+      "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+    const SUPABASE_URL =
+      "https://leneltfdgtjkyziqulol.supabase.co";
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_vEZoz6jKtXzMhlxVH27O9A_kuibGnl2";
+
+    const supabase = createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY
+    );
+
+    const form = document.getElementById("loginForm");
+    const button = document.getElementById("loginButton");
+    const message = document.getElementById("message");
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      button.disabled = true;
+      button.textContent = "Signing in...";
+      message.textContent = "";
+
+      try {
+        const email =
+          document.getElementById("email").value.trim();
+
+        const password =
+          document.getElementById("password").value;
+
+        const { error } = await supabase.auth.signInWithPassword({
+          email,
+          password
+        });
+
+        if (error) {
+          throw error;
+        }
+
+        message.style.color = "#f0c36a";
+        message.textContent =
+          "Authentication successful. Verifying administrator access is our next step.";
+
+      } catch (error) {
+        message.style.color = "#ff6673";
+        message.textContent =
+          error.message || "Unable to sign in. Please try again.";
+      } finally {
+        button.disabled = false;
+        button.textContent = "Login";
+      }
+    });
+  </script>
+</body>
+</html>
