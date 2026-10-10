@@ -1292,6 +1292,43 @@
 }
 
 
+/* =========================================
+   ANIMATED WEALTHTHESHAPER LOGO
+========================================= */
+
+.animated-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  animation: wealthShaperLogoBounce 2s ease-in-out infinite;
+  transform-origin: center;
+}
+
+.animated-logo img {
+  display: block;
+  width: 90px;
+  height: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+/* Gentle, continuous bounce */
+@keyframes wealthShaperLogoBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+/* Disable movement for visitors who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .animated-logo {
+    animation: none;
+  }
+}
 
   </style>
 </head>
