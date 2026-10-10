@@ -192,27 +192,176 @@
         flex-direction: column;
       }
     }
+
+    
+/* SIDEBAR IMPROVEMENTS */
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  transition: transform 0.3s ease;
+}
+
+.sidebar-bottom {
+  margin-top: auto;
+  padding-top: 25px;
+}
+
+.back-to-website {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 12px;
+  color: #b6b6bd;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 10px;
+  text-decoration: none;
+  font-size: 13px;
+  transition: color .25s ease, background .25s ease;
+}
+
+.back-to-website:hover {
+  color: #fff;
+  background: rgba(227,38,54,.13);
+  border-color: rgba(227,38,54,.5);
+}
+
+.back-to-website span {
+  color: #e32636;
+  font-size: 19px;
+}
+
+.sidebar-toggle {
+  display: none;
+}
+
+.sidebar-overlay {
+  display: none;
+}
+
+@media (max-width: 800px) {
+  .sidebar-toggle {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 1002;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 46px;
+    height: 46px;
+    padding: 11px;
+    background: #151515;
+    border: 1px solid rgba(227,38,54,.55);
+    border-radius: 12px;
+    cursor: pointer;
+  }
+
+  .sidebar-toggle span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: #e32636;
+    border-radius: 2px;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: min(285px, 85vw);
+    min-height: 100vh;
+    overflow-y: auto;
+    transform: translateX(-105%);
+    visibility: hidden;
+    transition:
+      transform .3s ease,
+      visibility .3s ease;
+    box-shadow: 15px 0 45px rgba(0,0,0,.3);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+    visibility: visible;
+  }
+
+  .sidebar-overlay.open {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    background: rgba(0,0,0,.65);
+    backdrop-filter: blur(3px);
+  }
+
+  body.sidebar-open {
+    overflow: hidden;
+  }
+
+  .sidebar-bottom {
+    margin-top: 30px;
+    padding-bottom: 15px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar,
+  .sidebar-toggle,
+  .back-to-website {
+    transition: none;
+  }
+}
+
   </style>
 </head>
 
 <body>
-  <aside class="sidebar">
-    <div class="brand">
-      <span>W</span> WEALTHTHESHAPER
-      <small>ADMINISTRATION</small>
-    </div>
+ 
+<!-- Mobile menu button -->
+<button
+  class="sidebar-toggle"
+  id="sidebarToggle"
+  type="button"
+  aria-label="Open dashboard menu"
+  aria-expanded="false"
+  aria-controls="adminSidebar"
+>
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
 
-    <p class="menu-label">MAIN MENU</p>
+<!-- Mobile overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <a href="dashboard.html" class="nav-item active">Dashboard</a>
-    <a href="bookings.html" class="nav-item">Bookings</a>
-    <a href="services.html" class="nav-item">Services</a>
-    <a href="projects.html" class="nav-item">Projects</a>
-    <a href="faqs.html" class="nav-item">FAQs</a>
-    <a href="testimonials.html" class="nav-item">Testimonials</a>
-    <a href="website-content.html" class="nav-item">Website Content</a>
-    <a href="settings.html" class="nav-item">Settings</a>
-  </aside>
+<!-- Admin sidebar -->
+<aside class="sidebar" id="adminSidebar">
+  <div class="brand">
+    <span>W</span> WEALTHTHESHAPER
+    <small>ADMINISTRATION</small>
+  </div>
+
+  <p class="menu-label">MAIN MENU</p>
+
+  <a href="dashboard.html" class="nav-item active">Dashboard</a>
+  <a href="bookings.html" class="nav-item">Bookings</a>
+  <a href="services.html" class="nav-item">Services</a>
+  <a href="projects.html" class="nav-item">Projects</a>
+  <a href="faqs.html" class="nav-item">FAQs</a>
+  <a href="testimonials.html" class="nav-item">Testimonials</a>
+  <a href="website-content.html" class="nav-item">Website Content</a>
+  <a href="settings.html" class="nav-item">Settings</a>
+
+  <div class="sidebar-bottom">
+    <a href="../index.html" class="back-to-website">
+      <span>←</span> Back to Website
+    </a>
+  </div>
+</aside>
+
 
   <main class="main">
     <header class="topbar">
@@ -310,7 +459,46 @@
   }
 
   protectAdminDashboard();
+
+  const sidebar = document.getElementById("adminSidebar");
+  const toggle = document.getElementById("sidebarToggle");
+  const overlay = document.getElementById("sidebarOverlay");
+
+  function setSidebar(open) {
+    sidebar.classList.toggle("open", open);
+    overlay.classList.toggle("open", open);
+    document.body.classList.toggle("sidebar-open", open);
+
+    toggle.setAttribute("aria-expanded", String(open));
+    toggle.setAttribute(
+      "aria-label",
+      open ? "Close dashboard menu" : "Open dashboard menu"
+    );
+  }
+
+  toggle.addEventListener("click", () => {
+    setSidebar(!sidebar.classList.contains("open"));
+  });
+
+  overlay.addEventListener("click", () => {
+    setSidebar(false);
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      setSidebar(false);
+    }
+  });
+
+  sidebar.querySelectorAll(".nav-item, .back-to-website")
+    .forEach((link) => {
+      link.addEventListener("click", () => {
+        setSidebar(false);
+      });
+    });
 </script>
+
+
 </body>
 </html>
 
