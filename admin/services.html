@@ -790,6 +790,9 @@ const serviceFormMessage =
 
 addServiceBtn.addEventListener("click", () => {
   serviceForm.reset();
+
+  editingServiceId = null;
+currentServiceImageUrl = null;
   document.getElementById("serviceOrder").value = 0;
   document.getElementById("serviceFormTitle").textContent =
     "Add New Service";
