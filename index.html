@@ -924,51 +924,6 @@
 
     
 
-/* Circular glass frame for the animated logo */
-
-.animated-logo {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 35px 20px;
-  overflow: visible;
-}
-
-.animated-logo img {
-  width: 120px;
-  height: 120px;
-  object-fit: cover;
-  border-radius: 50%;
-
-  padding: 5px;
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(255, 255, 255, 0.38);
-
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-
-  box-shadow:
-    0 8px 30px rgba(0, 0, 0, 0.22),
-    0 0 24px rgba(227, 38, 54, 0.18),
-    inset 0 1px 2px rgba(255, 255, 255, 0.18);
-
-  animation: logoBounce 1.5s ease-in-out infinite;
-  will-change: transform;
-}
-
-@media (max-width: 600px) {
-  .animated-logo img {
-    width: 100px;
-    height: 100px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .animated-logo img {
-    animation: none;
-  }
-}
-
     .nav-login {
   display: inline-flex;
   align-items: center;
@@ -1044,47 +999,6 @@
     width: auto;
   }
 }
-
-
-/* =========================================
-   ANIMATED WEALTHTHESHAPER LOGO
-========================================= */
-
-.animated-logo {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  animation: wealthShaperLogoBounce 2s ease-in-out infinite;
-  transform-origin: center;
-}
-
-.animated-logo img {
-  display: block;
-  width: 90px;
-  height: auto;
-  max-width: 100%;
-  object-fit: contain;
-}
-
-/* Gentle, continuous bounce */
-@keyframes wealthShaperLogoBounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-7px);
-  }
-}
-
-/* Disable movement for visitors who prefer reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .animated-logo {
-    animation: none;
-  }
-}
-
-    
 
 /* =========================================
    WEALTHTHESHAPER — OUR IMPACT
@@ -1238,53 +1152,8 @@
 
     
 /* =========================================
-   WEALTHTHESHAPER LOGO — CENTERED & BIGGER
-========================================= */
-
-.animated-logo {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto;
-  padding: 20px 0;
-  text-align: center;
-
-  /* Keep the logo still */
-  animation: none !important;
-  transform: none !important;
-}
-
-.animated-logo img {
-  display: block;
-  width: 150px;
-  max-width: 80%;
-  height: auto;
-  margin: 0 auto;
-  object-fit: contain;
-
-  animation: none !important;
-  transform: none !important;
-}
-
-/* Bigger logo on laptop */
-@media (min-width: 768px) {
-  .animated-logo img {
-    width: 180px;
-  }
-}
-
-/* Comfortable size on mobile */
-@media (max-width: 767px) {
-  .animated-logo img {
-    width: 140px;
-  }
-}
-
-    
-/* =========================================
    WEALTHTHESHAPER LOGO
-   Centered, Bigger & Gently Animated
+   Centered, Larger & Animated
 ========================================= */
 
 .animated-logo {
@@ -1292,82 +1161,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0 auto;
-  padding: 20px 0;
-
-  animation: wealthShaperBounce 2.5s ease-in-out infinite;
-}
-
-.animated-logo img {
-  display: block;
-  width: 150px;
-  max-width: 80%;
-  height: auto;
-  margin: 0 auto;
-  object-fit: contain;
-}
-
-/* Larger logo on laptops */
-@media (min-width: 768px) {
-  .animated-logo img {
-    width: 180px;
-  }
-}
-
-/* Mobile size */
-@media (max-width: 767px) {
-  .animated-logo img {
-    width: 140px;
-  }
-}
-
-/* Gentle up-and-down movement */
-@keyframes wealthShaperBounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-8px);
-  }
-}
-
-/* Respect reduced-motion preferences */
-@media (prefers-reduced-motion: reduce) {
-  .animated-logo {
-    animation: none !important;
-  }
-}
-
-    
-/* FORCE WEALTHTHESHAPER LOGO ANIMATION */
-.animated-logo {
-  animation: wtsLogoBounceFix 1.8s ease-in-out infinite !important;
-  transform: translateY(0);
-}
-
-.animated-logo img {
-  animation: none !important;
-  transform: none !important;
-}
-
-@keyframes wtsLogoBounceFix {
-  0%, 100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-15px);
-  }
-}
-
-    
-/* WealthTheShaper logo animation fix */
-.animated-logo {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  padding: 25px 0;
+  overflow: visible;
 }
 
 .animated-logo img {
@@ -1375,27 +1170,36 @@
   width: 180px;
   max-width: 80%;
   height: auto;
-
-  animation: wtsLogoFloat 2s ease-in-out infinite !important;
+  object-fit: contain;
+  animation: wtsLogoBounce 2s ease-in-out infinite;
   will-change: transform;
 }
 
-@keyframes wtsLogoFloat {
-  0%, 100% {
-    transform: translate3d(0, 0, 0);
-  }
-
-  50% {
-    transform: translate3d(0, -15px, 0);
-  }
-}
-
+/* Mobile logo size */
 @media (max-width: 767px) {
   .animated-logo img {
     width: 150px;
   }
 }
 
+/* Gentle up-and-down bounce */
+@keyframes wtsLogoBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .animated-logo img {
+    animation: none;
+    will-change: auto;
+  }
+}
 
   </style>
 </head>
