@@ -353,13 +353,15 @@
       </a>
     </header>
 
-    <section class="panel">
-      <h2>Your Services</h2>
-      <p class="muted">
-        Your service records will appear here once we connect
-        this page to your Supabase database.
-      </p>
-    </section>
+    
+<section class="panel">
+  <h2>Your Services</h2>
+
+  <div id="servicesContainer">
+    <p class="muted">Your services will appear here.</p>
+  </div>
+</section>
+
 
     <section class="panel">
       <h2>Available controls</h2>
@@ -412,6 +414,67 @@
     }
 
     verifyAdmin();
+
+    
+// Load services from Supabase
+async function loadServices() {
+  const servicesContainer =
+    document.getElementById("servicesContainer");
+
+  if (!servicesContainer) return;
+
+  servicesContainer.innerHTML =
+    '<p class="muted">Loading services...</p>';
+
+  const { data: services, error } = await supabase
+    .from("services")
+    .select("*")
+    .order("display_order", { ascending: true });
+
+  if (error) {
+    console.error("Error loading services:", error);
+
+    servicesContainer.innerHTML =
+      '<p class="muted">Unable to load services. Please try again.</p>';
+
+    return;
+  }
+
+  if (!services || services.length === 0) {
+    servicesContainer.innerHTML =
+      '<p class="muted">No services found yet.</p>';
+
+    return;
+  }
+
+  servicesContainer.innerHTML = "";
+
+  services.forEach((service) => {
+    const card = document.createElement("article");
+    card.className = "panel";
+
+    const title = document.createElement("h2");
+    title.textContent = service.title;
+
+    const description = document.createElement("p");
+    description.className = "muted";
+    description.textContent =
+      service.description || "No description added yet.";
+
+    const status = document.createElement("p");
+    status.className = "muted";
+    status.style.marginTop = "12px";
+    status.textContent = service.is_published
+      ? "Status: Published"
+      : "Status: Draft";
+
+    card.append(title, description, status);
+    servicesContainer.appendChild(card);
+  });
+}
+
+loadServices();
+
 
     
 const sidebar = document.getElementById("adminSidebar");
