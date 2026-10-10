@@ -921,6 +921,55 @@
   font-size: 0.8rem;
   border-radius: 50px;
 }
+
+    
+/* Animated WealthTheShaper Logo */
+
+.animated-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 20px;
+  overflow: visible;
+}
+
+.animated-logo img {
+  width: 110px;
+  height: 110px;
+  object-fit: contain;
+  animation: logoBounce 1.5s ease-in-out infinite;
+  filter: drop-shadow(0 10px 12px rgba(227, 38, 54, 0.18));
+  will-change: transform;
+}
+
+@keyframes logoBounce {
+  0%, 100% {
+    transform: translateY(0) scaleX(1) scaleY(1);
+  }
+
+  35% {
+    transform: translateY(-28px) scaleX(1) scaleY(1);
+  }
+
+  50% {
+    transform: translateY(-28px) scaleX(1) scaleY(1);
+  }
+
+  65% {
+    transform: translateY(0) scaleX(1.08) scaleY(0.92);
+  }
+
+  72% {
+    transform: translateY(-5px) scaleX(0.98) scaleY(1.02);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animated-logo img {
+    animation: none;
+  }
+}
+
   </style>
 </head>
 
@@ -1082,6 +1131,13 @@
 
       </div>
     </section>
+
+    
+<!-- Animated WealthTheShaper Logo -->
+<div class="animated-logo">
+  <img src="image/wealth.png" alt="WealthTheShaper logo">
+</div>
+
 
     <!-- SERVICES -->
     <section class="section services-section" id="services">
