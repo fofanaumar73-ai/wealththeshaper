@@ -595,6 +595,68 @@
     verifyAdmin();
 
     
+ // SERVICE IMAGE PREVIEW
+const serviceImageFile = document.getElementById("serviceImageFile");
+const serviceImagePreviewContainer = document.getElementById("serviceImagePreviewContainer");
+const serviceImagePreview = document.getElementById("serviceImagePreview");
+const removeServiceImageBtn = document.getElementById("removeServiceImageBtn");
+
+let selectedServiceImageFile = null;
+let serviceImagePreviewUrl = null;
+
+serviceImageFile.addEventListener("change", () => {
+  const file = serviceImageFile.files[0];
+
+  if (serviceImagePreviewUrl) {
+    URL.revokeObjectURL(serviceImagePreviewUrl);
+    serviceImagePreviewUrl = null;
+  }
+
+  selectedServiceImageFile = null;
+
+  if (!file) {
+    serviceImagePreviewContainer.hidden = true;
+    serviceImagePreview.removeAttribute("src");
+    return;
+  }
+
+  const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+
+  if (!allowedTypes.includes(file.type)) {
+    alert("Please select a JPG, PNG, or WebP image.");
+    serviceImageFile.value = "";
+    serviceImagePreviewContainer.hidden = true;
+    return;
+  }
+
+  if (file.size > 5 * 1024 * 1024) {
+    alert("The image must be 5 MB or smaller.");
+    serviceImageFile.value = "";
+    serviceImagePreviewContainer.hidden = true;
+    return;
+  }
+
+  selectedServiceImageFile = file;
+  serviceImagePreviewUrl = URL.createObjectURL(file);
+  serviceImagePreview.src = serviceImagePreviewUrl;
+  serviceImagePreviewContainer.hidden = false;
+});
+
+removeServiceImageBtn.addEventListener("click", () => {
+  serviceImageFile.value = "";
+  selectedServiceImageFile = null;
+
+  if (serviceImagePreviewUrl) {
+    URL.revokeObjectURL(serviceImagePreviewUrl);
+    serviceImagePreviewUrl = null;
+  }
+
+  serviceImagePreview.removeAttribute("src");
+  serviceImagePreviewContainer.hidden = true;
+});
+
+
+    
 // Load services from Supabase
 async function loadServices() {
   const servicesContainer =
