@@ -1153,7 +1153,7 @@
     
 /* =========================================
    WEALTHTHESHAPER LOGO
-   Centered, Larger & Animated
+   Glassy Circle + Gentle Animation
 ========================================= */
 
 .animated-logo {
@@ -1165,24 +1165,52 @@
   overflow: visible;
 }
 
+/* Glassy circular logo frame */
 .animated-logo img {
   display: block;
   width: 180px;
+  height: 180px;
   max-width: 80%;
-  height: auto;
   object-fit: contain;
+  box-sizing: border-box;
+
+  /* Glass effect */
+  padding: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+
+  /* Red and black glow */
+  box-shadow:
+    0 8px 30px rgba(0, 0, 0, 0.35),
+    0 0 24px rgba(227, 38, 54, 0.2),
+    inset 0 1px 3px rgba(255, 255, 255, 0.16);
+
+  /* Gentle floating animation */
   animation: wtsLogoBounce 2s ease-in-out infinite;
   will-change: transform;
 }
 
-/* Mobile logo size */
-@media (max-width: 767px) {
+/* Larger frame on laptops */
+@media (min-width: 768px) {
   .animated-logo img {
-    width: 150px;
+    width: 200px;
+    height: 200px;
   }
 }
 
-/* Gentle up-and-down bounce */
+/* Comfortable frame size on mobile */
+@media (max-width: 767px) {
+  .animated-logo img {
+    width: 155px;
+    height: 155px;
+  }
+}
+
+/* Gentle up-and-down movement */
 @keyframes wtsLogoBounce {
   0%, 100% {
     transform: translateY(0);
@@ -1200,6 +1228,7 @@
     will-change: auto;
   }
 }
+
 
   </style>
 </head>
