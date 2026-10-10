@@ -1576,58 +1576,34 @@
        SERVICE CONTENT
        Later this will come from Supabase.
     ========================== */
-    const services = [
-      {
-        title: "Business Growth Diagnosis",
-        eyebrow: "01 / DIAGNOSE",
-        description:
-          "Identify the gaps, bottlenecks and missed opportunities preventing your business from reaching its growth potential.",
-        help:
-          "WealthTheShaper helps you examine your current business position, identify potential growth barriers and understand where improvements may have the greatest impact.",
-        outcome:
-          "A clearer understanding of your business challenges, opportunities and areas that may require strategic attention."
-      },
-      {
-        title: "Strategic Positioning",
-        eyebrow: "02 / POSITION",
-        description:
-          "Clarify your business value, competitive advantage and market positioning so the right audience understands why it should choose your brand.",
-        help:
-          "WealthTheShaper helps you communicate what makes your business valuable, define your differentiation and build a clearer connection with your intended market.",
-        outcome:
-          "A stronger positioning direction and a clearer way to communicate your brand's value to the right audience."
-      },
-      {
-        title: "Visibility, Marketing & Sales Strategy",
-        eyebrow: "03 / ACTIVATE",
-        description:
-          "Develop strategies that strengthen visibility, attract suitable customers and create sales opportunities.",
-        help:
-          "WealthTheShaper helps you assess how your brand reaches its audience and identify ways to improve marketing alignment and sales opportunities.",
-        outcome:
-          "A more intentional direction for attracting potential customers and turning attention into meaningful business opportunities."
-      },
-      {
-        title: "Offer Development & Monetization",
-        eyebrow: "04 / MONETIZE",
-        description:
-          "Structure compelling offers and sales systems that convert customer interest into revenue opportunities.",
-        help:
-          "WealthTheShaper helps you review how your offers communicate value, how customers move toward a purchase and where your monetization approach may be improved.",
-        outcome:
-          "Clearer offers and a more structured approach to converting customer demand into revenue."
-      },
-      {
-        title: "Business Growth & Scaling",
-        eyebrow: "05 / SCALE",
-        description:
-          "Build repeatable strategies, processes and growth systems to improve performance and support sustainable expansion.",
-        help:
-          "WealthTheShaper helps you identify opportunities to standardize effective processes, strengthen business systems and plan for sustainable growth.",
-        outcome:
-          "A clearer growth direction and a framework for developing repeatable business processes."
-      }
-    ];
+  
+let services = [];
+
+async function loadPublicServices() {
+  const { data, error } = await supabase
+    .from("services")
+    .select("id, slug, title, description, image_url, display_order")
+    .eq("is_published", true)
+    .order("display_order", { ascending: true });
+
+  if (error) {
+    console.error("Unable to load public services:", error);
+    return;
+  }
+
+  services = (data || []).map((service, index) => ({
+    id: service.id,
+    slug: service.slug,
+    title: service.title,
+    eyebrow: `${String(index + 1).padStart(2, "0")} / EXPLORE`,
+    description: service.description || "",
+    help: service.description || "",
+    outcome: "Contact WealthTheShaper to discuss this service.",
+    image_url: service.image_url || "",
+    display_order: service.display_order
+  }));
+}
+
 
     /* =========================
        MOBILE NAVIGATION
