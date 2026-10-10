@@ -175,6 +175,122 @@
         flex-direction: column;
       }
     }
+
+    
+/* Consistent admin sidebar */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  transition: transform 0.3s ease;
+}
+
+.sidebar-bottom {
+  margin-top: auto;
+  padding-top: 25px;
+}
+
+.back-to-website {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 12px;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.back-to-website:hover {
+  color: #fff;
+  background: rgba(227, 38, 54, .13);
+  border-color: rgba(227, 38, 54, .5);
+}
+
+.back-to-website span {
+  color: var(--red);
+  font-size: 19px;
+}
+
+.sidebar-toggle,
+.sidebar-overlay {
+  display: none;
+}
+
+/* Mobile navigation */
+@media (max-width: 850px) {
+  .sidebar-toggle {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 1002;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 46px;
+    height: 46px;
+    padding: 11px;
+    background: #151515;
+    border: 1px solid rgba(227, 38, 54, .55);
+    border-radius: 12px;
+    cursor: pointer;
+  }
+
+  .sidebar-toggle span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: var(--red);
+    border-radius: 2px;
+  }
+
+  .sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: min(285px, 85vw);
+    min-height: 100vh;
+    padding: 28px 18px;
+    overflow-y: auto;
+    transform: translateX(-105%);
+    visibility: hidden;
+    transition: transform .3s ease, visibility .3s ease;
+    box-shadow: 15px 0 45px rgba(0, 0, 0, .3);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+    visibility: visible;
+  }
+
+  .sidebar-overlay.open {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    background: rgba(0, 0, 0, .65);
+    backdrop-filter: blur(3px);
+  }
+
+  body.sidebar-open {
+    overflow: hidden;
+  }
+
+  .sidebar-bottom {
+    margin-top: 30px;
+    padding-bottom: 15px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar,
+  .sidebar-toggle,
+  .back-to-website {
+    transition: none;
+  }
+}
+
   </style>
 </head>
 
