@@ -1611,6 +1611,26 @@ async function loadPublicServices() {
       }
     }
 
+  
+// Handle dynamically generated service buttons
+const servicesGrid = document.getElementById("servicesGrid");
+
+servicesGrid.addEventListener("click", (event) => {
+  const learnButton = event.target.closest(".learn-more");
+  const bookButton = event.target.closest(".book-service");
+
+  if (learnButton && servicesGrid.contains(learnButton)) {
+    event.preventDefault();
+    openServiceDetails(Number(learnButton.dataset.service));
+    return;
+  }
+
+  if (bookButton && servicesGrid.contains(bookButton)) {
+    startBooking(Number(bookButton.dataset.service));
+  }
+});
+
+
     modalClose.addEventListener("click", closeServiceDetails);
 
     modal.addEventListener("click", event => {
@@ -1642,6 +1662,26 @@ async function loadPublicServices() {
       // This route will work after we create the client portal.
       window.location.href = "client/login.html?" + params.toString();
     }
+
+  
+// Handle dynamically generated service buttons
+const servicesGrid = document.getElementById("servicesGrid");
+
+servicesGrid.addEventListener("click", (event) => {
+  const learnButton = event.target.closest(".learn-more");
+  const bookButton = event.target.closest(".book-service");
+
+  if (learnButton && servicesGrid.contains(learnButton)) {
+    event.preventDefault();
+    openServiceDetails(Number(learnButton.dataset.service));
+    return;
+  }
+
+  if (bookButton && servicesGrid.contains(bookButton)) {
+    startBooking(Number(bookButton.dataset.service));
+  }
+});
+
 
     modalBook.addEventListener("click", () => {
       if (selectedServiceIndex !== null) {
