@@ -291,6 +291,25 @@
   }
 }
 
+    .services-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.services-heading h2 {
+  margin-bottom: 0;
+}
+
+@media (max-width: 480px) {
+  .services-heading .primary-button {
+    width: 100%;
+  }
+}
+
   </style>
 </head>
 
@@ -355,7 +374,12 @@
 
     
 <section class="panel">
+  <div class="services-heading">
   <h2>Your Services</h2>
+  <button type="button" class="primary-button" id="addServiceBtn">
+    + Add Service
+  </button>
+</div>
 
   <div id="servicesContainer">
     <p class="muted">Your services will appear here.</p>
