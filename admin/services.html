@@ -310,6 +310,70 @@
   }
 }
 
+  
+#serviceFormContainer[hidden] {
+  display: none !important;
+}
+
+#serviceForm {
+  margin-bottom: 22px;
+}
+
+#serviceForm label {
+  display: block;
+  margin: 18px 0 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+#serviceForm input:not([type="checkbox"]),
+#serviceForm textarea {
+  display: block;
+  width: 100%;
+  padding: 12px 14px;
+  background: #0b0b0b;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  font: inherit;
+  font-size: 14px;
+}
+
+#serviceForm input:focus,
+#serviceForm textarea:focus {
+  outline: 1px solid var(--red);
+  border-color: var(--red);
+}
+
+#serviceForm textarea {
+  resize: vertical;
+}
+
+#serviceForm .publish-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.secondary-button {
+  padding: 11px 18px;
+  color: white;
+  background: #252525;
+  border: 1px solid var(--border);
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+
   </style>
 </head>
 
@@ -380,6 +444,75 @@
     + Add Service
   </button>
 </div>
+
+<div id="serviceFormContainer" hidden>
+  <form id="serviceForm" class="panel">
+    <h2 id="serviceFormTitle">Add New Service</h2>
+
+    <label for="serviceTitle">Service Title</label>
+    <input
+      type="text"
+      id="serviceTitle"
+      maxlength="150"
+      required
+      placeholder="Enter service title"
+    >
+
+    <label for="serviceSlug">Service Slug</label>
+    <input
+      type="text"
+      id="serviceSlug"
+      maxlength="150"
+      required
+      pattern="[a-z0-9]+(-[a-z0-9]+)*"
+      placeholder="business-growth-diagnosis"
+    >
+
+    <label for="serviceDescription">Description</label>
+    <textarea
+      id="serviceDescription"
+      rows="5"
+      maxlength="3000"
+      placeholder="Describe this service"
+    ></textarea>
+
+    <label for="serviceImage">Image URL (optional)</label>
+    <input
+      type="url"
+      id="serviceImage"
+      maxlength="2048"
+      placeholder="https://example.com/image.jpg"
+    >
+
+    <label for="serviceOrder">Display Order</label>
+    <input
+      type="number"
+      id="serviceOrder"
+      min="0"
+      max="10000"
+      value="0"
+      required
+    >
+
+    <label class="publish-option">
+      <input type="checkbox" id="servicePublished">
+      Publish this service
+    </label>
+
+    <div class="form-actions">
+      <button type="submit" class="primary-button" id="saveServiceBtn">
+        Save Service
+      </button>
+
+      <button type="button" class="secondary-button" id="cancelServiceBtn">
+        Cancel
+      </button>
+    </div>
+
+    <p id="serviceFormMessage" class="muted" role="status"></p>
+  </form>
+</div>
+
 
   <div id="servicesContainer">
     <p class="muted">Your services will appear here.</p>
@@ -498,6 +631,34 @@ async function loadServices() {
 }
 
 loadServices();
+
+    
+// Open and close the service form
+const addServiceBtn = document.getElementById("addServiceBtn");
+const serviceFormContainer =
+  document.getElementById("serviceFormContainer");
+const serviceForm = document.getElementById("serviceForm");
+const cancelServiceBtn =
+  document.getElementById("cancelServiceBtn");
+const serviceFormMessage =
+  document.getElementById("serviceFormMessage");
+
+addServiceBtn.addEventListener("click", () => {
+  serviceForm.reset();
+  document.getElementById("serviceOrder").value = 0;
+  document.getElementById("serviceFormTitle").textContent =
+    "Add New Service";
+  serviceFormMessage.textContent = "";
+  serviceFormContainer.hidden = false;
+  document.getElementById("serviceTitle").focus();
+});
+
+cancelServiceBtn.addEventListener("click", () => {
+  serviceFormContainer.hidden = true;
+  serviceForm.reset();
+  serviceFormMessage.textContent = "";
+});
+
 
 
     
