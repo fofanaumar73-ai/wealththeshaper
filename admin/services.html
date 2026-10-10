@@ -179,23 +179,49 @@
 </head>
 
 <body>
-  <aside class="sidebar">
-    <div class="brand">
-      <span>W</span> WEALTHTHESHAPER
-      <small>ADMINISTRATION</small>
-    </div>
+  
+<!-- Mobile menu button -->
+<button
+  class="sidebar-toggle"
+  id="sidebarToggle"
+  type="button"
+  aria-label="Open dashboard menu"
+  aria-expanded="false"
+  aria-controls="adminSidebar"
+>
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
 
-    <p class="menu-label">MAIN MENU</p>
+<!-- Mobile overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <a href="dashboard.html" class="nav-item">Dashboard</a>
-    <a href="bookings.html" class="nav-item">Bookings</a>
-    <a href="services.html" class="nav-item active">Services</a>
-    <a href="projects.html" class="nav-item">Projects</a>
-    <a href="faqs.html" class="nav-item">FAQs</a>
-    <a href="testimonials.html" class="nav-item">Testimonials</a>
-    <a href="website-content.html" class="nav-item">Website Content</a>
-    <a href="settings.html" class="nav-item">Settings</a>
-  </aside>
+<!-- Admin sidebar -->
+<aside class="sidebar" id="adminSidebar">
+  <div class="brand">
+    <span>W</span> WEALTHTHESHAPER
+    <small>ADMINISTRATION</small>
+  </div>
+
+  <p class="menu-label">MAIN MENU</p>
+
+  <a href="dashboard.html" class="nav-item">Dashboard</a>
+  <a href="bookings.html" class="nav-item">Bookings</a>
+  <a href="services.html" class="nav-item active">Services</a>
+  <a href="projects.html" class="nav-item">Projects</a>
+  <a href="faqs.html" class="nav-item">FAQs</a>
+  <a href="testimonials.html" class="nav-item">Testimonials</a>
+  <a href="website-content.html" class="nav-item">Website Content</a>
+  <a href="settings.html" class="nav-item">Settings</a>
+
+  <div class="sidebar-bottom">
+    <a href="../index.html" class="back-to-website">
+      <span>←</span> Back to Website
+    </a>
+  </div>
+</aside>
+
 
   <main>
     <header class="topbar">
