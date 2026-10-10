@@ -536,6 +536,70 @@
         setSidebar(false);
       });
     });
+
+  
+/* =========================================
+   DASHBOARD TOOL NAVIGATION
+   Step 1: Safe navigation foundation
+========================================= */
+
+const dashboardMain = document.getElementById("dashboardMain");
+const toolView = document.getElementById("toolView");
+
+const dashboardHomeHTML = dashboardMain
+  ? Array.from(dashboardMain.children)
+      .filter(element => element.id !== "toolView")
+  : [];
+
+const dashboardToolLinks = document.querySelectorAll(
+  "#adminSidebar .nav-item[data-tool]"
+);
+
+dashboardToolLinks.forEach(link => {
+  link.addEventListener("click", event => {
+    const tool = link.dataset.tool;
+
+    // Keep the existing Dashboard page working.
+    // Other tools will be connected one at a time.
+    if (tool !== "dashboard") {
+      return;
+    }
+
+    event.preventDefault();
+
+    if (!dashboardMain || !toolView) {
+      window.location.href = link.href;
+      return;
+    }
+
+    toolView.hidden = true;
+
+    dashboardHomeHTML.forEach(element => {
+      element.hidden = false;
+    });
+
+    dashboardMain.classList.remove("content-loading");
+
+    dashboardToolLinks.forEach(item => {
+      item.classList.toggle("active", item === link);
+    });
+
+    // Preserve the existing mobile sidebar behavior.
+    const sidebar = document.getElementById("adminSidebar");
+    const overlay = document.getElementById("sidebarOverlay");
+    const toggle = document.getElementById("sidebarToggle");
+
+    if (sidebar && overlay && toggle) {
+      sidebar.classList.remove("open");
+      overlay.classList.remove("open");
+      document.body.classList.remove("sidebar-open");
+
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.setAttribute("aria-label", "Open dashboard menu");
+    }
+  });
+});
+
 </script>
 
 
