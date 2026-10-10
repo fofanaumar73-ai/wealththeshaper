@@ -1442,6 +1442,12 @@ const supabase = window.supabase.createClient(
 let services = [];
 
 async function loadPublicServices() {
+  const grid = document.getElementById("servicesGrid");
+
+  if (!grid) return;
+
+  grid.textContent = "Loading services...";
+
   const { data, error } = await supabase
     .from("services")
     .select("id, slug, title, description, image_url, display_order")
@@ -1449,22 +1455,88 @@ async function loadPublicServices() {
     .order("display_order", { ascending: true });
 
   if (error) {
-    console.error("Unable to load public services:", error);
+    console.error("Could not load services:", error);
+    grid.textContent =
+      "Services are temporarily unavailable. Please try again later.";
     return;
   }
 
-  services = (data || []).map((service, index) => ({
-    id: service.id,
-    slug: service.slug,
-    title: service.title,
+  services = (data || []).map((item, index) => ({
+    id: item.id,
+    slug: item.slug,
+    title: item.title,
     eyebrow: `${String(index + 1).padStart(2, "0")} / EXPLORE`,
-    description: service.description || "",
-    help: service.description || "",
+    description: item.description || "",
+    help: item.description || "",
     outcome: "Contact WealthTheShaper to discuss this service.",
-    image_url: service.image_url || "",
-    display_order: service.display_order
+    image_url: item.image_url || ""
   }));
+
+  grid.replaceChildren();
+
+  if (services.length === 0) {
+    grid.textContent = "Our services are being updated. Please check back soon.";
+    return;
+  }
+
+  const fallbackImages = [
+    "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=900&q=80",
+    "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=80",
+    "https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=900&q=80",
+    "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=900&q=80",
+    "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=900&q=80"
+  ];
+
+  services.forEach((service, index) => {
+    const card = document.createElement("article");
+    card.className = "service-card";
+
+    const imageBox = document.createElement("div");
+    imageBox.className = "service-image";
+
+    const image = document.createElement("img");
+    image.src = service.image_url || fallbackImages[index % fallbackImages.length];
+    image.alt = service.title;
+    image.loading = "lazy";
+
+    imageBox.appendChild(image);
+
+    const content = document.createElement("div");
+    content.className = "service-content";
+
+    const eyebrow = document.createElement("span");
+    eyebrow.className = "service-index";
+    eyebrow.textContent = service.eyebrow;
+
+    const title = document.createElement("h3");
+    title.textContent = service.title;
+
+    const description = document.createElement("p");
+    description.textContent = service.description;
+
+    const actions = document.createElement("div");
+    actions.className = "service-actions";
+
+    const learnMore = document.createElement("a");
+    learnMore.href =
+      "service-details.html?service=" + encodeURIComponent(service.slug);
+    learnMore.className = "btn-glass learn-more";
+    learnMore.dataset.service = String(index);
+    learnMore.textContent = "Learn More ↗";
+
+    const bookButton = document.createElement("button");
+    bookButton.type = "button";
+    bookButton.className = "btn-primary book-service";
+    bookButton.dataset.service = String(index);
+    bookButton.textContent = "Book a Service →";
+
+    actions.append(learnMore, bookButton);
+    content.append(eyebrow, title, description, actions);
+    card.append(imageBox, content);
+    grid.appendChild(card);
+  });
 }
+
 
 
     /* =========================
