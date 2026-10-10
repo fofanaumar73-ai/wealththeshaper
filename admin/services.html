@@ -412,6 +412,45 @@
     }
 
     verifyAdmin();
+
+    
+const sidebar = document.getElementById("adminSidebar");
+const toggle = document.getElementById("sidebarToggle");
+const overlay = document.getElementById("sidebarOverlay");
+
+function setSidebar(open) {
+  sidebar.classList.toggle("open", open);
+  overlay.classList.toggle("open", open);
+  document.body.classList.toggle("sidebar-open", open);
+
+  toggle.setAttribute("aria-expanded", String(open));
+  toggle.setAttribute(
+    "aria-label",
+    open ? "Close dashboard menu" : "Open dashboard menu"
+  );
+}
+
+toggle.addEventListener("click", () => {
+  setSidebar(!sidebar.classList.contains("open"));
+});
+
+overlay.addEventListener("click", () => {
+  setSidebar(false);
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    setSidebar(false);
+  }
+});
+
+sidebar.querySelectorAll(".nav-item, .back-to-website")
+  .forEach((link) => {
+    link.addEventListener("click", () => {
+      setSidebar(false);
+    });
+  });
+
   </script>
 </body>
 </html>
