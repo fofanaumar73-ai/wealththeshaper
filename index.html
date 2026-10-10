@@ -1330,6 +1330,141 @@
   }
 }
 
+    
+/* =========================================
+   WEALTHTHESHAPER — OUR IMPACT
+========================================= */
+
+.wts-impact-section {
+  background: #080808;
+  color: #ffffff;
+  padding: 70px 7%;
+}
+
+.wts-impact-heading {
+  text-align: center;
+  max-width: 650px;
+  margin: 0 auto 45px;
+}
+
+.wts-impact-heading h2 {
+  font-size: clamp(28px, 4vw, 42px);
+  margin: 0 0 12px;
+  color: #ffffff;
+}
+
+.wts-impact-heading p {
+  color: #b8b8b8;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.wts-impact-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: 950px;
+  margin: 0 auto;
+}
+
+.wts-impact-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 35px 20px;
+  min-width: 0;
+}
+
+/* Vertical divider between the two columns */
+.wts-impact-card:nth-child(2n) {
+  border-left: 1px solid #353535;
+}
+
+/* Horizontal divider between the two rows */
+.wts-impact-card:nth-child(n+3) {
+  border-top: 1px solid #353535;
+}
+
+/* Remove the old circular ring design */
+.wts-impact-ring {
+  width: auto;
+  height: auto;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  animation: none;
+  filter: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wts-impact-inner {
+  width: auto;
+  height: auto;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  animation: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.wts-impact-number {
+  color: #d6b56d;
+  font-size: clamp(36px, 5vw, 52px);
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.wts-impact-label {
+  color: #d0d0d0;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* Mobile: one statistic per row */
+@media (max-width: 600px) {
+  .wts-impact-section {
+    padding: 50px 7%;
+  }
+
+  .wts-impact-heading {
+    margin-bottom: 25px;
+  }
+
+  .wts-impact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .wts-impact-card {
+    padding: 25px 12px;
+  }
+
+  /* Remove vertical dividers on mobile */
+  .wts-impact-card:nth-child(2n) {
+    border-left: none;
+  }
+
+  /* Separate each mobile statistic horizontally */
+  .wts-impact-card:not(:first-child) {
+    border-top: 1px solid #353535;
+  }
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .wts-impact-card,
+  .wts-impact-ring,
+  .wts-impact-inner {
+    animation: none !important;
+  }
+}
+
+
   </style>
 </head>
 
