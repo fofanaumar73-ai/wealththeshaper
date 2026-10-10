@@ -655,7 +655,8 @@ removeServiceImageBtn.addEventListener("click", () => {
   serviceImagePreviewContainer.hidden = true;
 });
 
-
+let editingServiceId = null;
+let currentServiceImageUrl = null;
     
 // Load services from Supabase
 async function loadServices() {
@@ -709,8 +710,68 @@ async function loadServices() {
       ? "Status: Published"
       : "Status: Draft";
 
-    card.append(title, description, status);
+    
+    const editButton = document.createElement("button");
+    editButton.type = "button";
+    editButton.className = "primary-button";
+    editButton.textContent = "Edit Service";
+    editButton.style.marginTop = "15px";
+
+    editButton.addEventListener("click", () => {
+      editingServiceId = service.id;
+
+      document.getElementById("serviceFormTitle").textContent =
+        "Edit Service";
+
+      document.getElementById("serviceTitle").value =
+        service.title || "";
+
+      document.getElementById("serviceSlug").value =
+        service.slug || "";
+
+      document.getElementById("serviceDescription").value =
+        service.description || "";
+
+      document.getElementById("serviceOrder").value =
+        service.display_order ?? 0;
+
+      document.getElementById("servicePublished").checked =
+        Boolean(service.is_published);
+
+      currentServiceImageUrl = service.image_url || null;
+
+      serviceImageFile.value = "";
+      selectedServiceImageFile = null;
+
+      if (serviceImagePreviewUrl) {
+        URL.revokeObjectURL(serviceImagePreviewUrl);
+        serviceImagePreviewUrl = null;
+      }
+
+      if (currentServiceImageUrl) {
+        serviceImagePreview.src = currentServiceImageUrl;
+        serviceImagePreviewContainer.hidden = false;
+      } else {
+        serviceImagePreview.removeAttribute("src");
+        serviceImagePreviewContainer.hidden = true;
+      }
+
+      serviceFormMessage.textContent = "";
+      document.getElementById("saveServiceBtn").textContent =
+        "Update Service";
+
+      serviceFormContainer.hidden = false;
+      document.getElementById("serviceTitle").focus();
+
+      serviceFormContainer.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    });
+
+    card.append(title, description, status, editButton);
     servicesContainer.appendChild(card);
+
   });
 }
 
