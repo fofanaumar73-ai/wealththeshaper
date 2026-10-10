@@ -315,6 +315,41 @@
   }
 }
 
+    
+/* Smooth transitions for dashboard tool content */
+#dashboardMain {
+  transition: opacity 0.2s ease;
+}
+
+#dashboardMain.content-loading {
+  opacity: 0.45;
+}
+
+#dashboardMain .tool-content {
+  animation: toolFadeIn 0.25s ease;
+}
+
+@keyframes toolFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #dashboardMain,
+  #dashboardMain .tool-content {
+    animation: none;
+    transition: none;
+  }
+}
+
+
   </style>
 </head>
 
