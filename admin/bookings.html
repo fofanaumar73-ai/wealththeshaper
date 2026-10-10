@@ -585,22 +585,89 @@ function renderBookings(bookings) {
       ? "Unknown"
       : parsedDate.toLocaleDateString();
 
-    const actionCell = document.createElement("td");
-    const viewButton = document.createElement("button");
-    viewButton.className = "secondary-button";
-    viewButton.textContent = "View";
-    viewButton.addEventListener("click", () => {
-      alert(
-        "Client: " + (booking.client_name || "Unknown") +
-        "\nEmail: " + (booking.client_email || "Unknown") +
-        "\nService: " + (booking.services?.title || "Unavailable") +
-        "\nStatus: " + (booking.status || "Unknown") +
-        "\nMessage: " + (booking.message || "No message") +
-        "\nAdmin notes: " + (booking.admin_notes || "None")
-      );
-    });
+    
+const actionCell = document.createElement("td");
 
-    actionCell.appendChild(viewButton);
+const viewButton = document.createElement("button");
+viewButton.className = "secondary-button";
+viewButton.textContent = "View";
+
+viewButton.addEventListener("click", () => {
+  alert(
+    "Client: " + (booking.client_name || "Unknown") +
+    "\nEmail: " + (booking.client_email || "Unknown") +
+    "\nBusiness: " + (booking.business_name || "None") +
+    "\nService: " + (booking.services?.title || "Unavailable") +
+    "\nStatus: " + (booking.status || "Unknown") +
+    "\nMessage: " + (booking.message || "No message") +
+    "\nAdmin notes: " + (booking.admin_notes || "None")
+  );
+});
+
+actionCell.appendChild(viewButton);
+
+const currentStatus = (booking.status || "pending").toLowerCase();
+
+function addStatusButton(label, nextStatus) {
+  const button = document.createElement("button");
+  button.className = "primary-button";
+  button.textContent = label;
+  button.style.marginTop = "6px";
+  button.style.marginLeft = "4px";
+
+  button.addEventListener("click", async () => {
+    const confirmed = confirm(
+      `Change this booking to "${nextStatus}"?`
+    );
+
+    if (!confirmed) return;
+
+    button.disabled = true;
+    button.textContent = "Updating...";
+
+    try {
+      const { error } = await supabase
+        .from("bookings")
+        .update({
+          status: nextStatus,
+          updated_at: new Date().toISOString()
+        })
+        .eq("id", booking.id);
+
+      if (error) throw error;
+
+      alert("Booking status updated successfully.");
+      window.location.reload();
+
+    } catch (error) {
+      console.error("Booking status update failed:", error);
+
+      alert(
+        "Could not update booking status. " +
+        "Please check the browser console."
+      );
+
+      button.disabled = false;
+      button.textContent = label;
+    }
+  });
+
+  actionCell.appendChild(button);
+}
+
+if (currentStatus === "pending") {
+  addStatusButton("Accept", "accepted");
+  addStatusButton("Reject", "rejected");
+}
+
+if (currentStatus === "accepted") {
+  addStatusButton("Start Work", "in progress");
+}
+
+if (currentStatus === "in progress") {
+  addStatusButton("Complete", "completed");
+}
+
 
     row.append(
       clientCell,
