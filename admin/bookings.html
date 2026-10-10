@@ -439,9 +439,182 @@
 
   const isVerifiedAdmin = await verifyAdmin();
 
-  if (isVerifiedAdmin) {
-    console.log("Bookings page: Admin verified.");
+  
+if (isVerifiedAdmin) {
+  loadBookings();
+}
+
+async function loadBookings() {
+  const notice = document.getElementById("bookingNotice");
+  const tableBody = document.getElementById("bookingsTableBody");
+
+  notice.textContent = "Loading bookings...";
+
+  try {
+    const { data: bookings, error } = await supabase
+      .from("bookings")
+      .select(`
+        id,
+        client_id,
+        service_id,
+        client_name,
+        client_email,
+        business_name,
+        message,
+        status,
+        admin_notes,
+        created_at,
+        services (
+          title
+        )
+      `)
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    const allBookings = bookings || [];
+
+    document.getElementById("totalBookings").textContent =
+      allBookings.length;
+
+    document.getElementById("pendingBookings").textContent =
+      allBookings.filter(b => b.status?.toLowerCase() === "pending").length;
+
+    document.getElementById("progressBookings").textContent =
+      allBookings.filter(b => b.status?.toLowerCase() === "in progress").length;
+
+    document.getElementById("completedBookings").textContent =
+      allBookings.filter(b => b.status?.toLowerCase() === "completed").length;
+
+    renderBookings(allBookings);
+
+    notice.textContent = allBookings.length
+      ? `${allBookings.length} booking(s) loaded successfully.`
+      : "No bookings have been submitted yet.";
+
+    notice.style.display = "block";
+
+    const searchInput = document.getElementById("searchBookings");
+    const statusFilter = document.getElementById("statusFilter");
+
+    function filterBookings() {
+      const searchTerm = searchInput.value.trim().toLowerCase();
+      const selectedStatus = statusFilter.value.toLowerCase();
+
+      const filtered = allBookings.filter(booking => {
+        const matchesSearch = [
+          booking.client_name,
+          booking.client_email,
+          booking.business_name
+        ].some(value => value?.toLowerCase().includes(searchTerm));
+
+        const matchesStatus =
+          selectedStatus === "all" ||
+          booking.status?.toLowerCase() === selectedStatus;
+
+        return matchesSearch && matchesStatus;
+      });
+
+      renderBookings(filtered);
+    }
+
+    searchInput.addEventListener("input", filterBookings);
+    statusFilter.addEventListener("change", filterBookings);
+
+  } catch (error) {
+    console.error("Error loading bookings:", error);
+
+    notice.textContent =
+      "Could not load bookings. Check the browser console for details.";
+
+    notice.style.display = "block";
+
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="6" class="muted">
+          Bookings could not be loaded.
+        </td>
+      </tr>
+    `;
   }
+}
+
+function renderBookings(bookings) {
+  const tableBody = document.getElementById("bookingsTableBody");
+
+  if (!bookings.length) {
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="6" class="muted">No matching bookings found.</td>
+      </tr>
+    `;
+    return;
+  }
+
+  tableBody.replaceChildren();
+
+  bookings.forEach(booking => {
+    const row = document.createElement("tr");
+
+    const clientCell = document.createElement("td");
+    const clientName = document.createElement("strong");
+    clientName.textContent = booking.client_name || "Unnamed client";
+
+    const clientEmail = document.createElement("div");
+    clientEmail.className = "muted";
+    clientEmail.textContent = booking.client_email || "No email";
+
+    clientCell.append(clientName, clientEmail);
+
+    const serviceCell = document.createElement("td");
+    serviceCell.textContent =
+      booking.services?.title || "Service unavailable";
+
+    const businessCell = document.createElement("td");
+    businessCell.textContent = booking.business_name || "—";
+
+    const statusCell = document.createElement("td");
+    const statusBadge = document.createElement("span");
+    statusBadge.className = "status";
+    statusBadge.textContent = booking.status || "Unknown";
+    statusCell.appendChild(statusBadge);
+
+    const dateCell = document.createElement("td");
+    const parsedDate = new Date(booking.created_at);
+    dateCell.textContent = Number.isNaN(parsedDate.getTime())
+      ? "Unknown"
+      : parsedDate.toLocaleDateString();
+
+    const actionCell = document.createElement("td");
+    const viewButton = document.createElement("button");
+    viewButton.className = "secondary-button";
+    viewButton.textContent = "View";
+    viewButton.addEventListener("click", () => {
+      alert(
+        "Client: " + (booking.client_name || "Unknown") +
+        "\nEmail: " + (booking.client_email || "Unknown") +
+        "\nService: " + (booking.services?.title || "Unavailable") +
+        "\nStatus: " + (booking.status || "Unknown") +
+        "\nMessage: " + (booking.message || "No message") +
+        "\nAdmin notes: " + (booking.admin_notes || "None")
+      );
+    });
+
+    actionCell.appendChild(viewButton);
+
+    row.append(
+      clientCell,
+      serviceCell,
+      businessCell,
+      statusCell,
+      dateCell,
+      actionCell
+    );
+
+    tableBody.appendChild(row);
+  });
+}
+
 </script>
 </body>
 </html>
