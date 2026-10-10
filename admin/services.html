@@ -816,11 +816,30 @@ currentServiceImageUrl = null;
   document.getElementById("serviceTitle").focus();
 });
 
+
 cancelServiceBtn.addEventListener("click", () => {
   serviceFormContainer.hidden = true;
   serviceForm.reset();
   serviceFormMessage.textContent = "";
+
+  editingServiceId = null;
+  currentServiceImageUrl = null;
+  selectedServiceImageFile = null;
+
+  serviceImageFile.value = "";
+
+  if (serviceImagePreviewUrl) {
+    URL.revokeObjectURL(serviceImagePreviewUrl);
+    serviceImagePreviewUrl = null;
+  }
+
+  serviceImagePreview.removeAttribute("src");
+  serviceImagePreviewContainer.hidden = true;
+
+  document.getElementById("serviceFormTitle").textContent = "Add New Service";
+  document.getElementById("saveServiceBtn").textContent = "Save Service";
 });
+
 
  
  // Add or update a service, including its image
