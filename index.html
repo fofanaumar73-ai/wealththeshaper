@@ -1,0 +1,1601 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080808">
+  <meta name="description" content="WealthTheShaper helps brands become impossible to ignore through business growth, strategic positioning, marketing, sales and monetization.">
+
+  <title>WealthTheShaper | Build. Grow. Scale.</title>
+
+  <style>
+    /* =========================
+       WEALTHTHESHAPER DESIGN
+    ========================== */
+    :root {
+      --black: #080808;
+      --surface: #121214;
+      --surface-light: #1b1b1f;
+      --red: #e32636;
+      --red-dark: #b91525;
+      --white: #ffffff;
+      --muted: #b6b6bd;
+      --border: rgba(255,255,255,.11);
+      --radius: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 90px;
+    }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    body.modal-open {
+      overflow: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    .container {
+      width: min(1160px, 90%);
+      margin-inline: auto;
+    }
+
+    .section {
+      padding: 100px 0;
+    }
+
+    .section-heading {
+      max-width: 680px;
+      margin: 0 auto 48px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      color: #ff5967;
+      font-size: .76rem;
+      font-weight: 800;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+    }
+
+    .section-heading h2 {
+      margin: 13px 0;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      line-height: 1.12;
+      letter-spacing: -1.4px;
+    }
+
+    .section-heading p,
+    .muted {
+      color: var(--muted);
+    }
+
+    .accent {
+      color: #ff4050;
+    }
+
+    /* =========================
+       NAVIGATION
+    ========================== */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(8,8,8,.88);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 11px;
+      font-size: 1.08rem;
+      font-weight: 900;
+      letter-spacing: -.5px;
+    }
+
+    .brand-mark {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      background: var(--red);
+      border-radius: 10px;
+      font-size: 1.25rem;
+    }
+
+    .brand small {
+      display: block;
+      color: var(--muted);
+      font-size: .57rem;
+      letter-spacing: 1.5px;
+      font-weight: 600;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: #dedee2;
+      font-size: .88rem;
+      transition: color .2s;
+    }
+
+    .nav-links a:hover {
+      color: #ff5967;
+    }
+
+    .nav-cta,
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      padding: 13px 20px;
+      background: var(--red);
+      color: var(--white);
+      border: 1px solid var(--red);
+      border-radius: 8px;
+      font-weight: 750;
+      font-size: .9rem;
+      transition: background .2s, transform .2s;
+    }
+
+    .nav-cta:hover,
+    .btn-primary:hover {
+      background: var(--red-dark);
+      transform: translateY(-2px);
+    }
+
+    .menu-toggle {
+      display: none;
+      border: 1px solid var(--border);
+      color: white;
+      background: var(--surface);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 1.25rem;
+    }
+
+    /* =========================
+       HERO
+    ========================== */
+    .hero {
+      min-height: 680px;
+      min-height: min(760px, calc(100svh - 76px));
+      position: relative;
+      isolation: isolate;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      background: #101012;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background-image:
+        url("https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=2000&q=85");
+      background-size: cover;
+      background-position: center 35%;
+      opacity: .75;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background:
+        linear-gradient(90deg,
+          rgba(5,5,6,.99) 0%,
+          rgba(5,5,6,.94) 33%,
+          rgba(5,5,6,.65) 58%,
+          rgba(5,5,6,.25) 100%),
+        linear-gradient(0deg, #080808 0%, transparent 30%);
+    }
+
+    .hero-content {
+      max-width: 720px;
+      padding: 100px 0 120px;
+    }
+
+    .hero-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 14px;
+      border: 1px solid rgba(255,64,80,.38);
+      border-radius: 50px;
+      background: rgba(227,38,54,.1);
+      color: #ff8b95;
+      font-size: .72rem;
+      font-weight: 800;
+      letter-spacing: 1.3px;
+    }
+
+    .hero-label span {
+      width: 7px;
+      height: 7px;
+      background: #ff4050;
+      border-radius: 50%;
+      box-shadow: 0 0 12px #ff4050;
+    }
+
+    .hero h1 {
+      max-width: 760px;
+      margin: 27px 0 22px;
+      font-size: clamp(3rem, 6.5vw, 5.7rem);
+      font-weight: 900;
+      letter-spacing: -3.5px;
+      line-height: 1.01;
+    }
+
+    .hero h1 span {
+      color: #ff4050;
+    }
+
+    .hero-description {
+      max-width: 550px;
+      color: #d0d0d5;
+      font-size: clamp(1rem, 1.5vw, 1.12rem);
+      line-height: 1.85;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 32px;
+    }
+
+    .btn-glass {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 13px 20px;
+      color: white;
+      background: rgba(255,255,255,.065);
+      border: 1px solid rgba(255,255,255,.3);
+      border-radius: 9px;
+      backdrop-filter: blur(14px);
+      transition: background .2s, border-color .2s;
+    }
+
+    .btn-glass:hover {
+      background: rgba(255,255,255,.13);
+      border-color: #ff5967;
+    }
+
+    .hero-note {
+      margin-top: 25px;
+      color: #b8b8be;
+      font-size: .8rem;
+    }
+
+    /* =========================
+       GROWTH FRAMEWORK
+    ========================== */
+    .framework {
+      position: relative;
+      margin-top: -1px;
+      background: #0d0d0f;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .framework-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+
+    .framework-item {
+      padding: 27px 20px;
+      border-right: 1px solid var(--border);
+    }
+
+    .framework-item:last-child {
+      border-right: 0;
+    }
+
+    .framework-number {
+      color: #ff4050;
+      font-weight: 900;
+      font-size: .78rem;
+    }
+
+    .framework-item h3 {
+      margin: 8px 0 4px;
+      font-size: .98rem;
+    }
+
+    .framework-item p {
+      color: var(--muted);
+      font-size: .78rem;
+    }
+
+    /* =========================
+       ABOUT
+    ========================== */
+    .about-grid {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 65px;
+      align-items: center;
+    }
+
+    .about-visual {
+      min-height: 420px;
+      position: relative;
+      display: flex;
+      align-items: end;
+      padding: 28px;
+      overflow: hidden;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background:
+        linear-gradient(0deg, rgba(0,0,0,.92), transparent 80%),
+        url("https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=1000&q=85")
+        center 35% / cover;
+    }
+
+    .about-visual::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border: 1px solid rgba(227,38,54,.3);
+      border-radius: inherit;
+      pointer-events: none;
+    }
+
+    .about-visual-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .about-visual-content h3 {
+      font-size: 1.5rem;
+    }
+
+    .about-copy h2 {
+      margin: 14px 0 20px;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.12;
+      letter-spacing: -1px;
+    }
+
+    .about-copy p {
+      margin-bottom: 17px;
+      color: var(--muted);
+    }
+
+    .check-list {
+      display: grid;
+      gap: 13px;
+      margin: 24px 0 30px;
+      list-style: none;
+    }
+
+    .check-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 11px;
+    }
+
+    .check {
+      color: #ff5967;
+      font-weight: 900;
+    }
+
+    /* =========================
+       SERVICES
+    ========================== */
+    .services-section {
+      background: #0d0d0f;
+      border-block: 1px solid var(--border);
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .service-card {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: linear-gradient(145deg, #19191d, #101012);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: var(--radius);
+      transition: transform .25s, border-color .25s;
+    }
+
+    .service-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(227,38,54,.65);
+    }
+
+    .service-image {
+      height: 215px;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 70% 25%, #512027, transparent 50%),
+        #1b1b20;
+    }
+
+    .service-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .4s;
+    }
+
+    .service-card:hover .service-image img {
+      transform: scale(1.045);
+    }
+
+    .service-image::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(0deg, rgba(10,10,12,.8), transparent 70%);
+      pointer-events: none;
+    }
+
+    .service-content {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      padding: 25px;
+    }
+
+    .service-index {
+      color: #ff5967;
+      font-size: .74rem;
+      font-weight: 850;
+      letter-spacing: 1.5px;
+    }
+
+    .service-content h3 {
+      margin: 9px 0 12px;
+      font-size: 1.28rem;
+      line-height: 1.3;
+    }
+
+    .service-content p {
+      color: var(--muted);
+      font-size: .91rem;
+    }
+
+    .service-actions {
+      display: grid;
+      gap: 10px;
+      margin-top: auto;
+      padding-top: 24px;
+    }
+
+    .service-actions button {
+      width: 100%;
+    }
+
+    .btn-full {
+      width: 100%;
+    }
+
+    /* =========================
+       PROJECTS / TESTIMONIALS
+    ========================== */
+    .placeholder-panel {
+      padding: 38px;
+      border: 1px dashed rgba(255,255,255,.2);
+      border-radius: var(--radius);
+      text-align: center;
+      background: var(--surface);
+    }
+
+    .placeholder-panel p {
+      max-width: 620px;
+      margin: 10px auto 0;
+      color: var(--muted);
+    }
+
+    /* =========================
+       CONTACT
+    ========================== */
+    .contact-panel {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+      padding: clamp(28px, 5vw, 55px);
+      border: 1px solid rgba(227,38,54,.4);
+      border-radius: var(--radius);
+      background:
+        radial-gradient(circle at 100% 0%, rgba(227,38,54,.15), transparent 45%),
+        #131315;
+    }
+
+    .contact-panel h2 {
+      margin: 10px 0;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      line-height: 1.15;
+    }
+
+    .contact-panel p {
+      max-width: 580px;
+      color: var(--muted);
+    }
+
+    /* =========================
+       RED FOOTER
+    ========================== */
+    .footer {
+      background: #d7192d;
+      color: white;
+      padding: 58px 0 22px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr;
+      gap: 45px;
+      padding-bottom: 40px;
+    }
+
+    .footer .brand-mark {
+      background: rgba(255,255,255,.16);
+    }
+
+    .footer-description {
+      max-width: 350px;
+      margin-top: 18px;
+      color: rgba(255,255,255,.83);
+      font-size: .9rem;
+    }
+
+    .footer h3 {
+      margin-bottom: 15px;
+      font-size: 1rem;
+    }
+
+    .footer-links {
+      display: grid;
+      gap: 10px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      color: rgba(255,255,255,.88);
+      font-size: .88rem;
+    }
+
+    .footer-links a:hover {
+      color: white;
+      text-decoration: underline;
+    }
+
+    .social-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .social-links a {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border: 1px solid rgba(255,255,255,.4);
+      border-radius: 50%;
+      font-weight: 900;
+      transition: background .2s;
+    }
+
+    .social-links a:hover {
+      background: rgba(255,255,255,.18);
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding-top: 22px;
+      border-top: 1px solid rgba(255,255,255,.25);
+      color: rgba(255,255,255,.8);
+      font-size: .78rem;
+    }
+
+    /* =========================
+       WHATSAPP FLOATING BUTTON
+    ========================== */
+    .whatsapp-float {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      z-index: 90;
+      width: 58px;
+      height: 58px;
+      display: grid;
+      place-items: center;
+      border: 2px solid rgba(255,255,255,.8);
+      border-radius: 50%;
+      background: #20b866;
+      color: white;
+      font-size: 1.65rem;
+      box-shadow: 0 8px 30px rgba(0,0,0,.4);
+      transition: transform .2s;
+    }
+
+    .whatsapp-float:hover {
+      transform: translateY(-4px);
+    }
+
+    /* =========================
+       SERVICE DETAIL MODAL
+    ========================== */
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      display: none;
+      place-items: center;
+      padding: 20px;
+      background: rgba(0,0,0,.8);
+      backdrop-filter: blur(9px);
+    }
+
+    .modal.active {
+      display: grid;
+    }
+
+    .modal-panel {
+      position: relative;
+      width: min(650px, 100%);
+      max-height: 85svh;
+      overflow-y: auto;
+      padding: clamp(24px, 5vw, 40px);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 20px;
+      background: #151518;
+      box-shadow: 0 30px 100px rgba(0,0,0,.55);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: #252529;
+      color: white;
+      font-size: 1.3rem;
+    }
+
+    .modal-panel h2 {
+      margin: 13px 35px 15px 0;
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      line-height: 1.15;
+    }
+
+    .modal-panel p {
+      margin: 13px 0;
+      color: var(--muted);
+    }
+
+    .modal-panel h3 {
+      margin-top: 24px;
+    }
+
+    .modal-panel .btn-primary {
+      margin-top: 20px;
+    }
+
+    /* =========================
+       RESPONSIVE DESIGN
+    ========================== */
+    @media (max-width: 900px) {
+      .nav-links {
+        gap: 14px;
+      }
+
+      .nav-links a {
+        font-size: .8rem;
+      }
+
+      .services-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .about-grid {
+        gap: 35px;
+      }
+
+      .framework-item {
+        padding: 22px 12px;
+      }
+
+      .footer-grid {
+        gap: 25px;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .section {
+        padding: 72px 0;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+
+      .nav-inner {
+        min-height: 68px;
+      }
+
+      .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: 12px 5% 22px;
+        background: #0b0b0d;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .nav-links li a {
+        display: block;
+        padding: 12px 0;
+        font-size: .95rem;
+      }
+
+      .nav-cta {
+        margin-top: 8px;
+        text-align: center;
+      }
+
+      .hero {
+        min-height: 690px;
+        min-height: 82svh;
+      }
+
+      .hero::before {
+        background-position: 61% center;
+      }
+
+      .hero::after {
+        background:
+          linear-gradient(90deg, rgba(5,5,6,.88), rgba(5,5,6,.42)),
+          linear-gradient(0deg, #080808 0%, rgba(8,8,8,.25) 65%, rgba(8,8,8,.4));
+      }
+
+      .hero-content {
+        padding: 90px 0 105px;
+      }
+
+      .hero h1 {
+        font-size: clamp(2.8rem, 12vw, 4.3rem);
+        letter-spacing: -2px;
+      }
+
+      .framework-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .framework-item {
+        border-bottom: 1px solid var(--border);
+      }
+
+      .framework-item:nth-child(2n) {
+        border-right: 0;
+      }
+
+      .framework-item:last-child {
+        grid-column: 1 / -1;
+        border-bottom: 0;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .about-visual {
+        min-height: 330px;
+      }
+
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .service-image {
+        height: 230px;
+      }
+
+      .contact-panel {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .whatsapp-float {
+        right: 17px;
+        bottom: 17px;
+        width: 54px;
+        height: 54px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVIGATION -->
+  <header class="navbar">
+    <nav class="container nav-inner" aria-label="Main navigation">
+      <a href="#home" class="brand" aria-label="WealthTheShaper home">
+        <span class="brand-mark">W</span>
+        <span>
+          WEALTHTHESHAPER
+          <small>BUSINESS GROWTH & STRATEGY</small>
+        </span>
+      </a>
+
+      <button
+        class="menu-toggle"
+        id="menuToggle"
+        aria-label="Open navigation"
+        aria-expanded="false"
+        aria-controls="navLinks"
+      >☰</button>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li>
+          <a class="nav-cta" href="#services">Work With Me ↗</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero" id="home">
+      <div class="container">
+        <div class="hero-content">
+
+          <div class="hero-label">
+            <span></span>
+            BUSINESS GROWTH & COMMERCIAL STRATEGY
+          </div>
+
+          <h1>
+            I Help Brands Become
+            <span>Impossible to Ignore.</span>
+          </h1>
+
+          <p class="hero-description">
+            I help businesses build a clear path to profitable growth by
+            connecting strategy, positioning, marketing, sales and
+            monetization.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#services" class="btn-primary">
+              Explore Services <span>↗</span>
+            </a>
+
+            <a href="#about" class="btn-glass">
+              Discover My Approach <span>→</span>
+            </a>
+          </div>
+
+          <p class="hero-note">
+            Clear strategy. Stronger positioning. Profitable growth.
+          </p>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- FIVE-STEP GROWTH FRAMEWORK -->
+    <section class="framework" aria-label="Our growth framework">
+      <div class="container framework-grid">
+
+        <article class="framework-item">
+          <span class="framework-number">01 / DIAGNOSE</span>
+          <h3>Find the Gaps</h3>
+          <p>Identify growth barriers and missed opportunities.</p>
+        </article>
+
+        <article class="framework-item">
+          <span class="framework-number">02 / POSITION</span>
+          <h3>Clarify Your Value</h3>
+          <p>Help the right market understand your brand.</p>
+        </article>
+
+        <article class="framework-item">
+          <span class="framework-number">03 / ACTIVATE</span>
+          <h3>Build Visibility</h3>
+          <p>Strengthen marketing and sales opportunities.</p>
+        </article>
+
+        <article class="framework-item">
+          <span class="framework-number">04 / MONETIZE</span>
+          <h3>Convert Attention</h3>
+          <p>Turn customer interest into revenue opportunities.</p>
+        </article>
+
+        <article class="framework-item">
+          <span class="framework-number">05 / SCALE</span>
+          <h3>Grow Sustainably</h3>
+          <p>Build repeatable systems for business growth.</p>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="section" id="about">
+      <div class="container about-grid">
+
+        <div class="about-visual">
+          <div class="about-visual-content">
+            <span class="eyebrow">THE STRATEGY BEHIND THE GROWTH</span>
+            <h3>Growth should be intentional.</h3>
+            <p class="muted">Lagos, Nigeria</p>
+          </div>
+        </div>
+
+        <div class="about-copy">
+          <span class="eyebrow">ABOUT WEALTHTHESHAPER</span>
+
+          <h2>
+            More Than Visibility.
+            <span class="accent">A Clearer Path to Growth.</span>
+          </h2>
+
+          <p>
+            Every business has potential. But unlocking that potential
+            requires more than simply getting attention. It requires the
+            right strategy, positioning, offers and systems.
+          </p>
+
+          <p>
+            WealthTheShaper helps businesses understand what is holding
+            them back, communicate their value clearly and build a more
+            intentional path to profitable growth.
+          </p>
+
+          <ul class="check-list">
+            <li><span class="check">✓</span> Strategic business diagnosis</li>
+            <li><span class="check">✓</span> Clear market positioning</li>
+            <li><span class="check">✓</span> Marketing and sales opportunities</li>
+            <li><span class="check">✓</span> Sustainable growth systems</li>
+          </ul>
+
+          <a href="#services" class="btn-primary">
+            Explore How I Help <span>↗</span>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section class="section services-section" id="services">
+      <div class="container">
+
+        <div class="section-heading">
+          <span class="eyebrow">WHAT I DO</span>
+          <h2>Strategies That <span class="accent">Shape Growth.</span></h2>
+          <p>
+            Explore the services designed to help businesses find clarity,
+            strengthen their market position and unlock growth opportunities.
+          </p>
+        </div>
+
+        <div class="services-grid" id="servicesGrid">
+
+          <!-- Service 1 -->
+          <article class="service-card">
+            <div class="service-image">
+              <img
+                src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=900&q=80"
+                alt="Business analytics and performance reports"
+                loading="lazy"
+              >
+            </div>
+
+            <div class="service-content">
+              <span class="service-index">01 / DIAGNOSE</span>
+              <h3>Business Growth Diagnosis</h3>
+              <p>
+                Identify the gaps, bottlenecks and missed opportunities
+                preventing your business from reaching its potential.
+              </p>
+
+              <div class="service-actions">
+                <button
+                  type="button"
+                  class="btn-glass learn-more"
+                  data-service="0"
+                >Learn More <span>↗</span></button>
+
+                <button
+                  type="button"
+                  class="btn-primary book-service"
+                  data-service="0"
+                >Book a Service →</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Service 2 -->
+          <article class="service-card">
+            <div class="service-image">
+              <img
+                src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=80"
+                alt="Team discussing business strategy"
+                loading="lazy"
+              >
+            </div>
+
+            <div class="service-content">
+              <span class="service-index">02 / POSITION</span>
+              <h3>Strategic Positioning</h3>
+              <p>
+                Clarify your value, competitive advantage and market identity
+                so the right audience understands why it should choose you.
+              </p>
+
+              <div class="service-actions">
+                <button type="button" class="btn-glass learn-more"
+                  data-service="1">Learn More <span>↗</span></button>
+                <button type="button" class="btn-primary book-service"
+                  data-service="1">Book a Service →</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Service 3 -->
+          <article class="service-card">
+            <div class="service-image">
+              <img
+                src="https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=900&q=80"
+                alt="Marketing and business planning session"
+                loading="lazy"
+              >
+            </div>
+
+            <div class="service-content">
+              <span class="service-index">03 / ACTIVATE</span>
+              <h3>Visibility, Marketing & Sales</h3>
+              <p>
+                Develop strategies that improve brand visibility, attract
+                suitable customers and create sales opportunities.
+              </p>
+
+              <div class="service-actions">
+                <button type="button" class="btn-glass learn-more"
+                  data-service="2">Learn More <span>↗</span></button>
+                <button type="button" class="btn-primary book-service"
+                  data-service="2">Book a Service →</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Service 4 -->
+          <article class="service-card">
+            <div class="service-image">
+              <img
+                src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=900&q=80"
+                alt="Financial planning and revenue documents"
+                loading="lazy"
+              >
+            </div>
+
+            <div class="service-content">
+              <span class="service-index">04 / MONETIZE</span>
+              <h3>Offer Development & Monetization</h3>
+              <p>
+                Structure compelling offers and sales systems that turn
+                customer demand into revenue opportunities.
+              </p>
+
+              <div class="service-actions">
+                <button type="button" class="btn-glass learn-more"
+                  data-service="3">Learn More <span>↗</span></button>
+                <button type="button" class="btn-primary book-service"
+                  data-service="3">Book a Service →</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Service 5 -->
+          <article class="service-card">
+            <div class="service-image">
+              <img
+                src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=900&q=80"
+                alt="Business team collaborating on growth"
+                loading="lazy"
+              >
+            </div>
+
+            <div class="service-content">
+              <span class="service-index">05 / SCALE</span>
+              <h3>Business Growth & Scaling</h3>
+              <p>
+                Build repeatable strategies, processes and growth systems
+                to improve performance and support sustainable expansion.
+              </p>
+
+              <div class="service-actions">
+                <button type="button" class="btn-glass learn-more"
+                  data-service="4">Learn More <span>↗</span></button>
+                <button type="button" class="btn-primary book-service"
+                  data-service="4">Book a Service →</button>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS: CONTENT WILL BE CONNECTED LATER -->
+    <section class="section" id="projects">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">SELECTED WORK</span>
+          <h2>Strategy in <span class="accent">Action.</span></h2>
+          <p>
+            Explore projects, business challenges and the strategies
+            developed to address them.
+          </p>
+        </div>
+
+        <div class="placeholder-panel">
+          <h3>Projects & Case Studies</h3>
+          <p>
+            This section will be connected to the admin portal, allowing
+            WealthTheShaper to add project images, descriptions, links and
+            verified results without editing the source code.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section" id="contact">
+      <div class="container">
+        <div class="contact-panel">
+          <div>
+            <span class="eyebrow">YOUR NEXT MOVE</span>
+            <h2>Ready to Shape Your <span class="accent">Growth?</span></h2>
+            <p>
+              Start a conversation about your business goals, current
+              challenges and opportunities for growth.
+            </p>
+          </div>
+
+          <a class="btn-primary" href="mailto:Wealthyhubgroup@gmail.com">
+            Send an Enquiry ↗
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- RED FOOTER -->
+  <footer class="footer">
+    <div class="container">
+
+      <div class="footer-grid">
+
+        <div>
+          <a href="#home" class="brand">
+            <span class="brand-mark">W</span>
+            <span>
+              WEALTHTHESHAPER
+              <small>BUSINESS GROWTH & STRATEGY</small>
+            </span>
+          </a>
+
+          <p class="footer-description">
+            Helping brands become impossible to ignore through business
+            growth, strategic positioning and commercial strategy.
+          </p>
+        </div>
+
+        <div>
+          <h3>Explore</h3>
+          <ul class="footer-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3>Contact & Socials</h3>
+          <ul class="footer-links">
+            <li>
+              <a href="mailto:Wealthyhubgroup@gmail.com">
+                Wealthyhubgroup@gmail.com
+              </a>
+            </li>
+            <li>Lagos, Nigeria</li>
+          </ul>
+
+          <div class="social-links">
+            <a
+              href="https://www.instagram.com/thewealththeshaper/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+            >IG</a>
+
+            <a
+              href="https://www.tiktok.com/@wealththeshaper"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="TikTok"
+            >TK</a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <span>© <span id="currentYear"></span> WealthTheShaper.</span>
+
+        <div>
+          <a href="privacy-policy.html">Privacy Policy</a>
+          &nbsp; · &nbsp;
+          <a href="terms.html">Terms of Service</a>
+          &nbsp; · &nbsp;
+          <a href="cookie-policy.html">Cookie Policy</a>
+          &nbsp; · &nbsp;
+          <a href="disclaimer.html">Disclaimer</a>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- WHATSAPP PLACEHOLDER -->
+  <button
+    type="button"
+    class="whatsapp-float"
+    id="whatsappButton"
+    aria-label="Contact WealthTheShaper on WhatsApp"
+    title="Contact us on WhatsApp"
+  >◉</button>
+
+  <!-- SERVICE DETAIL MODAL -->
+  <div
+    class="modal"
+    id="serviceModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modalTitle"
+    aria-hidden="true"
+  >
+    <div class="modal-panel">
+      <button
+        type="button"
+        class="modal-close"
+        id="modalClose"
+        aria-label="Close service details"
+      >×</button>
+
+      <span class="eyebrow" id="modalEyebrow">SERVICE DETAILS</span>
+      <h2 id="modalTitle">Service title</h2>
+      <p id="modalDescription"></p>
+
+      <h3>How WealthTheShaper Can Help</h3>
+      <p id="modalHelp"></p>
+
+      <h3>What This Service Focuses On</h3>
+      <p id="modalOutcome"></p>
+
+      <button type="button" class="btn-primary btn-full" id="modalBook">
+        Book This Service →
+      </button>
+    </div>
+  </div>
+
+  <script>
+    "use strict";
+
+    /* =========================
+       SERVICE CONTENT
+       Later this will come from Supabase.
+    ========================== */
+    const services = [
+      {
+        title: "Business Growth Diagnosis",
+        eyebrow: "01 / DIAGNOSE",
+        description:
+          "Identify the gaps, bottlenecks and missed opportunities preventing your business from reaching its growth potential.",
+        help:
+          "WealthTheShaper helps you examine your current business position, identify potential growth barriers and understand where improvements may have the greatest impact.",
+        outcome:
+          "A clearer understanding of your business challenges, opportunities and areas that may require strategic attention."
+      },
+      {
+        title: "Strategic Positioning",
+        eyebrow: "02 / POSITION",
+        description:
+          "Clarify your business value, competitive advantage and market positioning so the right audience understands why it should choose your brand.",
+        help:
+          "WealthTheShaper helps you communicate what makes your business valuable, define your differentiation and build a clearer connection with your intended market.",
+        outcome:
+          "A stronger positioning direction and a clearer way to communicate your brand's value to the right audience."
+      },
+      {
+        title: "Visibility, Marketing & Sales Strategy",
+        eyebrow: "03 / ACTIVATE",
+        description:
+          "Develop strategies that strengthen visibility, attract suitable customers and create sales opportunities.",
+        help:
+          "WealthTheShaper helps you assess how your brand reaches its audience and identify ways to improve marketing alignment and sales opportunities.",
+        outcome:
+          "A more intentional direction for attracting potential customers and turning attention into meaningful business opportunities."
+      },
+      {
+        title: "Offer Development & Monetization",
+        eyebrow: "04 / MONETIZE",
+        description:
+          "Structure compelling offers and sales systems that convert customer interest into revenue opportunities.",
+        help:
+          "WealthTheShaper helps you review how your offers communicate value, how customers move toward a purchase and where your monetization approach may be improved.",
+        outcome:
+          "Clearer offers and a more structured approach to converting customer demand into revenue."
+      },
+      {
+        title: "Business Growth & Scaling",
+        eyebrow: "05 / SCALE",
+        description:
+          "Build repeatable strategies, processes and growth systems to improve performance and support sustainable expansion.",
+        help:
+          "WealthTheShaper helps you identify opportunities to standardize effective processes, strengthen business systems and plan for sustainable growth.",
+        outcome:
+          "A clearer growth direction and a framework for developing repeatable business processes."
+      }
+    ];
+
+    /* =========================
+       MOBILE NAVIGATION
+    ========================== */
+    const menuToggle = document.getElementById("menuToggle");
+    const navLinks = document.getElementById("navLinks");
+
+    menuToggle.addEventListener("click", () => {
+      const isOpen = navLinks.classList.toggle("open");
+
+      menuToggle.setAttribute("aria-expanded", String(isOpen));
+      menuToggle.setAttribute(
+        "aria-label",
+        isOpen ? "Close navigation" : "Open navigation"
+      );
+      menuToggle.textContent = isOpen ? "×" : "☰";
+    });
+
+    navLinks.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => {
+        navLinks.classList.remove("open");
+        menuToggle.setAttribute("aria-expanded", "false");
+        menuToggle.setAttribute("aria-label", "Open navigation");
+        menuToggle.textContent = "☰";
+      });
+    });
+
+    /* =========================
+       SERVICE DETAIL MODAL
+    ========================== */
+    const modal = document.getElementById("serviceModal");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalEyebrow = document.getElementById("modalEyebrow");
+    const modalDescription = document.getElementById("modalDescription");
+    const modalHelp = document.getElementById("modalHelp");
+    const modalOutcome = document.getElementById("modalOutcome");
+    const modalClose = document.getElementById("modalClose");
+    const modalBook = document.getElementById("modalBook");
+
+    let selectedServiceIndex = null;
+    let lastFocusedElement = null;
+
+    function openServiceDetails(index) {
+      const service = services[index];
+
+      if (!service) return;
+
+      selectedServiceIndex = index;
+      lastFocusedElement = document.activeElement;
+
+      modalEyebrow.textContent = service.eyebrow;
+      modalTitle.textContent = service.title;
+      modalDescription.textContent = service.description;
+      modalHelp.textContent = service.help;
+      modalOutcome.textContent = service.outcome;
+
+      modal.classList.add("active");
+      modal.setAttribute("aria-hidden", "false");
+      document.body.classList.add("modal-open");
+
+      modalClose.focus();
+    }
+
+    function closeServiceDetails() {
+      modal.classList.remove("active");
+      modal.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("modal-open");
+
+      if (lastFocusedElement) {
+        lastFocusedElement.focus();
+      }
+    }
+
+    document.querySelectorAll(".learn-more").forEach(button => {
+      button.addEventListener("click", () => {
+        const index = Number(button.dataset.service);
+        openServiceDetails(index);
+      });
+    });
+
+    modalClose.addEventListener("click", closeServiceDetails);
+
+    modal.addEventListener("click", event => {
+      if (event.target === modal) {
+        closeServiceDetails();
+      }
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape" && modal.classList.contains("active")) {
+        closeServiceDetails();
+      }
+    });
+
+    /* =========================
+       BOOKING ROUTING
+       Client portal will be built next.
+    ========================== */
+    function startBooking(index) {
+      const service = services[index];
+
+      if (!service) return;
+
+      const params = new URLSearchParams({
+        service: service.title,
+        next: "booking"
+      });
+
+      // This route will work after we create the client portal.
+      window.location.href = "client/login.html?" + params.toString();
+    }
+
+    document.querySelectorAll(".book-service").forEach(button => {
+      button.addEventListener("click", () => {
+        startBooking(Number(button.dataset.service));
+      });
+    });
+
+    modalBook.addEventListener("click", () => {
+      if (selectedServiceIndex !== null) {
+        startBooking(selectedServiceIndex);
+      }
+    });
+
+    /* =========================
+       WHATSAPP
+       Add the client's real number later.
+    ========================== */
+    const whatsappButton = document.getElementById("whatsappButton");
+
+    whatsappButton.addEventListener("click", () => {
+      // Replace this placeholder with the real WhatsApp number
+      // in international format, without +, spaces or dashes.
+      const whatsappNumber = "";
+
+      if (!/^\d{10,15}$/.test(whatsappNumber)) {
+        alert("The WhatsApp contact will be activated when the business number is added.");
+        return;
+      }
+
+      const message =
+        "Hello WealthTheShaper, I would like to discuss your business growth services.";
+
+      const whatsappURL =
+        "https://wa.me/" + whatsappNumber +
+        "?text=" + encodeURIComponent(message);
+
+      window.open(whatsappURL, "_blank", "noopener,noreferrer");
+    });
+
+    /* =========================
+       FOOTER YEAR
+    ========================== */
+    document.getElementById("currentYear").textContent =
+      new Date().getFullYear();
+  </script>
+
+</body>
+</html>
