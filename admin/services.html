@@ -1033,31 +1033,6 @@ serviceForm.addEventListener("submit", async (event) => {
   }
 });
 
-
-    // Remove an uploaded image if saving the database record failed.
-    if (uploadedImagePath) {
-      const { error: cleanupError } = await supabase.storage
-        .from("service-images")
-        .remove([uploadedImagePath]);
-
-      if (cleanupError) {
-        console.error("Image cleanup failed:", cleanupError);
-      }
-    }
-
-    serviceFormMessage.textContent =
-      error.message || "Unable to save the service. Please try again.";
-
-  } finally {
-    saveButton.disabled = false;
-    saveButton.textContent = "Save Service";
-  }
-});
-
-
-
-
-
     
 const sidebar = document.getElementById("adminSidebar");
 const toggle = document.getElementById("sidebarToggle");
