@@ -1331,26 +1331,30 @@
 }
 
     
+
 /* =========================================
    WEALTHTHESHAPER — OUR IMPACT
+   Red & Black | Clean | Static
 ========================================= */
 
 .wts-impact-section {
   background: #080808;
   color: #ffffff;
   padding: 70px 7%;
+  animation: none !important;
 }
 
 .wts-impact-heading {
   text-align: center;
   max-width: 650px;
-  margin: 0 auto 45px;
+  margin: 0 auto 40px;
+  animation: none !important;
 }
 
 .wts-impact-heading h2 {
+  color: #ffffff;
   font-size: clamp(28px, 4vw, 42px);
   margin: 0 0 12px;
-  color: #ffffff;
 }
 
 .wts-impact-heading p {
@@ -1364,6 +1368,7 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   max-width: 950px;
   margin: 0 auto;
+  animation: none !important;
 }
 
 .wts-impact-card {
@@ -1371,59 +1376,81 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 35px 20px;
+  padding: 32px 20px;
   min-width: 0;
+
+  /* Remove boxes and movement */
+  background: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  transform: none !important;
+  animation: none !important;
 }
 
-/* Vertical divider between the two columns */
-.wts-impact-card:nth-child(2n) {
-  border-left: 1px solid #353535;
+/* Vertical divider between columns */
+.wts-impact-card:nth-child(2) {
+  border-left: 1px solid #383838;
 }
 
-/* Horizontal divider between the two rows */
+/* Horizontal divider between rows */
 .wts-impact-card:nth-child(n+3) {
-  border-top: 1px solid #353535;
+  border-top: 1px solid #383838;
 }
 
-/* Remove the old circular ring design */
-.wts-impact-ring {
-  width: auto;
-  height: auto;
-  border: none;
-  border-radius: 0;
-  background: transparent;
-  animation: none;
-  filter: none;
+/* Remove circular rings and inner backgrounds */
+.wts-impact-ring,
+.wts-impact-inner {
+  width: auto !important;
+  height: auto !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+
+  filter: none !important;
+  transform: none !important;
+  animation: none !important;
 }
 
 .wts-impact-inner {
-  width: auto;
-  height: auto;
-  border: none;
-  border-radius: 0;
-  background: transparent;
-  animation: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   gap: 10px;
 }
 
 .wts-impact-number {
-  color: #d6b56d;
+  color: #ff3030;
   font-size: clamp(36px, 5vw, 52px);
   font-weight: 800;
   line-height: 1.1;
+  text-shadow: none !important;
+  animation: none !important;
 }
 
 .wts-impact-label {
   color: #d0d0d0;
   font-size: 15px;
+  font-weight: 500;
   line-height: 1.6;
+  text-shadow: none !important;
+  animation: none !important;
+}
+
+/* Prevent hover effects from moving the statistics */
+.wts-impact-card:hover,
+.wts-impact-ring:hover,
+.wts-impact-inner:hover {
+  transform: none !important;
+  box-shadow: none !important;
+  animation: none !important;
 }
 
 /* Mobile: one statistic per row */
@@ -1445,24 +1472,16 @@
   }
 
   /* Remove vertical dividers on mobile */
-  .wts-impact-card:nth-child(2n) {
+  .wts-impact-card:nth-child(2) {
     border-left: none;
   }
 
-  /* Separate each mobile statistic horizontally */
+  /* Add horizontal dividers between statistics */
   .wts-impact-card:not(:first-child) {
-    border-top: 1px solid #353535;
+    border-top: 1px solid #383838;
   }
 }
 
-/* Respect reduced-motion preferences */
-@media (prefers-reduced-motion: reduce) {
-  .wts-impact-card,
-  .wts-impact-ring,
-  .wts-impact-inner {
-    animation: none !important;
-  }
-}
 
 
   </style>
