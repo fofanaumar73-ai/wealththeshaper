@@ -367,18 +367,37 @@ input:focus {
         const password =
           document.getElementById("password").value;
 
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password
-        });
+        
+const { error } = await supabase.auth.signInWithPassword({
+  email,
+  password
+});
 
-        if (error) {
-          throw error;
-        }
+if (error) {
+  throw error;
+}
 
-        message.style.color = "#f0c36a";
-        message.textContent =
-          "Authentication successful. Verifying administrator access is our next step.";
+// Verify the signed-in user's UID in Supabase
+const { data: isAdmin, error: adminError } =
+  await supabase.rpc("is_wealththeshaper_admin");
+
+if (adminError) {
+  await supabase.auth.signOut();
+  throw new Error(
+    "Unable to verify administrator access. Please try again."
+  );
+}
+
+if (isAdmin !== true) {
+  await supabase.auth.signOut();
+  throw new Error(
+    "Access denied. This account is not authorized for the admin portal."
+  );
+}
+
+// Only the authorized UID reaches the dashboard
+window.location.href = "dashboard.html";
+
 
       } catch (error) {
         message.style.color = "#ff6673";
