@@ -1527,6 +1527,64 @@
   }
 }
 
+    
+/* =========================================
+   WEALTHTHESHAPER LOGO
+   Centered, Bigger & Gently Animated
+========================================= */
+
+.animated-logo {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  padding: 20px 0;
+
+  animation: wealthShaperBounce 2.5s ease-in-out infinite;
+}
+
+.animated-logo img {
+  display: block;
+  width: 150px;
+  max-width: 80%;
+  height: auto;
+  margin: 0 auto;
+  object-fit: contain;
+}
+
+/* Larger logo on laptops */
+@media (min-width: 768px) {
+  .animated-logo img {
+    width: 180px;
+  }
+}
+
+/* Mobile size */
+@media (max-width: 767px) {
+  .animated-logo img {
+    width: 140px;
+  }
+}
+
+/* Gentle up-and-down movement */
+@keyframes wealthShaperBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .animated-logo {
+    animation: none !important;
+  }
+}
+
 
   </style>
 </head>
