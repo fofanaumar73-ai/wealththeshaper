@@ -1645,18 +1645,11 @@ const servicesGrid = document.getElementById("servicesGrid");
 
 if (servicesGrid) {
   servicesGrid.addEventListener("click", (event) => {
-  const learnButton = event.target.closest(".learn-more");
-  const bookButton = event.target.closest(".book-service");
+    const bookButton = event.target.closest(".book-service");
 
-  if (learnButton && servicesGrid.contains(learnButton)) {
-    event.preventDefault();
-    openServiceDetails(Number(learnButton.dataset.service));
-    return;
-  }
-
-  if (bookButton && servicesGrid.contains(bookButton)) {
-    startBooking(Number(bookButton.dataset.service));
-  }
+    if (bookButton && servicesGrid.contains(bookButton)) {
+      startBooking(Number(bookButton.dataset.service));
+    }
   });
 }
 
