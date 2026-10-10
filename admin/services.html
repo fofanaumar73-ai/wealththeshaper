@@ -659,6 +659,98 @@ cancelServiceBtn.addEventListener("click", () => {
   serviceFormMessage.textContent = "";
 });
 
+// Save a new service to Supabase
+serviceForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const saveButton = document.getElementById("saveServiceBtn");
+
+  const title = document.getElementById("serviceTitle").value.trim();
+  const slug = document.getElementById("serviceSlug").value.trim();
+  const description =
+    document.getElementById("serviceDescription").value.trim();
+  const imageUrl =
+    document.getElementById("serviceImage").value.trim();
+  const displayOrder =
+    Number(document.getElementById("serviceOrder").value);
+  const isPublished =
+    document.getElementById("servicePublished").checked;
+
+  serviceFormMessage.textContent = "";
+
+  if (!title || !slug) {
+    serviceFormMessage.textContent =
+      "Please enter both a service title and slug.";
+    return;
+  }
+
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) {
+    serviceFormMessage.textContent =
+      "Use lowercase letters, numbers, and single hyphens in the slug.";
+    return;
+  }
+
+  saveButton.disabled = true;
+  saveButton.textContent = "Saving...";
+
+  try {
+    // Verify the current session and administrator permission.
+    const {
+      data: { session },
+      error: sessionError
+    } = await supabase.auth.getSession();
+
+    if (sessionError || !session) {
+      throw new Error("Your session has expired. Please sign in again.");
+    }
+
+    const { data: isAdmin, error: adminError } =
+      await supabase.rpc("is_wealththeshaper_admin");
+
+    if (adminError || isAdmin !== true) {
+      throw new Error("You are not authorized to manage services.");
+    }
+
+    const { error } = await supabase
+      .from("services")
+      .insert({
+        title,
+        slug,
+        description,
+        image_url: imageUrl || null,
+        display_order: displayOrder,
+        is_published: isPublished
+      });
+
+    if (error) {
+      if (error.code === "23505") {
+        throw new Error("That service slug already exists. Choose another.");
+      }
+
+      throw error;
+    }
+
+    serviceFormMessage.textContent = "Service saved successfully!";
+
+    await loadServices();
+
+    serviceForm.reset();
+    document.getElementById("serviceOrder").value = 0;
+    serviceFormContainer.hidden = true;
+
+  } catch (error) {
+    console.error("Error saving service:", error);
+
+    serviceFormMessage.textContent =
+      error.message || "Unable to save the service. Please try again.";
+
+  } finally {
+    saveButton.disabled = false;
+    saveButton.textContent = "Save Service";
+  }
+});
+
+
 
 
     
