@@ -743,7 +743,7 @@ cancelServiceBtn.addEventListener("click", () => {
   serviceFormMessage.textContent = "";
 });
 
-// Save a new service to Supabase
+ // Save a new service and upload its image
 serviceForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
@@ -753,8 +753,6 @@ serviceForm.addEventListener("submit", async (event) => {
   const slug = document.getElementById("serviceSlug").value.trim();
   const description =
     document.getElementById("serviceDescription").value.trim();
-  const imageUrl =
-    document.getElementById("serviceImage").value.trim();
   const displayOrder =
     Number(document.getElementById("serviceOrder").value);
   const isPublished =
@@ -774,8 +772,30 @@ serviceForm.addEventListener("submit", async (event) => {
     return;
   }
 
+  if (
+    selectedServiceImageFile &&
+    !["image/jpeg", "image/png", "image/webp"].includes(
+      selectedServiceImageFile.type
+    )
+  ) {
+    serviceFormMessage.textContent =
+      "Please select a JPG, PNG, or WebP image.";
+    return;
+  }
+
+  if (
+    selectedServiceImageFile &&
+    selectedServiceImageFile.size > 5 * 1024 * 1024
+  ) {
+    serviceFormMessage.textContent =
+      "The image must be 5 MB or smaller.";
+    return;
+  }
+
   saveButton.disabled = true;
   saveButton.textContent = "Saving...";
+
+  let uploadedImagePath = null;
 
   try {
     // Verify the current session and administrator permission.
@@ -795,35 +815,95 @@ serviceForm.addEventListener("submit", async (event) => {
       throw new Error("You are not authorized to manage services.");
     }
 
-    const { error } = await supabase
+    let imageUrl = null;
+
+    // Upload the selected image, if one was chosen.
+    if (selectedServiceImageFile) {
+      const file = selectedServiceImageFile;
+      const extension = file.type === "image/jpeg"
+        ? "jpg"
+        : file.type === "image/png"
+          ? "png"
+          : "webp";
+
+      const imagePath =
+        `${slug}/${crypto.randomUUID()}.${extension}`;
+
+      const { data: uploadedImage, error: uploadError } =
+        await supabase.storage
+          .from("service-images")
+          .upload(imagePath, file, {
+            contentType: file.type,
+            upsert: false
+          });
+
+      if (uploadError) {
+        throw uploadError;
+      }
+
+      uploadedImagePath = uploadedImage.path;
+
+      const { data: publicUrlData } = supabase.storage
+        .from("service-images")
+        .getPublicUrl(uploadedImage.path);
+
+      imageUrl = publicUrlData.publicUrl;
+    }
+
+    // Save the service and its image URL.
+    const { error: insertError } = await supabase
       .from("services")
       .insert({
         title,
         slug,
         description,
-        image_url: imageUrl || null,
+        image_url: imageUrl,
         display_order: displayOrder,
         is_published: isPublished
       });
 
-    if (error) {
-      if (error.code === "23505") {
-        throw new Error("That service slug already exists. Choose another.");
+    if (insertError) {
+      if (insertError.code === "23505") {
+        throw new Error(
+          "That service slug already exists. Choose another."
+        );
       }
 
-      throw error;
+      throw insertError;
     }
 
-    serviceFormMessage.textContent = "Service saved successfully!";
+    serviceFormMessage.textContent =
+      "Service saved successfully!";
 
     await loadServices();
 
     serviceForm.reset();
     document.getElementById("serviceOrder").value = 0;
+
+    if (serviceImagePreviewUrl) {
+      URL.revokeObjectURL(serviceImagePreviewUrl);
+      serviceImagePreviewUrl = null;
+    }
+
+    selectedServiceImageFile = null;
+    serviceImagePreview.removeAttribute("src");
+    serviceImagePreviewContainer.hidden = true;
+
     serviceFormContainer.hidden = true;
 
   } catch (error) {
     console.error("Error saving service:", error);
+
+    // Remove an uploaded image if saving the database record failed.
+    if (uploadedImagePath) {
+      const { error: cleanupError } = await supabase.storage
+        .from("service-images")
+        .remove([uploadedImagePath]);
+
+      if (cleanupError) {
+        console.error("Image cleanup failed:", cleanupError);
+      }
+    }
 
     serviceFormMessage.textContent =
       error.message || "Unable to save the service. Please try again.";
@@ -833,6 +913,7 @@ serviceForm.addEventListener("submit", async (event) => {
     saveButton.textContent = "Save Service";
   }
 });
+
 
 
 
