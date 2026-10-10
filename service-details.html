@@ -1,0 +1,494 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#171719">
+  <title>Service Details | WealthTheShaper</title>
+
+  <style>
+    :root {
+      --bg: #19191c;
+      --surface: #222226;
+      --red: #e32636;
+      --white: #ffffff;
+      --muted: #bdbdc5;
+      --border: rgba(255, 255, 255, 0.10);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--white);
+      background:
+        radial-gradient(
+          ellipse at 15% 5%,
+          rgba(227, 38, 54, 0.13),
+          transparent 38%
+        ),
+        radial-gradient(
+          ellipse at 90% 55%,
+          rgba(115, 35, 45, 0.10),
+          transparent 40%
+        ),
+        var(--bg);
+      line-height: 1.7;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(1100px, 90%);
+      margin: auto;
+    }
+
+    /* Navigation */
+
+    .navbar {
+      padding: 22px 0;
+      border-bottom: 1px solid var(--border);
+      background: rgba(25, 25, 28, 0.65);
+      backdrop-filter: blur(16px);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .brand span {
+      color: var(--red);
+    }
+
+    .back-link {
+      color: var(--muted);
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover {
+      color: var(--white);
+    }
+
+    /* Hero */
+
+    .service-hero {
+      padding: 100px 0 75px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      color: #ff6572;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 22px;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 25px;
+      height: 2px;
+      background: var(--red);
+    }
+
+    h1 {
+      max-width: 850px;
+      font-size: clamp(2.4rem, 6vw, 4.7rem);
+      line-height: 1.08;
+      letter-spacing: -2px;
+      margin-bottom: 25px;
+    }
+
+    .hero-description {
+      max-width: 690px;
+      color: var(--muted);
+      font-size: 1.08rem;
+      margin-bottom: 32px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px 22px;
+      border: 1px solid var(--red);
+      border-radius: 50px;
+      background: var(--red);
+      color: var(--white);
+      font-weight: 700;
+      font-size: 0.9rem;
+      transition: 0.2s ease;
+    }
+
+    .button:hover {
+      background: #bd1929;
+      border-color: #bd1929;
+      transform: translateY(-2px);
+    }
+
+    .button-outline {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(255, 255, 255, 0.2);
+      margin-left: 10px;
+    }
+
+    .button-outline:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    /* Content */
+
+    .details-section {
+      padding: 30px 0 90px;
+    }
+
+    .section-heading {
+      max-width: 680px;
+      margin-bottom: 35px;
+    }
+
+    .section-heading h2 {
+      font-size: clamp(1.7rem, 4vw, 2.5rem);
+      line-height: 1.2;
+      margin-bottom: 15px;
+      letter-spacing: -0.8px;
+    }
+
+    .section-heading p {
+      color: var(--muted);
+    }
+
+    .details-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .detail-card {
+      padding: 30px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.055),
+        rgba(255, 255, 255, 0.018)
+      );
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .detail-card:hover {
+      border-color: rgba(227, 38, 54, 0.4);
+      transform: translateY(-3px);
+    }
+
+    .card-number {
+      display: inline-block;
+      color: #ff6572;
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+
+    .detail-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 12px;
+    }
+
+    .detail-card p {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .closing {
+      margin-top: 25px;
+      padding: 45px;
+      border: 1px solid rgba(227, 38, 54, 0.25);
+      border-radius: 22px;
+      background: linear-gradient(
+        120deg,
+        rgba(227, 38, 54, 0.12),
+        rgba(255, 255, 255, 0.025)
+      );
+    }
+
+    .closing h2 {
+      font-size: clamp(1.7rem, 4vw, 2.5rem);
+      line-height: 1.2;
+      margin-bottom: 15px;
+    }
+
+    .closing p {
+      color: var(--muted);
+      max-width: 650px;
+      margin-bottom: 25px;
+    }
+
+    footer {
+      padding: 25px 0;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 650px) {
+      .service-hero {
+        padding: 70px 0 50px;
+      }
+
+      h1 {
+        letter-spacing: -1px;
+      }
+
+      .details-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .detail-card {
+        padding: 24px;
+      }
+
+      .closing {
+        padding: 28px 22px;
+      }
+
+      .button-outline {
+        margin: 12px 0 0;
+      }
+
+      .nav-inner {
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a href="index.html" class="brand">
+        WEALTH<span>THE</span>SHAPER
+      </a>
+
+      <a href="index.html#services" class="back-link">
+        ← Back to Services
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <section class="service-hero">
+      <div class="container">
+        <div class="eyebrow">Our Services</div>
+
+        <h1 id="service-title">Business Growth Diagnosis</h1>
+
+        <p class="hero-description" id="service-intro">
+          Discover what's holding your business back, identify overlooked
+          opportunities, and gain clarity on the steps that can support
+          your next stage of growth.
+        </p>
+
+        <a href="#book" class="button">
+          Book This Service <span>↗</span>
+        </a>
+
+        <a href="index.html#services" class="button button-outline">
+          Explore Services
+        </a>
+      </div>
+    </section>
+
+    <section class="details-section">
+      <div class="container">
+        <div class="section-heading">
+          <div class="eyebrow">A Clearer Path Forward</div>
+          <h2>Turn business challenges into growth opportunities.</h2>
+          <p id="service-overview">
+            Growth becomes easier to approach when you understand your
+            current position, recognize the gaps, and know what deserves
+            your attention first.
+          </p>
+        </div>
+
+        <div class="details-grid">
+          <article class="detail-card">
+            <span class="card-number">01 / THE CHALLENGE</span>
+            <h3>What we help you address</h3>
+            <p id="service-challenge">
+              Unclear priorities, growth bottlenecks, inconsistent
+              performance, and opportunities that may be going unnoticed.
+            </p>
+          </article>
+
+          <article class="detail-card">
+            <span class="card-number">02 / OUR APPROACH</span>
+            <h3>How WealthTheShaper helps</h3>
+            <p id="service-approach">
+              We examine your business situation, identify areas that need
+              attention, and help you develop a clearer direction for action.
+            </p>
+          </article>
+
+          <article class="detail-card">
+            <span class="card-number">03 / THE BENEFITS</span>
+            <h3>What you can gain</h3>
+            <p id="service-benefits">
+              Better clarity, more focused priorities, a stronger basis
+              for decision-making, and a practical direction for improvement.
+            </p>
+          </article>
+
+          <article class="detail-card">
+            <span class="card-number">04 / THE PROCESS</span>
+            <h3>What working together looks like</h3>
+            <p id="service-process">
+              We discuss your goals and challenges, assess your current
+              position, identify opportunities, and outline actionable
+              next steps suited to your business.
+            </p>
+          </article>
+        </div>
+
+        <div class="closing" id="book">
+          <div class="eyebrow">Your Next Step</div>
+          <h2 id="closing-title">Ready to move your business forward?</h2>
+          <p id="closing-description">
+            Let's discuss your goals and explore how this service could
+            support your business growth journey.
+          </p>
+
+          <a href="#" class="button" id="booking-button">
+            Book This Service <span>↗</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>© <span id="year"></span> WealthTheShaper</span>
+      <a href="index.html">Return to homepage ↑</a>
+    </div>
+  </footer>
+
+  <script>
+    const serviceDetails = {
+      "business-growth-diagnosis": {
+        title: "Business Growth Diagnosis",
+        intro: "Identify what is holding your business back, uncover overlooked opportunities, and gain clarity on where to focus next.",
+        overview: "Sustainable growth starts with understanding your current position. We help you examine the business, identify gaps, and make your next moves more intentional.",
+        challenge: "Unclear priorities, operational bottlenecks, inconsistent performance, and growth opportunities that may be going unnoticed.",
+        approach: "We examine your current business position, discuss your goals, identify areas that need attention, and help you prioritize practical next steps.",
+        benefits: "Clearer priorities, stronger decision-making, a better understanding of your challenges, and a focused direction for improvement.",
+        process: "We discuss your goals and challenges, assess your current position, identify opportunities, and outline actionable next steps suited to your business."
+      },
+
+      "strategic-positioning": {
+        title: "Strategic Positioning",
+        intro: "Clarify what makes your business valuable, strengthen your competitive advantage, and communicate why customers should choose you.",
+        overview: "A strong position helps customers understand who you serve, what you offer, and why your business matters in the market.",
+        challenge: "Unclear messaging, difficulty standing out, and a business offer that customers may struggle to distinguish from competitors.",
+        approach: "We work through your value proposition, target audience, strengths, and market position to develop a clearer business message.",
+        benefits: "Sharper messaging, stronger differentiation, clearer customer communication, and a more consistent brand direction.",
+        process: "We explore your business, customers, market, and competitors before shaping positioning recommendations that align with your goals."
+      },
+
+      "visibility-marketing-sales": {
+        title: "Visibility, Marketing & Sales Strategy",
+        intro: "Strengthen your visibility, attract suitable customers, and create a clearer path from attention to meaningful sales opportunities.",
+        overview: "Being visible is only part of the picture. Your marketing and sales activities need to work together to reach the right people and guide them toward action.",
+        challenge: "Inconsistent visibility, disconnected marketing activities, difficulty reaching suitable customers, or unclear steps for converting interest into sales.",
+        approach: "We help you examine your audience, communication channels, marketing priorities, and sales journey to identify practical improvements.",
+        benefits: "More focused marketing, clearer messaging, better alignment between visibility and sales, and a more intentional customer journey.",
+        process: "We review your current approach, identify opportunities, establish priorities, and outline a practical strategy for your marketing and sales activities."
+      },
+
+      "offer-development-monetization": {
+        title: "Offer Development & Monetization",
+        intro: "Shape compelling offers and improve how your business turns customer demand, expertise, and value into revenue opportunities.",
+        overview: "A valuable service or product needs a clear offer and a sensible path to purchase. We help you examine how your value is packaged and communicated.",
+        challenge: "Offers that are difficult to explain, unclear customer value, or a disconnect between what a business provides and how it generates revenue.",
+        approach: "We examine your offers, target customers, value proposition, pricing considerations, and sales process to identify opportunities for improvement.",
+        benefits: "Clearer offers, stronger communication of value, a more intentional sales process, and better alignment between customer needs and monetization.",
+        process: "We discuss your existing offers and goals, identify areas for refinement, and develop recommendations suited to your business model."
+      },
+
+      "business-growth-scaling": {
+        title: "Business Growth & Scaling",
+        intro: "Build more repeatable processes, improve how your business operates, and prepare for sustainable growth without relying on guesswork.",
+        overview: "Growth requires more than ambition. Businesses need clear priorities, workable systems, and processes that can support increasing demand.",
+        challenge: "Inconsistent processes, unclear responsibilities, operational strain, or difficulty maintaining quality as the business grows.",
+        approach: "We examine your growth goals, business processes, priorities, and operational challenges to identify areas where better systems may help.",
+        benefits: "Clearer growth priorities, more consistent processes, better operational visibility, and a stronger foundation for future expansion.",
+        process: "We assess your current operations and goals, identify constraints, prioritize improvements, and outline practical steps toward more sustainable growth."
+      }
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    const serviceKey = params.get("service") || "business-growth-diagnosis";
+    const service = serviceDetails[serviceKey] || serviceDetails["business-growth-diagnosis"];
+
+    document.getElementById("service-title").textContent = service.title;
+    document.getElementById("service-intro").textContent = service.intro;
+    document.getElementById("service-overview").textContent = service.overview;
+    document.getElementById("service-challenge").textContent = service.challenge;
+    document.getElementById("service-approach").textContent = service.approach;
+    document.getElementById("service-benefits").textContent = service.benefits;
+    document.getElementById("service-process").textContent = service.process;
+    document.getElementById("closing-title").textContent =
+      "Ready to explore " + service.title + "?";
+    document.getElementById("closing-description").textContent =
+      "Let's discuss your goals and explore how " + service.title +
+      " could support your business growth journey.";
+
+    document.getElementById("booking-button").href =
+      "client/login.html?service=" + encodeURIComponent(serviceKey) +
+      "&next=booking";
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+    document.title = service.title + " | WealthTheShaper";
+  </script>
+
+</body>
+</html>
