@@ -1,0 +1,400 @@
+
+<!DOCTYPE html>
+<html lang="en" style="visibility: hidden;">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bookings Management | WealthTheShaper</title>
+
+  <style>
+    :root {
+      --red: #e32636;
+      --bg: #080808;
+      --panel: #151515;
+      --text: #fff;
+      --muted: #b6b6bd;
+      --border: rgba(255,255,255,.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, sans-serif;
+    }
+
+    .sidebar {
+      position: fixed;
+      inset: 0 auto 0 0;
+      width: 240px;
+      padding: 24px 16px;
+      background: #101010;
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      z-index: 100;
+    }
+
+    .brand {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 30px;
+    }
+
+    .brand span {
+      color: var(--red);
+    }
+
+    .nav-item {
+      display: block;
+      padding: 13px 14px;
+      margin-bottom: 7px;
+      color: var(--muted);
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .nav-item:hover,
+    .nav-item.active {
+      background: rgba(227,38,54,.14);
+      color: white;
+    }
+
+    .nav-item.active {
+      border-left: 3px solid var(--red);
+    }
+
+    main {
+      margin-left: 240px;
+      padding: 30px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 26px;
+      flex-wrap: wrap;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin: 0 0 8px;
+    }
+
+    .muted {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px;
+      margin-bottom: 22px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .stat-number {
+      font-size: 28px;
+      font-weight: 700;
+      margin-top: 12px;
+    }
+
+    .stat-number.red {
+      color: var(--red);
+    }
+
+    .filters {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 12px;
+      background: #0d0d0d;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: white;
+      font: inherit;
+    }
+
+    .filters input {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .filters select {
+      width: auto;
+      min-width: 160px;
+    }
+
+    .primary-button,
+    .secondary-button {
+      padding: 11px 16px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .primary-button {
+      background: var(--red);
+      color: white;
+    }
+
+    .secondary-button {
+      background: #222;
+      color: white;
+      border-color: var(--border);
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 750px;
+    }
+
+    th,
+    td {
+      padding: 14px 12px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      font-size: 13px;
+      vertical-align: top;
+    }
+
+    th {
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 6px 9px;
+      border-radius: 20px;
+      background: #292929;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .notice {
+      padding: 14px;
+      background: rgba(227,38,54,.08);
+      border: 1px solid rgba(227,38,54,.25);
+      border-radius: 8px;
+      color: var(--muted);
+    }
+
+    .sidebar-toggle,
+    .sidebar-overlay {
+      display: none;
+    }
+
+    @media (max-width: 900px) {
+      .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      main {
+        padding: 22px;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .sidebar {
+        transform: translateX(-100%);
+        transition: transform .25s ease;
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .sidebar-overlay.show {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,.65);
+        z-index: 90;
+      }
+
+      main {
+        margin-left: 0;
+        padding: 18px;
+      }
+
+      .sidebar-toggle {
+        display: inline-block;
+        background: #1b1b1b;
+        color: white;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 10px 13px;
+        cursor: pointer;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .panel {
+        padding: 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">Wealth<span>TheShaper</span></div>
+
+    <a href="dashboard.html" class="nav-item">Dashboard</a>
+    <a href="bookings.html" class="nav-item active">Bookings</a>
+    <a href="services.html" class="nav-item">Services</a>
+    <a href="projects.html" class="nav-item">Projects</a>
+    <a href="faqs.html" class="nav-item">FAQs</a>
+    <a href="testimonials.html" class="nav-item">Testimonials</a>
+    <a href="website-content.html" class="nav-item">Website Content</a>
+    <a href="settings.html" class="nav-item">Settings</a>
+
+    <a href="../index.html" class="nav-item">← Back to Website</a>
+  </aside>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <main>
+    <div class="topbar">
+      <div>
+        <h1>Bookings Management</h1>
+        <div class="muted">
+          Review client requests, manage progress and deliver completed work.
+        </div>
+      </div>
+
+      <button class="sidebar-toggle" id="sidebarToggle">
+        ☰ Menu
+      </button>
+    </div>
+
+    <section class="stats">
+      <div class="panel">
+        <div class="muted">Total Bookings</div>
+        <div class="stat-number" id="totalBookings">—</div>
+      </div>
+
+      <div class="panel">
+        <div class="muted">Pending</div>
+        <div class="stat-number red" id="pendingBookings">—</div>
+      </div>
+
+      <div class="panel">
+        <div class="muted">In Progress</div>
+        <div class="stat-number" id="progressBookings">—</div>
+      </div>
+
+      <div class="panel">
+        <div class="muted">Completed</div>
+        <div class="stat-number" id="completedBookings">—</div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="topbar">
+        <div>
+          <h2 style="margin:0 0 6px;">Client Bookings</h2>
+          <div class="muted">Requests submitted by your clients.</div>
+        </div>
+      </div>
+
+      <div class="filters">
+        <input
+          type="search"
+          id="searchBookings"
+          placeholder="Search client, email or business..."
+        >
+
+        <select id="statusFilter">
+          <option value="all">All statuses</option>
+          <option value="pending">Pending</option>
+          <option value="accepted">Accepted</option>
+          <option value="in progress">In Progress</option>
+          <option value="completed">Completed</option>
+          <option value="rejected">Rejected</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+      </div>
+
+      <div id="bookingNotice" class="notice">
+        Bookings will appear here once the database connection is added.
+      </div>
+
+      <div class="table-wrap" style="margin-top:18px;">
+        <table>
+          <thead>
+            <tr>
+              <th>Client</th>
+              <th>Service</th>
+              <th>Business</th>
+              <th>Status</th>
+              <th>Date</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody id="bookingsTableBody">
+            <tr>
+              <td colspan="6" class="muted">
+                Preparing bookings table...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("sidebarOverlay");
+
+    document.getElementById("sidebarToggle").addEventListener("click", () => {
+      sidebar.classList.toggle("open");
+      overlay.classList.toggle("show");
+    });
+
+    overlay.addEventListener("click", () => {
+      sidebar.classList.remove("open");
+      overlay.classList.remove("show");
+    });
+
+    document.querySelectorAll(".sidebar .nav-item").forEach(link => {
+      link.addEventListener("click", () => {
+        sidebar.classList.remove("open");
+        overlay.classList.remove("show");
+      });
+    });
+  </script>
+</body>
+</html>
