@@ -1648,7 +1648,8 @@ async function loadPublicServices() {
 // Handle dynamically generated service buttons
 const servicesGrid = document.getElementById("servicesGrid");
 
-servicesGrid.addEventListener("click", (event) => {
+if (servicesGrid) {
+  servicesGrid.addEventListener("click", (event) => {
   const learnButton = event.target.closest(".learn-more");
   const bookButton = event.target.closest(".book-service");
 
@@ -1661,7 +1662,8 @@ servicesGrid.addEventListener("click", (event) => {
   if (bookButton && servicesGrid.contains(bookButton)) {
     startBooking(Number(bookButton.dataset.service));
   }
-});
+  });
+}
 
 
     modalBook.addEventListener("click", () => {
