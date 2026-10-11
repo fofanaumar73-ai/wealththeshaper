@@ -410,9 +410,60 @@
             </tr>
           </tbody>
         </table>
+      
+      </div>
+    </section>
+
+    <!-- REVIEW MANAGEMENT -->
+    <section class="panel" id="reviewManagement">
+      <div class="topbar">
+        <div>
+          <h2 style="margin:0 0 6px;">Client Reviews</h2>
+          <div class="muted">
+            Review client feedback and approve or reject submissions.
+          </div>
+        </div>
+      </div>
+
+      <div class="filters">
+        <select id="reviewStatusFilter">
+          <option value="all">All reviews</option>
+          <option value="pending">Pending approval</option>
+          <option value="approved">Approved</option>
+          <option value="rejected">Rejected</option>
+        </select>
+      </div>
+
+      <div id="reviewsNotice" class="notice">
+        Reviews will appear here when loaded.
+      </div>
+
+      <div class="table-wrap" style="margin-top:18px;">
+        <table>
+          <thead>
+            <tr>
+              <th>Client</th>
+              <th>Service</th>
+              <th>Rating</th>
+              <th>Review</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody id="reviewsTableBody">
+            <tr>
+              <td colspan="6" class="muted">
+                Preparing reviews...
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </section>
   </main>
+
+
 
   
 <script type="module">
@@ -722,6 +773,178 @@ function showBookingDetails(booking) {
   alert(details);
 }
 
+
+async function loadReviews() {
+  const notice = document.getElementById("reviewsNotice");
+  const tableBody = document.getElementById("reviewsTableBody");
+  const statusFilter = document.getElementById("reviewStatusFilter");
+
+  notice.textContent = "Loading reviews...";
+
+  try {
+    const { data: reviews, error } = await supabase
+      .from("reviews")
+      .select(`
+        id,
+        booking_id,
+        client_id,
+        rating,
+        review_text,
+        status,
+        created_at,
+        bookings (
+          client_name,
+          client_email,
+          service_id,
+          services (
+            title
+          )
+        )
+      `)
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    const allReviews = reviews || [];
+
+    function renderReviews() {
+      const selectedStatus = statusFilter.value;
+
+      const filteredReviews = allReviews.filter(review =>
+        selectedStatus === "all" ||
+        review.status === selectedStatus
+      );
+
+      tableBody.replaceChildren();
+
+      if (!filteredReviews.length) {
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+
+        cell.colSpan = 6;
+        cell.className = "muted";
+        cell.textContent = "No reviews found for this filter.";
+
+        row.appendChild(cell);
+        tableBody.appendChild(row);
+        return;
+      }
+
+      filteredReviews.forEach(review => {
+        const row = document.createElement("tr");
+        const booking = review.bookings || {};
+
+        const clientCell = document.createElement("td");
+        const name = document.createElement("strong");
+        name.textContent = booking.client_name || "Client";
+
+        const email = document.createElement("div");
+        email.className = "muted";
+        email.textContent = booking.client_email || "Email unavailable";
+
+        clientCell.append(name, email);
+
+        const serviceCell = document.createElement("td");
+        serviceCell.textContent =
+          booking.services?.title || "Service unavailable";
+
+        const ratingCell = document.createElement("td");
+        ratingCell.textContent =
+          "★".repeat(Number(review.rating)) +
+          "☆".repeat(5 - Number(review.rating)) +
+          ` (${review.rating}/5)`;
+
+        const textCell = document.createElement("td");
+        textCell.style.minWidth = "220px";
+        textCell.style.maxWidth = "350px";
+        textCell.style.whiteSpace = "normal";
+        textCell.style.overflowWrap = "anywhere";
+        textCell.textContent = review.review_text;
+
+        const statusCell = document.createElement("td");
+        const badge = document.createElement("span");
+        badge.className = "status";
+        badge.textContent = review.status;
+        statusCell.appendChild(badge);
+
+        const actionCell = document.createElement("td");
+
+        if (review.status === "pending") {
+          const approveButton = document.createElement("button");
+          approveButton.className = "primary-button";
+          approveButton.textContent = "Approve";
+
+          const rejectButton = document.createElement("button");
+          rejectButton.className = "secondary-button";
+          rejectButton.textContent = "Reject";
+          rejectButton.style.marginTop = "6px";
+
+          async function updateReviewStatus(nextStatus, button) {
+            if (!confirm(`Are you sure you want to ${nextStatus} this review?`)) {
+              return;
+            }
+
+            button.disabled = true;
+            button.textContent = "Updating...";
+
+            const { error } = await supabase
+              .from("reviews")
+              .update({
+                status: nextStatus,
+                updated_at: new Date().toISOString()
+              })
+              .eq("id", review.id);
+
+            if (error) {
+              console.error("Review moderation failed:", error);
+              alert("Could not update this review. Check the browser console.");
+              button.disabled = false;
+              button.textContent =
+                nextStatus === "approved" ? "Approve" : "Reject";
+              return;
+            }
+
+            review.status = nextStatus;
+            notice.textContent = `Review ${nextStatus} successfully.`;
+            renderReviews();
+          }
+
+          approveButton.addEventListener("click", () =>
+            updateReviewStatus("approved", approveButton)
+          );
+
+          rejectButton.addEventListener("click", () =>
+            updateReviewStatus("rejected", rejectButton)
+          );
+
+          actionCell.append(approveButton, rejectButton);
+        } else {
+          actionCell.textContent = "No action needed";
+        }
+
+        row.append(
+          clientCell,
+          serviceCell,
+          ratingCell,
+          textCell,
+          statusCell,
+          actionCell
+        );
+
+        tableBody.appendChild(row);
+      });
+    }
+
+    statusFilter.addEventListener("change", renderReviews);
+    renderReviews();
+
+    notice.textContent = `${allReviews.length} review(s) loaded successfully.`;
+  } catch (error) {
+    console.error("Could not load reviews:", error);
+    notice.textContent =
+      "Reviews could not be loaded. Check the browser console for details.";
+  }
+}
 
 
 </script>
