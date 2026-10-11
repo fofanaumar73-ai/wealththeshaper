@@ -265,6 +265,134 @@
   display: none;
 }
 
+    
+.client-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.notification-wrap {
+  position: relative;
+}
+
+.notification-bell {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #242424;
+  color: #fff;
+  font-size: 23px;
+  cursor: pointer;
+}
+
+.notification-count {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 19px;
+  height: 19px;
+  padding: 2px 5px;
+  border-radius: 20px;
+  background: var(--red);
+  color: white;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.notification-panel {
+  position: absolute;
+  top: 54px;
+  right: 0;
+  z-index: 50;
+  width: min(360px, calc(100vw - 28px));
+  max-height: 70vh;
+  overflow-y: auto;
+  background: #151515;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 18px 45px rgba(0,0,0,.55);
+  animation: notificationEnter .2s ease;
+}
+
+.notification-panel[hidden],
+.notification-count[hidden] {
+  display: none;
+}
+
+.notification-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.notification-heading h2 {
+  margin: 0 0 6px;
+  font-size: 17px;
+}
+
+.notification-heading p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.notification-close {
+  background: transparent;
+  border: 0;
+  color: white;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.notification-list {
+  display: grid;
+}
+
+.notification-item {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+}
+
+.notification-item.unread {
+  background: rgba(227,38,54,.09);
+  border-left: 3px solid var(--red);
+}
+
+.notification-item h3 {
+  margin: 0 0 6px;
+  font-size: 14px;
+}
+
+.notification-item p {
+  margin: 0 0 8px;
+  color: #d0d0d0;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.notification-item time {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+@keyframes notificationEnter {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .notification-panel { animation: none; }
+}
+
+
 @media (max-width: 760px) {
   .sidebar-overlay.open {
     display: block;
@@ -334,8 +462,45 @@
         <h1>My Dashboard</h1>
         <p class="muted">Manage your bookings and follow your service progress.</p>
       </div>
-      <button class="menu-toggle" id="menuToggle"
-              type="button" aria-label="Toggle navigation">☰</button>
+      
+<div class="client-top-actions">
+  <div class="notification-wrap">
+    <button
+      class="notification-bell"
+      id="notificationBell"
+      type="button"
+      aria-label="Notifications"
+      aria-expanded="false"
+    >
+      ♡
+      <span id="notificationCount" class="notification-count" hidden>0</span>
+    </button>
+
+    <section
+      id="notificationPanel"
+      class="notification-panel"
+      aria-label="Notifications"
+      hidden
+    >
+      <div class="notification-heading">
+        <div>
+          <h2>Notifications</h2>
+          <p>Booking updates and account activity</p>
+        </div>
+        <button id="closeNotifications" type="button"
+                class="notification-close" aria-label="Close notifications">×</button>
+      </div>
+
+      <div id="notificationList" class="notification-list">
+        <div class="empty">Loading notifications...</div>
+      </div>
+    </section>
+  </div>
+
+  <button class="menu-toggle" id="menuToggle"
+          type="button" aria-label="Toggle navigation">☰</button>
+</div>
+
     </div>
 
     <div id="notice" class="notice" role="status" aria-live="polite"></div>
