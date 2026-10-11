@@ -1,0 +1,548 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080808">
+  <title>Client Dashboard | WealthTheShaper</title>
+
+  <style>
+    :root {
+      --red: #e32636;
+      --bg: #080808;
+      --panel: #151515;
+      --text: #fff;
+      --muted: #b6b6bd;
+      --border: rgba(255,255,255,.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, sans-serif;
+    }
+
+    .layout { display: flex; min-height: 100vh; }
+
+    .sidebar {
+      width: 245px;
+      flex-shrink: 0;
+      padding: 26px 17px;
+      background: #101010;
+      border-right: 1px solid var(--border);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 35px;
+    }
+
+    .logo img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      border-radius: 50%;
+      border: 1px solid rgba(227,38,54,.65);
+      padding: 3px;
+    }
+
+    .brand {
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.6;
+      letter-spacing: 1px;
+    }
+
+    .brand span { color: var(--red); }
+
+    .nav-label {
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 2px;
+      margin: 25px 10px 12px;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 12px;
+      margin: 5px 0;
+      border-radius: 9px;
+      color: #d0d0d0;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .sidebar a:hover,
+    .sidebar a.active {
+      color: #fff;
+      background: rgba(227,38,54,.15);
+    }
+
+    .sidebar a.active { border-left: 3px solid var(--red); }
+
+    .main {
+      flex: 1;
+      min-width: 0;
+      padding: 32px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+
+    h1 { font-size: clamp(25px, 4vw, 34px); margin: 0 0 9px; }
+    h2 { font-size: 19px; margin: 0 0 18px; }
+
+    .muted { color: var(--muted); line-height: 1.7; }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 15px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      color: #fff;
+      background: #242424;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .button.primary {
+      background: var(--red);
+      border-color: var(--red);
+    }
+
+    .button:disabled { opacity: .6; cursor: wait; }
+
+    .welcome {
+      padding: 27px;
+      border: 1px solid rgba(227,38,54,.25);
+      border-radius: 17px;
+      background: radial-gradient(
+        ellipse at top right,
+        rgba(227,38,54,.17),
+        transparent 65%
+      ), var(--panel);
+      margin-bottom: 24px;
+    }
+
+    .welcome .eyebrow {
+      color: #ff7b86;
+      font-size: 11px;
+      letter-spacing: 2px;
+      font-weight: 800;
+    }
+
+    .welcome h1 { margin-top: 12px; }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 25px;
+    }
+
+    .stat, .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px;
+    }
+
+    .stat p { margin: 0 0 13px; color: var(--muted); font-size: 13px; }
+    .stat strong { font-size: 29px; }
+
+    .panel { margin-bottom: 22px; }
+
+    .booking-list { display: grid; gap: 13px; }
+
+    .booking-card {
+      padding: 18px;
+      border-radius: 11px;
+      background: #0e0e0e;
+      border: 1px solid var(--border);
+    }
+
+    .booking-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .booking-card h3 { margin: 0 0 8px; font-size: 16px; }
+
+    .booking-meta {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
+      overflow-wrap: anywhere;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 20px;
+      background: #292929;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .status.completed {
+      color: #8de0ad;
+      background: rgba(40,180,90,.12);
+    }
+
+    .status.pending {
+      color: #ffce83;
+      background: rgba(255,180,50,.12);
+    }
+
+    .status.rejected {
+      color: #ff9aa3;
+      background: rgba(227,38,54,.12);
+    }
+
+    .notice {
+      display: none;
+      padding: 13px 15px;
+      margin-bottom: 20px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      padding: 30px 15px;
+      border: 1px dashed var(--border);
+      border-radius: 10px;
+      line-height: 1.7;
+    }
+
+    .footer {
+      color: var(--muted);
+      text-align: center;
+      font-size: 12px;
+      padding: 18px 0;
+    }
+
+    .menu-toggle {
+      display: none;
+      background: #242424;
+      color: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 13px;
+    }
+
+    @media (max-width: 760px) {
+      .sidebar {
+        display: none;
+        position: fixed;
+        z-index: 10;
+        inset: 0 auto 0 0;
+        overflow-y: auto;
+      }
+
+      .sidebar.open { display: block; }
+      .main { padding: 20px 14px; }
+      .menu-toggle { display: inline-block; }
+      .stats { grid-template-columns: 1fr; }
+      .topbar { align-items: flex-start; }
+      .welcome { padding: 21px; }
+      .booking-top { flex-direction: column; }
+    }
+  </style>
+</head>
+
+<body>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="logo">
+      <img src="../image/wealth.png" alt="WealthTheShaper logo">
+      <div class="brand">WEALTH<span>THESHAPER</span><br>CLIENT PORTAL</div>
+    </div>
+
+    <div class="nav-label">MY ACCOUNT</div>
+    <a href="dashboard.html" class="active">Dashboard</a>
+    <a href="#myBookings">My Bookings</a>
+    <a href="#accountInfo">My Account</a>
+
+    <div class="nav-label">WEBSITE</div>
+    <a href="../index.html">← Back to Website</a>
+    <a href="#" id="sidebarLogout">Sign Out</a>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <h1>My Dashboard</h1>
+        <p class="muted">Manage your bookings and follow your service progress.</p>
+      </div>
+      <button class="menu-toggle" id="menuToggle"
+              type="button" aria-label="Toggle navigation">☰</button>
+    </div>
+
+    <div id="notice" class="notice" role="status" aria-live="polite"></div>
+
+    <section class="welcome">
+      <span class="eyebrow">YOUR WEALTHTHESHAPER PORTAL</span>
+      <h1>Welcome, <span id="clientName">Client</span>!</h1>
+      <p class="muted">
+        Your business growth journey starts with clear goals and the right support.
+        Review your bookings and check their latest status here.
+      </p>
+      <a href="../index.html#services" class="button primary">Explore Services ↗</a>
+    </section>
+
+    <section class="stats">
+      <div class="stat">
+        <p>Total Bookings</p>
+        <strong id="totalBookings">—</strong>
+      </div>
+      <div class="stat">
+        <p>In Progress</p>
+        <strong id="activeBookings">—</strong>
+      </div>
+      <div class="stat">
+        <p>Completed</p>
+        <strong id="completedBookings">—</strong>
+      </div>
+    </section>
+
+    <section class="panel" id="myBookings">
+      <h2>My Bookings</h2>
+      <p class="muted">
+        Your submitted service requests and their current status.
+      </p>
+
+      <div id="bookingList" class="booking-list">
+        <div class="empty">Loading your bookings...</div>
+      </div>
+    </section>
+
+    <section class="panel" id="accountInfo">
+      <h2>My Account</h2>
+      <p class="muted">Your signed-in account details.</p>
+      <div class="booking-meta">
+        <p><strong>Name:</strong> <span id="accountName">Loading...</span></p>
+        <p><strong>Email:</strong> <span id="accountEmail">Loading...</span></p>
+      </div>
+      <button class="button" id="logoutButton" type="button">Sign Out</button>
+    </section>
+
+    <div class="footer">© <span id="currentYear"></span> WealthTheShaper</div>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function () {
+  "use strict";
+
+  const SUPABASE_URL =
+    "https://leneltfdgtjkyziqulol.supabase.co";
+
+  const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_vEZoz6jKtXzMhlxVH27O9A_kuibGnl2";
+
+  const supabase = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+  const $ = id => document.getElementById(id);
+
+  function showNotice(message, isError = false) {
+    const notice = $("notice");
+    notice.textContent = message;
+    notice.style.display = "block";
+    notice.style.color = isError ? "#ff9aa3" : "#a5efbd";
+    notice.style.borderColor = isError
+      ? "rgba(227,38,54,.55)"
+      : "rgba(80,200,120,.4)";
+  }
+
+  function statusClass(status) {
+    const value = String(status || "pending").toLowerCase();
+
+    if (value === "completed") return "completed";
+    if (value === "pending") return "pending";
+    if (value === "rejected") return "rejected";
+
+    return "";
+  }
+
+  function displayStatus(status) {
+    return String(status || "pending")
+      .replace(/_/g, " ")
+      .replace(/\b\w/g, character => character.toUpperCase());
+  }
+
+  function renderBookings(bookings) {
+    const list = $("bookingList");
+    list.replaceChildren();
+
+    $("totalBookings").textContent = bookings.length;
+    $("activeBookings").textContent = bookings.filter(item =>
+      ["accepted", "in progress"].includes(
+        String(item.status || "").toLowerCase()
+      )
+    ).length;
+
+    $("completedBookings").textContent = bookings.filter(item =>
+      String(item.status || "").toLowerCase() === "completed"
+    ).length;
+
+    if (bookings.length === 0) {
+      const empty = document.createElement("div");
+      empty.className = "empty";
+      empty.textContent =
+        "You have no bookings yet. Explore our services to get started.";
+      list.appendChild(empty);
+      return;
+    }
+
+    bookings.forEach(booking => {
+      const card = document.createElement("article");
+      card.className = "booking-card";
+
+      const top = document.createElement("div");
+      top.className = "booking-top";
+
+      const details = document.createElement("div");
+
+      const title = document.createElement("h3");
+      title.textContent =
+        booking.services?.title || "Service booking";
+
+      const meta = document.createElement("div");
+      meta.className = "booking-meta";
+
+      const bookingDate = booking.created_at
+        ? new Date(booking.created_at).toLocaleDateString(undefined, {
+            year: "numeric",
+            month: "short",
+            day: "numeric"
+          })
+        : "Date unavailable";
+
+      meta.textContent = "Booking date: " + bookingDate;
+
+      details.append(title, meta);
+
+      const status = document.createElement("span");
+      status.className = "status " + statusClass(booking.status);
+      status.textContent = displayStatus(booking.status);
+
+      top.append(details, status);
+      card.appendChild(top);
+
+      if (String(booking.status || "").toLowerCase() === "completed") {
+        const reviewNote = document.createElement("p");
+        reviewNote.className = "booking-meta";
+        reviewNote.textContent =
+          "Your service is complete. Client review submission will be enabled when the review system is connected.";
+        card.appendChild(reviewNote);
+      }
+
+      list.appendChild(card);
+    });
+  }
+
+  async function logout() {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+      showNotice("Could not sign out: " + error.message, true);
+      return;
+    }
+
+    window.location.replace("login.html");
+  }
+
+  $("logoutButton").addEventListener("click", logout);
+  $("sidebarLogout").addEventListener("click", event => {
+    event.preventDefault();
+    logout();
+  });
+
+  $("menuToggle").addEventListener("click", () => {
+    $("sidebar").classList.toggle("open");
+  });
+
+  async function init() {
+    $("currentYear").textContent = new Date().getFullYear();
+
+    const { data: sessionData, error: sessionError } =
+      await supabase.auth.getSession();
+
+    if (sessionError || !sessionData.session) {
+      window.location.replace("login.html");
+      return;
+    }
+
+    const user = sessionData.session.user;
+    const fullName = user.user_metadata?.full_name || "Client";
+
+    $("clientName").textContent = fullName;
+    $("accountName").textContent = fullName;
+    $("accountEmail").textContent = user.email || "Not available";
+
+    const { data: bookings, error } = await supabase
+      .from("bookings")
+      .select(`
+        id,
+        client_id,
+        service_id,
+        client_name,
+        client_email,
+        business_name,
+        message,
+        status,
+        created_at,
+        services (
+          title
+        )
+      `)
+      .eq("client_id", user.id)
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error("Client bookings load failed:", error);
+      renderBookings([]);
+      showNotice(
+        "Your account is active, but bookings could not be loaded. " +
+        "Check the bookings table's Row Level Security policies. " +
+        "Details: " + error.message,
+        true
+      );
+      return;
+    }
+
+    renderBookings(bookings || []);
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>
