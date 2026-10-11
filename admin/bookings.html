@@ -704,6 +704,22 @@ function renderBookings(bookings) {
   });
 }
 
+  
+function showBookingDetails(booking) {
+  const details = [
+    `Client: ${booking.client_name || "N/A"}`,
+    `Email: ${booking.client_email || "N/A"}`,
+    `Business: ${booking.business_name || "N/A"}`,
+    `Service: ${booking.services?.title || "N/A"}`,
+    `Status: ${booking.status || "pending"}`,
+    `Message: ${booking.message || "No message provided"}`,
+    `Admin Notes: ${booking.admin_notes || "No notes yet"}`
+  ].join("\n\n");
+
+  alert(details);
+}
+
+
 
 </script>
 </body>
