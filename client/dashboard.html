@@ -572,6 +572,138 @@
   );
 
   const $ = id => document.getElementById(id);
+  
+let notificationUserId = null;
+let notificationItems = [];
+let notificationTimer = null;
+
+function formatNotificationDate(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "Time unavailable";
+
+  return date.toLocaleString(undefined, {
+    dateStyle: "medium",
+    timeStyle: "short"
+  });
+}
+
+function renderNotifications() {
+  const list = $("notificationList");
+  const count = notificationItems.filter(item => !item.is_read).length;
+
+  $("notificationCount").textContent = count > 99 ? "99+" : String(count);
+  $("notificationCount").hidden = count === 0;
+
+  list.replaceChildren();
+
+  if (!notificationItems.length) {
+    const empty = document.createElement("div");
+    empty.className = "empty";
+    empty.textContent = "No notifications yet.";
+    list.appendChild(empty);
+    return;
+  }
+
+  notificationItems.forEach(item => {
+    const card = document.createElement("article");
+    card.className =
+      "notification-item" + (item.is_read ? "" : " unread");
+    card.tabIndex = 0;
+
+    const title = document.createElement("h3");
+    title.textContent = item.title;
+
+    const message = document.createElement("p");
+    message.textContent = item.message;
+
+    const time = document.createElement("time");
+    time.dateTime = item.created_at;
+    time.textContent =
+      formatNotificationDate(item.created_at) +
+      (item.is_read ? " · Read" : " · Unread");
+
+    card.append(title, message, time);
+
+    async function markRead() {
+      if (item.is_read) return;
+
+      const { data, error } = await supabase.rpc(
+        "mark_notification_read",
+        { notification_id: item.id }
+      );
+
+      if (error || data !== true) {
+        console.error("Could not mark notification read:", error);
+        return;
+      }
+
+      item.is_read = true;
+      renderNotifications();
+    }
+
+    card.addEventListener("click", markRead);
+    card.addEventListener("keydown", event => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        markRead();
+      }
+    });
+
+    list.appendChild(card);
+  });
+}
+
+async function loadNotifications() {
+  if (!notificationUserId) return;
+
+  const { data, error } = await supabase
+    .from("notifications")
+    .select(
+      "id, title, message, notification_type, is_read, created_at"
+    )
+    .eq("recipient_role", "client")
+    .eq("recipient_user_id", notificationUserId)
+    .order("created_at", { ascending: false })
+    .limit(50);
+
+  if (error) {
+    console.error("Notifications could not load:", error);
+    $("notificationList").textContent =
+      "Notifications could not be loaded. Please refresh and try again.";
+    return;
+  }
+
+  notificationItems = data || [];
+  renderNotifications();
+}
+
+$("notificationBell").addEventListener("click", async () => {
+  const panel = $("notificationPanel");
+  const opening = panel.hidden;
+
+  panel.hidden = !opening;
+  $("notificationBell").setAttribute(
+    "aria-expanded", String(opening)
+  );
+
+  if (opening) await loadNotifications();
+});
+
+$("closeNotifications").addEventListener("click", () => {
+  $("notificationPanel").hidden = true;
+  $("notificationBell").setAttribute("aria-expanded", "false");
+});
+
+document.addEventListener("click", event => {
+  if (
+    !$("notificationPanel").hidden &&
+    !event.target.closest(".notification-wrap")
+  ) {
+    $("notificationPanel").hidden = true;
+    $("notificationBell").setAttribute("aria-expanded", "false");
+  }
+});
+
 
   function showNotice(message, isError = false) {
     const notice = $("notice");
