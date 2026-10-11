@@ -364,6 +364,20 @@
           <textarea id="testimonialText" maxlength="10000"
                     placeholder="Write the client's feedback..." required></textarea>
 
+          
+<label for="rating">Star rating</label>
+<select id="rating" required
+  style="width:100%;background:#0b0b0b;color:white;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:9px;padding:12px;margin-bottom:17px;">
+  <option value="5">★★★★★ — 5 Stars</option>
+  <option value="4">★★★★☆ — 4 Stars</option>
+  <option value="3">★★★☆☆ — 3 Stars</option>
+  <option value="2">★★☆☆☆ — 2 Stars</option>
+  <option value="1">★☆☆☆☆ — 1 Star</option>
+</select>
+
+
           <label for="imageUrl">Client image URL (optional)</label>
           <input id="imageUrl" type="url" maxlength="2000"
                  placeholder="https://example.com/image.jpg">
