@@ -524,6 +524,16 @@
 
       const name = document.createElement("h3");
       name.textContent = item.client_name;
+      
+const stars = document.createElement("div");
+stars.style.color = "#f5b942";
+stars.style.fontSize = "20px";
+stars.style.letterSpacing = "3px";
+
+const rating = Math.max(1, Math.min(5, Number(item.rating) || 5));
+stars.textContent = "★".repeat(rating) + "☆".repeat(5 - rating);
+stars.setAttribute("aria-label", `${rating} out of 5 stars`);
+
 
       const roleParts = [item.client_role, item.company_name].filter(Boolean);
       const role = document.createElement("div");
@@ -591,7 +601,7 @@
         deleteTestimonial(item)
       ));
 
-      card.append(name, role, review, meta, actions);
+     card.append(name, stars, role, review, meta, actions);
       list.appendChild(card);
     });
   }
