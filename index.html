@@ -1229,6 +1229,160 @@
   }
 }
 
+    
+/* WEALTHTHESHAPER FAQ & TESTIMONIAL SLIDERS */
+
+.wt-faq-wrap,
+.wt-testimonial-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  max-width: 900px;
+  margin: 32px auto 0;
+}
+
+.wt-faq-card,
+.wt-testimonial-card {
+  flex: 1;
+  min-width: 0;
+  min-height: 235px;
+  padding: clamp(24px, 5vw, 42px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 22px;
+  background: linear-gradient(
+    145deg,
+    rgba(35, 35, 35, 0.88),
+    rgba(12, 12, 12, 0.96)
+  );
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.24);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow-wrap: anywhere;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.wt-faq-card h3,
+.wt-testimonial-card h3 {
+  color: #fff;
+  font-size: clamp(19px, 3vw, 25px);
+  line-height: 1.45;
+  margin: 12px 0;
+}
+
+.wt-faq-card p,
+.wt-testimonial-card p {
+  color: #c5c5cc;
+  line-height: 1.8;
+  margin: 8px 0;
+}
+
+.wt-slide-label {
+  color: #e32636;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.wt-glass-arrow {
+  flex: 0 0 46px;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+  transition: background 0.2s ease, border-color 0.2s ease,
+              transform 0.2s ease;
+}
+
+.wt-glass-arrow:hover {
+  background: rgba(227, 38, 54, 0.25);
+  border-color: #e32636;
+  transform: scale(1.06);
+}
+
+.wt-glass-arrow:focus-visible {
+  outline: 2px solid #e32636;
+  outline-offset: 4px;
+}
+
+.wt-stars {
+  color: #f5b942;
+  font-size: 23px;
+  letter-spacing: 3px;
+  margin-bottom: 12px;
+}
+
+.wt-reviewer {
+  color: #fff !important;
+  font-weight: 700;
+  margin-top: 22px !important;
+}
+
+.wt-slider-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 22px 0 0;
+}
+
+.wt-slider-dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #555;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.wt-slider-dot.active {
+  background: #e32636;
+  transform: scale(1.35);
+}
+
+.wt-slider-empty {
+  text-align: center;
+  color: #b6b6bd;
+}
+
+@media (max-width: 560px) {
+  .wt-faq-wrap,
+  .wt-testimonial-wrap {
+    gap: 8px;
+  }
+
+  .wt-glass-arrow {
+    flex-basis: 36px;
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+  }
+
+  .wt-faq-card,
+  .wt-testimonial-card {
+    min-height: 255px;
+    padding: 22px 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wt-faq-card,
+  .wt-testimonial-card,
+  .wt-glass-arrow,
+  .wt-slider-dot {
+    transition: none;
+  }
+}
 
   </style>
 </head>
@@ -1514,19 +1668,38 @@
       </div>
     </section>
 
-    
 <!-- TESTIMONIALS -->
 <section class="section" id="testimonials">
   <div class="container">
     <div class="section-heading">
       <span class="eyebrow">CLIENT EXPERIENCES</span>
-      <h2>Trusted by Businesses. <span class="accent">Driven by Results.</span></h2>
-      <p>Hear from clients who have taken steps toward meaningful business growth.</p>
+      <h2>Real Experiences. <span class="accent">Real Feedback.</span></h2>
+      <p>Discover what clients have to say about their experience with WealthTheShaper.</p>
     </div>
 
-    <div id="testimonialsContainer" class="testimonials-grid">
-      <p>Loading client testimonials...</p>
+    <div class="wt-testimonial-wrap">
+      <button class="wt-glass-arrow"
+              id="testimonialPrev"
+              type="button"
+              aria-label="Previous testimonial">
+        &#10094;
+      </button>
+
+      <div id="testimonialsContainer"
+           class="wt-testimonial-card"
+           aria-live="polite">
+        <p>Loading testimonials...</p>
+      </div>
+
+      <button class="wt-glass-arrow"
+              id="testimonialNext"
+              type="button"
+              aria-label="Next testimonial">
+        &#10095;
+      </button>
     </div>
+
+    <div id="testimonialDots" class="wt-slider-dots"></div>
   </div>
 </section>
 
@@ -1534,19 +1707,36 @@
 <section class="section" id="faq">
   <div class="container">
     <div class="section-heading">
-      <span class="eyebrow">GOT QUESTIONS?</span>
+      <span class="eyebrow">NEED CLARITY?</span>
       <h2>Frequently Asked <span class="accent">Questions.</span></h2>
-      <p>Find answers to common questions about our services and how we work.</p>
+      <p>Quick answers to help you take your next step with confidence.</p>
     </div>
 
-    <div id="faqsContainer" class="faqs-list">
-      <p>Loading frequently asked questions...</p>
+    <div class="wt-faq-wrap">
+      <button class="wt-glass-arrow"
+              id="faqPrev"
+              type="button"
+              aria-label="Previous question">
+        &#10094;
+      </button>
+
+      <div id="faqsContainer"
+           class="wt-faq-card"
+           aria-live="polite">
+        <p>Loading frequently asked questions...</p>
+      </div>
+
+      <button class="wt-glass-arrow"
+              id="faqNext"
+              type="button"
+              aria-label="Next question">
+        &#10095;
+      </button>
     </div>
+
+    <div id="faqDots" class="wt-slider-dots"></div>
   </div>
 </section>
-
-<!-- CONTACT -->
-
 
     <!-- CONTACT -->
     <section class="section" id="contact">
