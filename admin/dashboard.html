@@ -694,6 +694,137 @@
   }
 
   protectAdminDashboard();
+  
+const adminBell = document.getElementById("adminNotificationBell");
+const adminPanel = document.getElementById("adminNotificationPanel");
+const adminList = document.getElementById("adminNotificationList");
+const adminCount = document.getElementById("adminNotificationCount");
+
+let adminNotificationItems = [];
+let adminNotificationTimer = null;
+
+function adminNotificationTime(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "Time unavailable";
+
+  return date.toLocaleString(undefined, {
+    dateStyle: "medium",
+    timeStyle: "short"
+  });
+}
+
+function renderAdminNotifications() {
+  const unread = adminNotificationItems.filter(item => !item.is_read).length;
+
+  adminCount.textContent = unread > 99 ? "99+" : String(unread);
+  adminCount.hidden = unread === 0;
+  adminList.replaceChildren();
+
+  if (!adminNotificationItems.length) {
+    const empty = document.createElement("p");
+    empty.className = "admin-notification-empty";
+    empty.textContent = "No notifications yet.";
+    adminList.appendChild(empty);
+    return;
+  }
+
+  adminNotificationItems.forEach(item => {
+    const card = document.createElement("article");
+    card.className =
+      "admin-notification-item" + (item.is_read ? "" : " unread");
+    card.tabIndex = 0;
+
+    const title = document.createElement("h3");
+    title.textContent = item.title;
+
+    const message = document.createElement("p");
+    message.textContent = item.message;
+
+    const time = document.createElement("time");
+    time.dateTime = item.created_at;
+    time.textContent =
+      adminNotificationTime(item.created_at) +
+      (item.is_read ? " · Read" : " · Unread");
+
+    card.append(title, message, time);
+
+    async function markAdminNotificationRead() {
+      if (item.is_read) return;
+
+      const { data, error } = await supabase.rpc(
+        "mark_notification_read",
+        { notification_id: item.id }
+      );
+
+      if (error || data !== true) {
+        console.error("Could not mark admin notification as read:", error);
+        return;
+      }
+
+      item.is_read = true;
+      renderAdminNotifications();
+    }
+
+    card.addEventListener("click", markAdminNotificationRead);
+    card.addEventListener("keydown", event => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        markAdminNotificationRead();
+      }
+    });
+
+    adminList.appendChild(card);
+  });
+}
+
+async function loadAdminNotifications() {
+  const { data, error } = await supabase
+    .from("notifications")
+    .select("id, title, message, is_read, created_at, booking_id")
+    .eq("recipient_role", "admin")
+    .order("created_at", { ascending: false })
+    .limit(50);
+
+  if (error) {
+    console.error("Could not load admin notifications:", error);
+    adminList.textContent =
+      "Notifications could not be loaded. Please try again.";
+    return;
+  }
+
+  adminNotificationItems = data || [];
+  renderAdminNotifications();
+}
+
+adminBell.addEventListener("click", async () => {
+  const opening = adminPanel.hidden;
+  adminPanel.hidden = !opening;
+  adminBell.setAttribute("aria-expanded", String(opening));
+
+  if (opening) await loadAdminNotifications();
+});
+
+document.getElementById("closeAdminNotifications")
+  .addEventListener("click", () => {
+    adminPanel.hidden = true;
+    adminBell.setAttribute("aria-expanded", "false");
+  });
+
+document.addEventListener("click", event => {
+  if (
+    !adminPanel.hidden &&
+    !event.target.closest(".admin-notification-wrap")
+  ) {
+    adminPanel.hidden = true;
+    adminBell.setAttribute("aria-expanded", "false");
+  }
+});
+
+adminNotificationTimer = window.setInterval(
+  loadAdminNotifications,
+  30000
+);
+
 
   const sidebar = document.getElementById("adminSidebar");
   const toggle = document.getElementById("sidebarToggle");
