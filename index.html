@@ -2164,6 +2164,127 @@ if (servicesGrid) {
     document.getElementById("currentYear").textContent =
       new Date().getFullYear();
 
+    
+/* =========================================
+   WEALTHTHESHAPER FAQ SLIDER
+========================================= */
+
+let faqItems = [];
+let faqIndex = 0;
+let faqTimer = null;
+
+const faqContainer = document.getElementById("faqsContainer");
+const faqPrev = document.getElementById("faqPrev");
+const faqNext = document.getElementById("faqNext");
+const faqDots = document.getElementById("faqDots");
+
+function renderFAQ() {
+  if (!faqContainer) return;
+
+  if (faqItems.length === 0) {
+    faqContainer.innerHTML = `
+      <p class="wt-slider-empty">
+        No frequently asked questions are available yet.
+      </p>
+    `;
+
+    if (faqDots) faqDots.innerHTML = "";
+    return;
+  }
+
+  const faq = faqItems[faqIndex];
+
+  faqContainer.innerHTML = `
+    <span class="wt-slide-label">
+      QUESTION ${String(faqIndex + 1).padStart(2, "0")}
+    </span>
+    <h3></h3>
+    <p></p>
+  `;
+
+  faqContainer.querySelector("h3").textContent = faq.question;
+  faqContainer.querySelector("p").textContent = faq.answer;
+
+  if (faqDots) {
+    faqDots.innerHTML = "";
+
+    faqItems.forEach((item, index) => {
+      const dot = document.createElement("button");
+      dot.type = "button";
+      dot.className =
+        "wt-slider-dot" + (index === faqIndex ? " active" : "");
+      dot.setAttribute("aria-label", `Show question ${index + 1}`);
+
+      dot.addEventListener("click", () => {
+        faqIndex = index;
+        renderFAQ();
+        restartFAQTimer();
+      });
+
+      faqDots.appendChild(dot);
+    });
+  }
+}
+
+function changeFAQ(direction) {
+  if (faqItems.length < 2) return;
+
+  faqIndex =
+    (faqIndex + direction + faqItems.length) % faqItems.length;
+
+  renderFAQ();
+}
+
+function restartFAQTimer() {
+  clearInterval(faqTimer);
+
+  if (faqItems.length > 1) {
+    faqTimer = setInterval(() => {
+      changeFAQ(1);
+    }, 5000);
+  }
+}
+
+async function loadFAQs() {
+  if (!faqContainer) return;
+
+  const { data, error } = await supabase
+    .from("faqs")
+    .select("id, question, answer, display_order, is_published")
+    .eq("is_published", true)
+    .order("display_order", { ascending: true });
+
+  if (error) {
+    console.error("Could not load FAQs:", error);
+
+    faqContainer.innerHTML = `
+      <p class="wt-slider-empty">
+        FAQs could not be loaded. Please try again later.
+      </p>
+    `;
+    return;
+  }
+
+  faqItems = data || [];
+  faqIndex = 0;
+
+  renderFAQ();
+  restartFAQTimer();
+}
+
+faqPrev?.addEventListener("click", () => {
+  changeFAQ(-1);
+  restartFAQTimer();
+});
+
+faqNext?.addEventListener("click", () => {
+  changeFAQ(1);
+  restartFAQTimer();
+});
+
+loadFAQs();
+
+
   loadPublicServices();
     })();
   </script>
