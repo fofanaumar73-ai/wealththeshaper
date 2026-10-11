@@ -501,6 +501,43 @@
   }
 }
 
+    
+/* Mobile: notification bell beside hamburger */
+@media (max-width: 800px) {
+  .admin-top-actions {
+    position: fixed;
+    top: 16px;
+    right: 72px;
+    z-index: 1002;
+    width: auto;
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+
+  .admin-notification-bell {
+    width: 46px;
+    height: 46px;
+  }
+
+  .sidebar-toggle {
+    right: 16px;
+    z-index: 1003;
+  }
+
+  .admin-notification-panel {
+    position: fixed;
+    top: 70px;
+    right: 12px;
+    width: min(360px, calc(100vw - 24px));
+    z-index: 1004;
+  }
+
+  .topbar {
+    padding-top: 60px;
+  }
+}
+
 
   </style>
 </head>
