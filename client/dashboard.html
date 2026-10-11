@@ -483,6 +483,190 @@
   }
 }
 
+    
+/* ==============================
+   BOOKING MODAL
+============================== */
+.booking-modal[hidden] {
+  display: none !important;
+}
+
+.booking-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(8px);
+  animation: bookingFadeIn 0.25s ease;
+}
+
+.booking-modal-panel {
+  position: relative;
+  width: 100%;
+  max-width: 540px;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  padding: clamp(22px, 5vw, 34px);
+  border: 1px solid rgba(227, 38, 54, 0.45);
+  border-radius: 20px;
+  background: linear-gradient(145deg, #191919, #0c0c0c);
+  box-shadow: 0 25px 90px rgba(0, 0, 0, 0.6);
+  animation: bookingSlideIn 0.3s ease;
+}
+
+.booking-modal-panel h2 {
+  margin: 10px 0 12px;
+  font-size: clamp(22px, 5vw, 29px);
+}
+
+.booking-modal-panel > .muted {
+  margin-bottom: 24px;
+  font-size: 14px;
+}
+
+.booking-modal-close {
+  position: absolute;
+  top: 13px;
+  right: 15px;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #242424;
+  color: #fff;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.booking-field {
+  margin-bottom: 18px;
+}
+
+.booking-field label {
+  display: block;
+  margin-bottom: 8px;
+  color: #e6e6e6;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.booking-field input,
+.booking-field select,
+.booking-field textarea {
+  display: block;
+  width: 100%;
+  min-height: 46px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  outline: none;
+  background: #090909;
+  color: #fff;
+  font: inherit;
+  font-size: 14px;
+}
+
+.booking-field textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.booking-field input:focus,
+.booking-field select:focus,
+.booking-field textarea:focus {
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px rgba(227, 38, 54, 0.12);
+}
+
+.booking-modal-panel .button {
+  width: 100%;
+  min-height: 48px;
+}
+
+#bookingFormMessage {
+  color: #ff9aa3;
+  font-size: 13px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+#bookingFormMessage:empty {
+  display: none;
+}
+
+.booking-success-panel {
+  max-width: 460px;
+  text-align: center;
+}
+
+.booking-success-panel p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.8;
+  margin-bottom: 18px;
+}
+
+.success-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 20px;
+  border: 1px solid rgba(80, 200, 120, 0.45);
+  border-radius: 50%;
+  background: rgba(80, 200, 120, 0.1);
+  color: #7ce5a0;
+  font-size: 34px;
+}
+
+@keyframes bookingFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes bookingSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 520px) {
+  .booking-modal {
+    padding: 10px;
+    align-items: center;
+  }
+
+  .booking-modal-panel {
+    max-height: calc(100dvh - 20px);
+    padding: 24px 18px;
+    border-radius: 16px;
+  }
+
+  .booking-modal-close {
+    top: 10px;
+    right: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .booking-modal,
+  .booking-modal-panel {
+    animation: none;
+  }
+}
+
+
   </style>
 </head>
 
