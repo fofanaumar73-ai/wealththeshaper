@@ -2284,6 +2284,169 @@ faqNext?.addEventListener("click", () => {
 
 loadFAQs();
 
+    
+/* =========================================
+   WEALTHTHESHAPER TESTIMONIAL SLIDER
+========================================= */
+
+let publicTestimonials = [];
+let testimonialIndex = 0;
+let testimonialTimer = null;
+
+const testimonialContainer =
+  document.getElementById("testimonialsContainer");
+
+const testimonialPrev =
+  document.getElementById("testimonialPrev");
+
+const testimonialNext =
+  document.getElementById("testimonialNext");
+
+const testimonialDots =
+  document.getElementById("testimonialDots");
+
+function renderPublicTestimonial() {
+  if (!testimonialContainer) return;
+
+  if (publicTestimonials.length === 0) {
+    testimonialContainer.innerHTML = "";
+
+    const empty = document.createElement("p");
+    empty.className = "wt-slider-empty";
+    empty.textContent = "Client testimonials will appear here soon.";
+
+    testimonialContainer.appendChild(empty);
+
+    if (testimonialDots) testimonialDots.replaceChildren();
+    return;
+  }
+
+  const item = publicTestimonials[testimonialIndex];
+  const rating = Math.max(1, Math.min(5, Number(item.rating) || 5));
+
+  testimonialContainer.replaceChildren();
+
+  const label = document.createElement("span");
+  label.className = "wt-slide-label";
+  label.textContent = "CLIENT REVIEW";
+
+  const stars = document.createElement("div");
+  stars.className = "wt-stars";
+  stars.textContent = "★".repeat(rating) + "☆".repeat(5 - rating);
+  stars.setAttribute("aria-label", `${rating} out of 5 stars`);
+
+  const review = document.createElement("h3");
+  review.textContent = item.testimonial || "";
+
+  const name = document.createElement("p");
+  name.className = "wt-reviewer";
+  name.textContent = item.client_name || "Client";
+
+  const role = document.createElement("p");
+  role.textContent = [item.client_role, item.company_name]
+    .filter(Boolean)
+    .join(" · ");
+
+  testimonialContainer.append(label, stars, review, name);
+
+  if (role.textContent) {
+    testimonialContainer.appendChild(role);
+  }
+
+  if (testimonialDots) {
+    testimonialDots.replaceChildren();
+
+    publicTestimonials.forEach((testimonial, index) => {
+      const dot = document.createElement("button");
+      dot.type = "button";
+      dot.className =
+        "wt-slider-dot" + (index === testimonialIndex ? " active" : "");
+
+      dot.setAttribute(
+        "aria-label",
+        `Show testimonial ${index + 1}`
+      );
+
+      dot.addEventListener("click", () => {
+        testimonialIndex = index;
+        renderPublicTestimonial();
+        restartTestimonialTimer();
+      });
+
+      testimonialDots.appendChild(dot);
+    });
+  }
+}
+
+function changeTestimonial(direction) {
+  if (publicTestimonials.length < 2) return;
+
+  testimonialIndex =
+    (testimonialIndex + direction + publicTestimonials.length)
+    % publicTestimonials.length;
+
+  renderPublicTestimonial();
+}
+
+function restartTestimonialTimer() {
+  clearInterval(testimonialTimer);
+
+  if (publicTestimonials.length > 1) {
+    testimonialTimer = setInterval(() => {
+      changeTestimonial(1);
+    }, 3000);
+  }
+}
+
+async function loadPublicTestimonials() {
+  if (!testimonialContainer) return;
+
+  testimonialContainer.textContent = "Loading testimonials...";
+
+  const { data, error } = await supabase
+    .from("testimonials")
+    .select(`
+      id,
+      client_name,
+      client_role,
+      company_name,
+      testimonial,
+      rating,
+      display_order,
+      is_published
+    `)
+    .eq("is_published", true)
+    .order("display_order", { ascending: true });
+
+  if (error) {
+    console.error("Could not load testimonials:", error);
+
+    testimonialContainer.textContent =
+      "Testimonials are temporarily unavailable.";
+
+    return;
+  }
+
+  publicTestimonials = data || [];
+  testimonialIndex = 0;
+
+  renderPublicTestimonial();
+  restartTestimonialTimer();
+}
+
+testimonialPrev?.addEventListener("click", () => {
+  changeTestimonial(-1);
+  restartTestimonialTimer();
+});
+
+testimonialNext?.addEventListener("click", () => {
+  changeTestimonial(1);
+  restartTestimonialTimer();
+});
+
+loadPublicTestimonials();
+
+
 
   loadPublicServices();
     })();
