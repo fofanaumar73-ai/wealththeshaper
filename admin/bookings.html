@@ -919,9 +919,52 @@ async function loadReviews() {
           );
 
           actionCell.append(approveButton, rejectButton);
-        } else {
-          actionCell.textContent = "No action needed";
-        }
+        
+} else {
+  const deleteButton = document.createElement("button");
+  deleteButton.className = "secondary-button";
+  deleteButton.textContent = "Delete";
+  deleteButton.style.marginTop = "6px";
+
+  deleteButton.addEventListener("click", async () => {
+    const confirmed = confirm(
+      "Are you sure you want to permanently delete this review? This action cannot be undone."
+    );
+
+    if (!confirmed) return;
+
+    deleteButton.disabled = true;
+    deleteButton.textContent = "Deleting...";
+
+    const { error } = await supabase
+      .from("reviews")
+      .delete()
+      .eq("id", review.id);
+
+    if (error) {
+      console.error("Could not delete review:", error);
+      alert("Could not delete this review. Check the browser console.");
+
+      deleteButton.disabled = false;
+      deleteButton.textContent = "Delete";
+      return;
+    }
+
+    const reviewIndex = allReviews.findIndex(
+      item => item.id === review.id
+    );
+
+    if (reviewIndex !== -1) {
+      allReviews.splice(reviewIndex, 1);
+    }
+
+    notice.textContent = "Review deleted successfully.";
+    renderReviews();
+  });
+
+  actionCell.appendChild(deleteButton);
+}
+
 
         row.append(
           clientCell,
