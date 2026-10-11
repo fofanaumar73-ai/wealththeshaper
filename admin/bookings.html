@@ -564,7 +564,10 @@ async function loadBookings() {
     console.error("Error loading bookings:", error);
 
     notice.textContent =
-      "Could not load bookings. Check the browser console for details.";
+  "Could not load bookings: " +
+  (error.message || "Unknown error");
+
+console.error("Supabase booking error details:", error);
 
     notice.style.display = "block";
 
