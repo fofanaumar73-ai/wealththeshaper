@@ -522,9 +522,36 @@
     logout();
   });
 
-  $("menuToggle").addEventListener("click", () => {
-    $("sidebar").classList.toggle("open");
-  });
+  
+const sidebar = $("sidebar");
+const menuToggle = $("menuToggle");
+const sidebarOverlay = $("sidebarOverlay");
+
+function closeSidebar() {
+  sidebar.classList.remove("open");
+  sidebarOverlay.classList.remove("open");
+  menuToggle.setAttribute("aria-expanded", "false");
+}
+
+function toggleSidebar() {
+  const isOpen = sidebar.classList.toggle("open");
+  sidebarOverlay.classList.toggle("open", isOpen);
+  menuToggle.setAttribute("aria-expanded", String(isOpen));
+}
+
+menuToggle.setAttribute("aria-expanded", "false");
+
+menuToggle.addEventListener("click", toggleSidebar);
+sidebarOverlay.addEventListener("click", closeSidebar);
+
+sidebar.querySelectorAll("a").forEach(link => {
+  link.addEventListener("click", closeSidebar);
+});
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") closeSidebar();
+});
+
 
   async function init() {
     $("currentYear").textContent = new Date().getFullYear();
