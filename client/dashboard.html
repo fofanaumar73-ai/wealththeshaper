@@ -260,6 +260,31 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, .35);
 }
 
+    
+.sidebar-overlay {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  .sidebar-overlay.open {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 9;
+    background: rgba(0, 0, 0, .7);
+  }
+
+  .sidebar {
+    z-index: 10;
+    width: 260px;
+    max-width: 85vw;
+  }
+
+  .menu-toggle {
+    display: inline-block;
+  }
+}
+
 
     @media (max-width: 760px) {
       .sidebar {
