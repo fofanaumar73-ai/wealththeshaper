@@ -862,7 +862,15 @@ document.addEventListener("keydown", event => {
     }
 
     const user = sessionData.session.user;
+    notificationUserId = user.id;
+await loadNotifications();
+
+notificationTimer = window.setInterval(
+  loadNotifications,
+  30000
+);
     const fullName = user.user_metadata?.full_name || "Client";
+    
 
     $("clientName").textContent = fullName;
     $("accountName").textContent = fullName;
