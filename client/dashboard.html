@@ -666,6 +666,49 @@
   }
 }
 
+    /* Client review form */
+.review-form {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid rgba(227, 38, 54, .3);
+  border-radius: 12px;
+  background: #151515;
+}
+
+.review-form label {
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.review-form select,
+.review-form textarea {
+  width: 100%;
+  padding: 12px;
+  color: #fff;
+  background: #080808;
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 8px;
+  font: inherit;
+}
+
+.review-form textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.review-message {
+  margin-top: 12px;
+  color: #b6b6bd;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.review-status {
+  color: #ffce83;
+}
 
   </style>
 </head>
@@ -1082,76 +1125,200 @@ document.addEventListener("click", event => {
       .replace(/\b\w/g, character => character.toUpperCase());
   }
 
-  function renderBookings(bookings) {
-    const list = $("bookingList");
-    list.replaceChildren();
+  
+function renderBookings(bookings, reviews = [], user = null) {
+  const list = $("bookingList");
+  list.replaceChildren();
 
-    $("totalBookings").textContent = bookings.length;
-    $("activeBookings").textContent = bookings.filter(item =>
-      ["accepted", "in progress"].includes(
-        String(item.status || "").toLowerCase()
-      )
-    ).length;
+  $("totalBookings").textContent = bookings.length;
 
-    $("completedBookings").textContent = bookings.filter(item =>
-      String(item.status || "").toLowerCase() === "completed"
-    ).length;
+  $("activeBookings").textContent = bookings.filter(item =>
+    ["accepted", "in progress"].includes(
+      String(item.status || "").toLowerCase()
+    )
+  ).length;
 
-    if (bookings.length === 0) {
-      const empty = document.createElement("div");
-      empty.className = "empty";
-      empty.textContent =
-        "You have no bookings yet. Explore our services to get started.";
-      list.appendChild(empty);
-      return;
+  $("completedBookings").textContent = bookings.filter(item =>
+    String(item.status || "").toLowerCase() === "completed"
+  ).length;
+
+  if (bookings.length === 0) {
+    const empty = document.createElement("div");
+    empty.className = "empty";
+    empty.textContent =
+      "You have no bookings yet. Explore our services to get started.";
+    list.appendChild(empty);
+    return;
+  }
+
+  bookings.forEach(booking => {
+    const card = document.createElement("article");
+    card.className = "booking-card";
+
+    const top = document.createElement("div");
+    top.className = "booking-top";
+
+    const details = document.createElement("div");
+
+    const title = document.createElement("h3");
+    title.textContent = booking.services?.title || "Service booking";
+
+    const meta = document.createElement("div");
+    meta.className = "booking-meta";
+
+    const bookingDate = booking.created_at
+      ? new Date(booking.created_at).toLocaleDateString(undefined, {
+          year: "numeric",
+          month: "short",
+          day: "numeric"
+        })
+      : "Date unavailable";
+
+    meta.textContent = "Booking date: " + bookingDate;
+    details.append(title, meta);
+
+    const status = document.createElement("span");
+    status.className = "status " + statusClass(booking.status);
+    status.textContent = displayStatus(booking.status);
+
+    top.append(details, status);
+    card.appendChild(top);
+
+    if (String(booking.status || "").toLowerCase() === "completed") {
+      const existingReview = reviews.find(
+        review => review.booking_id === booking.id
+      );
+
+      if (existingReview) {
+        const reviewNote = document.createElement("p");
+        reviewNote.className = "review-message";
+
+        const reviewStatus = String(existingReview.status || "pending");
+
+        reviewNote.textContent =
+          reviewStatus === "approved"
+            ? "✓ Your review has been approved. Thank you!"
+            : reviewStatus === "rejected"
+              ? "Your review was not approved. Please contact us for assistance."
+              : "Your review has been submitted and is awaiting approval.";
+
+        card.appendChild(reviewNote);
+      } else {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "button primary";
+        button.textContent = "Leave a Review";
+        button.style.marginTop = "14px";
+
+        button.addEventListener("click", () => {
+          if (card.querySelector(".review-form")) return;
+
+          const form = document.createElement("form");
+          form.className = "review-form";
+
+          const ratingLabel = document.createElement("label");
+          ratingLabel.textContent = "Your rating";
+
+          const rating = document.createElement("select");
+          rating.required = true;
+          rating.innerHTML = `
+            <option value="">Choose a rating</option>
+            <option value="5">★★★★★ — Excellent</option>
+            <option value="4">★★★★☆ — Very good</option>
+            <option value="3">★★★☆☆ — Good</option>
+            <option value="2">★★☆☆☆ — Fair</option>
+            <option value="1">★☆☆☆☆ — Poor</option>
+          `;
+          ratingLabel.appendChild(rating);
+
+          const reviewLabel = document.createElement("label");
+          reviewLabel.textContent = "Your review";
+
+          const reviewText = document.createElement("textarea");
+          reviewText.required = true;
+          reviewText.minLength = 5;
+          reviewText.maxLength = 2000;
+          reviewText.placeholder =
+            "Tell us about your experience with our service...";
+          reviewLabel.appendChild(reviewText);
+
+          const submit = document.createElement("button");
+          submit.type = "submit";
+          submit.className = "button primary";
+          submit.textContent = "Submit Review";
+
+          const cancel = document.createElement("button");
+          cancel.type = "button";
+          cancel.className = "button";
+          cancel.textContent = "Cancel";
+          cancel.addEventListener("click", () => form.remove());
+
+          form.append(ratingLabel, reviewLabel, submit, cancel);
+
+          form.addEventListener("submit", async event => {
+            event.preventDefault();
+
+            if (!user) {
+              showNotice("Please sign in again to submit your review.", true);
+              return;
+            }
+
+            const text = reviewText.value.trim();
+
+            if (!rating.value || text.length < 5) {
+              showNotice(
+                "Choose a rating and write at least 5 characters.",
+                true
+              );
+              return;
+            }
+
+            submit.disabled = true;
+            submit.textContent = "Submitting...";
+
+            const { data, error } = await supabase
+              .from("reviews")
+              .insert({
+                booking_id: booking.id,
+                client_id: user.id,
+                rating: Number(rating.value),
+                review_text: text
+              })
+              .select("id, booking_id, status, rating, review_text")
+              .single();
+
+            if (error) {
+              console.error("Review submission failed:", error);
+
+              showNotice(
+                error.code === "23505"
+                  ? "A review has already been submitted for this booking."
+                  : "Could not submit your review. Please try again.",
+                true
+              );
+
+              submit.disabled = false;
+              submit.textContent = "Submit Review";
+              return;
+            }
+
+            reviews.push(data);
+            renderBookings(bookings, reviews, user);
+            showNotice("Review submitted successfully! It is awaiting approval.");
+          });
+
+          card.appendChild(form);
+          rating.focus();
+        });
+
+        card.appendChild(button);
+      }
     }
 
-    bookings.forEach(booking => {
-      const card = document.createElement("article");
-      card.className = "booking-card";
+    list.appendChild(card);
+  });
+}
 
-      const top = document.createElement("div");
-      top.className = "booking-top";
-
-      const details = document.createElement("div");
-
-      const title = document.createElement("h3");
-      title.textContent =
-        booking.services?.title || "Service booking";
-
-      const meta = document.createElement("div");
-      meta.className = "booking-meta";
-
-      const bookingDate = booking.created_at
-        ? new Date(booking.created_at).toLocaleDateString(undefined, {
-            year: "numeric",
-            month: "short",
-            day: "numeric"
-          })
-        : "Date unavailable";
-
-      meta.textContent = "Booking date: " + bookingDate;
-
-      details.append(title, meta);
-
-      const status = document.createElement("span");
-      status.className = "status " + statusClass(booking.status);
-      status.textContent = displayStatus(booking.status);
-
-      top.append(details, status);
-      card.appendChild(top);
-
-      if (String(booking.status || "").toLowerCase() === "completed") {
-        const reviewNote = document.createElement("p");
-        reviewNote.className = "booking-meta";
-        reviewNote.textContent =
-          "Your service is complete. Client review submission will be enabled when the review system is connected.";
-        card.appendChild(reviewNote);
-      }
-
-      list.appendChild(card);
-    });
-  }
 
   async function logout() {
     const { error } = await supabase.auth.signOut();
@@ -1507,7 +1674,19 @@ notificationTimer = window.setInterval(
       return;
     }
 
-    renderBookings(bookings || []);
+    const { data: reviews, error: reviewsError } = await supabase
+  .from("reviews")
+  .select("id, booking_id, status, rating, review_text")
+  .eq("client_id", user.id);
+
+if (reviewsError) {
+  console.error("Could not load client reviews:", reviewsError);
+  showNotice("Your bookings loaded, but reviews could not be loaded.", true);
+  renderBookings(bookings || [], [], user);
+  return;
+}
+
+renderBookings(bookings || [], reviews || [], user);
   }
 
   init();
