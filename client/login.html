@@ -313,6 +313,21 @@
     const $ = id => document.getElementById(id);
 
     let mode = "login";
+    
+const loginParams = new URLSearchParams(window.location.search);
+
+const requestedService = loginParams.get("service");
+const requestedNext = loginParams.get("next");
+
+function getPostLoginDestination() {
+  if (requestedNext === "booking" && requestedService) {
+    return "dashboard.html?next=booking&service=" +
+      encodeURIComponent(requestedService);
+  }
+
+  return "dashboard.html";
+}
+
 
     function showNotice(message, isError = false) {
       const notice = $("notice");
