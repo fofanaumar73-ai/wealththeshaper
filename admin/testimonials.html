@@ -1,0 +1,806 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Testimonials | WealthTheShaper Admin</title>
+
+  <style>
+    :root {
+      --red: #e32636;
+      --bg: #080808;
+      --panel: #151515;
+      --text: #fff;
+      --muted: #b6b6bd;
+      --border: rgba(255,255,255,.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, sans-serif;
+    }
+
+    .layout { display: flex; min-height: 100vh; }
+
+    .sidebar {
+      width: 245px;
+      flex-shrink: 0;
+      padding: 25px 16px;
+      background: #101010;
+      border-right: 1px solid var(--border);
+    }
+
+    .brand {
+      font-size: 19px;
+      font-weight: 800;
+      margin: 0 0 30px;
+    }
+
+    .brand span { color: var(--red); }
+
+    .nav-label {
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 2px;
+      margin: 24px 10px 12px;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 12px;
+      margin: 5px 0;
+      border-radius: 9px;
+      color: #d0d0d0;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .sidebar a:hover,
+    .sidebar a.active {
+      color: #fff;
+      background: rgba(227,38,54,.15);
+    }
+
+    .sidebar a.active { border-left: 3px solid var(--red); }
+
+    .main {
+      flex: 1;
+      min-width: 0;
+      padding: 32px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    h1 { margin: 0 0 8px; font-size: 29px; }
+
+    .muted { color: var(--muted); line-height: 1.6; }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat, .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px;
+    }
+
+    .stat p { margin: 0 0 12px; color: var(--muted); }
+    .stat strong { font-size: 27px; }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
+      gap: 20px;
+      align-items: start;
+    }
+
+    .panel h2 { margin: 0 0 18px; font-size: 19px; }
+
+    label {
+      display: block;
+      font-size: 13px;
+      color: #dedee3;
+      margin-bottom: 8px;
+    }
+
+    input[type="text"],
+    input[type="url"],
+    input[type="number"],
+    textarea {
+      width: 100%;
+      background: #0b0b0b;
+      color: white;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 12px;
+      font: inherit;
+      margin-bottom: 17px;
+    }
+
+    textarea { min-height: 140px; resize: vertical; }
+
+    input:focus, textarea:focus {
+      outline: 1px solid var(--red);
+      border-color: var(--red);
+    }
+
+    .check-row {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 18px;
+      color: #ddd;
+      font-size: 13px;
+    }
+
+    .check-row input { accent-color: var(--red); }
+
+    button {
+      border: 0;
+      border-radius: 8px;
+      padding: 11px 15px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    button:disabled { opacity: .55; cursor: wait; }
+
+    .primary { background: var(--red); color: #fff; }
+
+    .secondary {
+      background: #292929;
+      color: #fff;
+      border: 1px solid var(--border);
+    }
+
+    .danger {
+      background: rgba(227,38,54,.12);
+      color: #ff7a85;
+      border: 1px solid rgba(227,38,54,.3);
+    }
+
+    .form-actions, .item-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .notice {
+      display: none;
+      padding: 13px 15px;
+      margin-bottom: 20px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .testimonial-list { display: grid; gap: 14px; }
+
+    .testimonial-card {
+      background: #101010;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+    }
+
+    .testimonial-card h3 {
+      margin: 0 0 6px;
+      font-size: 17px;
+    }
+
+    .testimonial-role {
+      color: var(--red);
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+
+    .testimonial-text {
+      color: #d1d1d6;
+      line-height: 1.8;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .testimonial-image {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 14px;
+      border: 1px solid var(--border);
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 14px 0;
+    }
+
+    .pill {
+      background: #292929;
+      color: #ddd;
+      border-radius: 20px;
+      padding: 5px 9px;
+      font-size: 11px;
+    }
+
+    .pill.published {
+      color: #8de0ad;
+      background: rgba(40,180,90,.12);
+    }
+
+    .pill.draft {
+      color: #ffbd80;
+      background: rgba(255,160,50,.12);
+    }
+
+    .item-actions button { padding: 8px 11px; font-size: 12px; }
+
+    .empty {
+      color: var(--muted);
+      text-align: center;
+      padding: 30px 12px;
+      border: 1px dashed var(--border);
+      border-radius: 10px;
+    }
+
+    .menu-toggle {
+      display: none;
+      background: #222;
+      color: white;
+      font-size: 20px;
+    }
+
+    @media (max-width: 1050px) {
+      .content-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 700px) {
+      .sidebar {
+        display: none;
+        position: fixed;
+        z-index: 10;
+        inset: 0 auto 0 0;
+        overflow-y: auto;
+        width: 260px;
+      }
+
+      .sidebar.open { display: block; }
+      .main { padding: 20px 14px; }
+      .menu-toggle { display: inline-block; }
+      .stats { grid-template-columns: 1fr; }
+      .topbar { align-items: flex-start; }
+      h1 { font-size: 25px; }
+    }
+  </style>
+</head>
+
+<body>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">WEALTH<span>THESHAPER</span></div>
+
+    <div class="nav-label">MAIN MENU</div>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="bookings.html">Bookings</a>
+    <a href="services.html">Services</a>
+    <a href="projects.html">Projects</a>
+    <a href="faqs.html">FAQs</a>
+    <a href="testimonials.html" class="active">Testimonials</a>
+    <a href="website-content.html">Website Content</a>
+    <a href="settings.html">Settings</a>
+
+    <div class="nav-label">WEBSITE</div>
+    <a href="../index.html">← Back to Website</a>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <h1>Testimonials</h1>
+        <p class="muted">
+          Manage client feedback displayed on your storefront.
+        </p>
+      </div>
+      <button class="menu-toggle" id="menuToggle"
+              type="button" aria-label="Toggle navigation">☰</button>
+    </div>
+
+    <div class="notice" id="notice" role="status" aria-live="polite"></div>
+
+    <div class="stats">
+      <div class="stat">
+        <p>Total Testimonials</p>
+        <strong id="totalCount">0</strong>
+      </div>
+      <div class="stat">
+        <p>Published</p>
+        <strong id="publishedCount">0</strong>
+      </div>
+      <div class="stat">
+        <p>Drafts</p>
+        <strong id="draftCount">0</strong>
+      </div>
+    </div>
+
+    <div class="content-grid">
+      <section class="panel">
+        <h2 id="formTitle">Add a Testimonial</h2>
+
+        <form id="testimonialForm">
+          <input type="hidden" id="testimonialId">
+
+          <label for="clientName">Client name</label>
+          <input id="clientName" type="text" maxlength="200"
+                 placeholder="Client's name" required>
+
+          <label for="clientRole">Client role</label>
+          <input id="clientRole" type="text" maxlength="200"
+                 placeholder="e.g. Business Owner">
+
+          <label for="companyName">Company name</label>
+          <input id="companyName" type="text" maxlength="200"
+                 placeholder="Company name (optional)">
+
+          <label for="testimonialText">Review / testimonial</label>
+          <textarea id="testimonialText" maxlength="10000"
+                    placeholder="Write the client's feedback..." required></textarea>
+
+          <label for="imageUrl">Client image URL (optional)</label>
+          <input id="imageUrl" type="url" maxlength="2000"
+                 placeholder="https://example.com/image.jpg">
+
+          <label for="displayOrder">Display order</label>
+          <input id="displayOrder" type="number" min="0" step="1"
+                 value="0" required>
+
+          <label class="check-row">
+            <input id="isPublished" type="checkbox">
+            Publish on the storefront
+          </label>
+
+          <div class="form-actions">
+            <button class="primary" id="saveButton" type="submit">
+              Save Testimonial
+            </button>
+            <button class="secondary" id="cancelButton"
+                    type="button" hidden>Cancel Edit</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="panel">
+        <h2>Saved Testimonials</h2>
+        <p class="muted">
+          Only published testimonials appear on the public website.
+        </p>
+        <div id="testimonialList" class="testimonial-list">
+          <div class="empty">Loading testimonials...</div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function () {
+  "use strict";
+
+  const SUPABASE_URL =
+    "https://leneltfdgtjkyziqulol.supabase.co";
+
+  const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_vEZoz6jKtXzMhlxVH27O9A_kuibGnl2";
+
+  const supabase = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+  const $ = id => document.getElementById(id);
+
+  const form = $("testimonialForm");
+  const list = $("testimonialList");
+  const notice = $("notice");
+  const saveButton = $("saveButton");
+
+  let testimonials = [];
+  let isAdmin = false;
+
+  function showNotice(message, isError = false) {
+    notice.textContent = message;
+    notice.style.display = "block";
+    notice.style.borderColor = isError
+      ? "rgba(227,38,54,.6)"
+      : "rgba(80,200,120,.45)";
+    notice.style.color = isError ? "#ff9aa3" : "#a5efbd";
+  }
+
+  async function verifyAdmin() {
+    const { data: sessionData, error: sessionError } =
+      await supabase.auth.getSession();
+
+    if (sessionError || !sessionData.session) {
+      window.location.href = "login.html";
+      return false;
+    }
+
+    const { data, error } = await supabase.rpc(
+      "is_wealththeshaper_admin"
+    );
+
+    if (error || data !== true) {
+      document.body.innerHTML = `
+        <main style="background:#080808;color:white;padding:40px;
+                     font-family:Arial,sans-serif;min-height:100vh">
+          <h2>Access denied</h2>
+          <p>This page is available to authorized administrators only.</p>
+          <a href="login.html" style="color:#e32636">Return to login</a>
+        </main>`;
+      return false;
+    }
+
+    isAdmin = true;
+    return true;
+  }
+
+  function updateStats() {
+    $("totalCount").textContent = testimonials.length;
+    $("publishedCount").textContent =
+      testimonials.filter(item => item.is_published).length;
+    $("draftCount").textContent =
+      testimonials.filter(item => !item.is_published).length;
+  }
+
+  function makeButton(label, className, handler) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = className;
+    button.textContent = label;
+    button.addEventListener("click", handler);
+    return button;
+  }
+
+  function renderTestimonials() {
+    updateStats();
+    list.replaceChildren();
+
+    if (!testimonials.length) {
+      const empty = document.createElement("div");
+      empty.className = "empty";
+      empty.textContent =
+        "No testimonials yet. Add your first testimonial using the form.";
+      list.appendChild(empty);
+      return;
+    }
+
+    testimonials.forEach((item, index) => {
+      const card = document.createElement("article");
+      card.className = "testimonial-card";
+
+      if (item.image_url) {
+        const image = document.createElement("img");
+        image.className = "testimonial-image";
+        image.src = item.image_url;
+        image.alt = "Photo of " + item.client_name;
+        image.loading = "lazy";
+        image.referrerPolicy = "no-referrer";
+        image.onerror = () => image.remove();
+        card.appendChild(image);
+      }
+
+      const name = document.createElement("h3");
+      name.textContent = item.client_name;
+
+      const roleParts = [item.client_role, item.company_name].filter(Boolean);
+      const role = document.createElement("div");
+      role.className = "testimonial-role";
+      role.textContent = roleParts.join(" · ") || "Client";
+
+      const review = document.createElement("p");
+      review.className = "testimonial-text";
+      review.textContent = item.testimonial;
+
+      const meta = document.createElement("div");
+      meta.className = "meta";
+
+      const order = document.createElement("span");
+      order.className = "pill";
+      order.textContent = "Order: " + item.display_order;
+
+      const status = document.createElement("span");
+      status.className = "pill " +
+        (item.is_published ? "published" : "draft");
+      status.textContent = item.is_published ? "Published" : "Draft";
+
+      meta.append(order, status);
+
+      const actions = document.createElement("div");
+      actions.className = "item-actions";
+
+      actions.appendChild(makeButton("Edit", "secondary", () => {
+        $("testimonialId").value = item.id;
+        $("clientName").value = item.client_name || "";
+        $("clientRole").value = item.client_role || "";
+        $("companyName").value = item.company_name || "";
+        $("testimonialText").value = item.testimonial || "";
+        $("imageUrl").value = item.image_url || "";
+        $("displayOrder").value = item.display_order ?? 0;
+        $("isPublished").checked = Boolean(item.is_published);
+
+        $("formTitle").textContent = "Edit Testimonial";
+        saveButton.textContent = "Update Testimonial";
+        $("cancelButton").hidden = false;
+
+        $("clientName").focus();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }));
+
+      actions.appendChild(makeButton(
+        item.is_published ? "Unpublish" : "Publish",
+        "secondary",
+        () => togglePublished(item)
+      ));
+
+      if (index > 0) {
+        actions.appendChild(makeButton("Move Up", "secondary", () =>
+          changeOrder(item, testimonials[index - 1])
+        ));
+      }
+
+      if (index < testimonials.length - 1) {
+        actions.appendChild(makeButton("Move Down", "secondary", () =>
+          changeOrder(item, testimonials[index + 1])
+        ));
+      }
+
+      actions.appendChild(makeButton("Delete", "danger", () =>
+        deleteTestimonial(item)
+      ));
+
+      card.append(name, role, review, meta, actions);
+      list.appendChild(card);
+    });
+  }
+
+  async function loadTestimonials() {
+    list.textContent = "Loading testimonials...";
+
+    const { data, error } = await supabase
+      .from("testimonials")
+      .select(`
+        id,
+        client_name,
+        client_role,
+        company_name,
+        testimonial,
+        image_url,
+        display_order,
+        is_published,
+        created_at,
+        updated_at
+      `)
+      .order("display_order", { ascending: true });
+
+    if (error) {
+      console.error("Testimonials load failed:", error);
+      list.textContent =
+        "Could not load testimonials. Check the error message below.";
+      showNotice("Failed to load testimonials: " + error.message, true);
+      return;
+    }
+
+    testimonials = data || [];
+    renderTestimonials();
+  }
+
+  function resetForm() {
+    form.reset();
+    $("testimonialId").value = "";
+    $("displayOrder").value = testimonials.length
+      ? Math.max(...testimonials.map(item =>
+          Number(item.display_order) || 0)) + 1
+      : 0;
+
+    $("isPublished").checked = false;
+    $("formTitle").textContent = "Add a Testimonial";
+    saveButton.textContent = "Save Testimonial";
+    $("cancelButton").hidden = true;
+  }
+
+  form.addEventListener("submit", async event => {
+    event.preventDefault();
+    if (!isAdmin) return;
+
+    const id = $("testimonialId").value;
+    const clientName = $("clientName").value.trim();
+    const testimonialText = $("testimonialText").value.trim();
+    const displayOrder = Number($("displayOrder").value);
+    const imageUrl = $("imageUrl").value.trim();
+
+    if (!clientName || !testimonialText ||
+        !Number.isInteger(displayOrder) || displayOrder < 0) {
+      showNotice(
+        "Enter the client name, review and a valid display order.",
+        true
+      );
+      return;
+    }
+
+    if (imageUrl) {
+      try {
+        const parsedUrl = new URL(imageUrl);
+        if (parsedUrl.protocol !== "https:") {
+          showNotice("Image URLs must use HTTPS.", true);
+          return;
+        }
+      } catch {
+        showNotice("Enter a valid image URL or leave it blank.", true);
+        return;
+      }
+    }
+
+    const payload = {
+      client_name: clientName,
+      client_role: $("clientRole").value.trim() || null,
+      company_name: $("companyName").value.trim() || null,
+      testimonial: testimonialText,
+      image_url: imageUrl || null,
+      display_order: displayOrder,
+      is_published: $("isPublished").checked,
+      updated_at: new Date().toISOString()
+    };
+
+    saveButton.disabled = true;
+    saveButton.textContent = id ? "Updating..." : "Saving...";
+
+    try {
+      const result = id
+        ? await supabase
+            .from("testimonials")
+            .update(payload)
+            .eq("id", id)
+        : await supabase
+            .from("testimonials")
+            .insert(payload);
+
+      if (result.error) throw result.error;
+
+      showNotice(
+        id ? "Testimonial updated successfully."
+           : "Testimonial added successfully."
+      );
+
+      await loadTestimonials();
+      resetForm();
+
+    } catch (error) {
+      console.error("Testimonial save failed:", error);
+      showNotice("Could not save testimonial: " + error.message, true);
+    } finally {
+      saveButton.disabled = false;
+      saveButton.textContent =
+        $("testimonialId").value
+          ? "Update Testimonial"
+          : "Save Testimonial";
+    }
+  });
+
+  async function togglePublished(item) {
+    const { error } = await supabase
+      .from("testimonials")
+      .update({
+        is_published: !item.is_published,
+        updated_at: new Date().toISOString()
+      })
+      .eq("id", item.id);
+
+    if (error) {
+      showNotice("Could not change publication status: " + error.message, true);
+      return;
+    }
+
+    showNotice(item.is_published
+      ? "Testimonial unpublished."
+      : "Testimonial published.");
+
+    await loadTestimonials();
+  }
+
+  async function deleteTestimonial(item) {
+    if (!confirm(
+      "Permanently delete the testimonial from " +
+      item.client_name + "?"
+    )) return;
+
+    const { error } = await supabase
+      .from("testimonials")
+      .delete()
+      .eq("id", item.id);
+
+    if (error) {
+      showNotice("Could not delete testimonial: " + error.message, true);
+      return;
+    }
+
+    if ($("testimonialId").value === item.id) resetForm();
+
+    showNotice("Testimonial deleted.");
+    await loadTestimonials();
+  }
+
+  async function changeOrder(item, otherItem) {
+    const originalOrder = Number(item.display_order) || 0;
+    const otherOrder = Number(otherItem.display_order) || 0;
+
+    const first = await supabase
+      .from("testimonials")
+      .update({
+        display_order: otherOrder,
+        updated_at: new Date().toISOString()
+      })
+      .eq("id", item.id);
+
+    if (first.error) {
+      showNotice("Could not reorder testimonial: " + first.error.message, true);
+      return;
+    }
+
+    const second = await supabase
+      .from("testimonials")
+      .update({
+        display_order: originalOrder,
+        updated_at: new Date().toISOString()
+      })
+      .eq("id", otherItem.id);
+
+    if (second.error) {
+      showNotice(
+        "One order change saved, but the other failed: " +
+        second.error.message,
+        true
+      );
+      await loadTestimonials();
+      return;
+    }
+
+    await loadTestimonials();
+    showNotice("Testimonial order updated.");
+  }
+
+  $("cancelButton").addEventListener("click", resetForm);
+
+  $("menuToggle").addEventListener("click", () => {
+    $("sidebar").classList.toggle("open");
+  });
+
+  async function init() {
+    if (!await verifyAdmin()) return;
+    resetForm();
+    await loadTestimonials();
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>
