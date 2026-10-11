@@ -434,7 +434,7 @@ function getPostLoginDestination() {
           if (error) throw error;
 
           if (data.session) {
-            window.location.replace("dashboard.html");
+            window.location.replace(getPostLoginDestination());
             return;
           }
 
@@ -451,7 +451,7 @@ function getPostLoginDestination() {
 
           if (error) throw error;
 
-          window.location.replace("dashboard.html");
+          window.location.replace(getPostLoginDestination());
           return;
         }
 
@@ -503,7 +503,7 @@ function getPostLoginDestination() {
       }
 
       if (data.session) {
-        window.location.replace("dashboard.html");
+        window.location.replace(getPostLoginDestination());
       }
     }
 
