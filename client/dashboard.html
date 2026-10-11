@@ -620,6 +620,104 @@
       <button class="button" id="logoutButton" type="button">Sign Out</button>
     </section>
 
+    
+<!-- BOOKING REQUEST MODAL -->
+<div class="booking-modal" id="bookingModal" hidden>
+  <div
+    class="booking-modal-panel"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="bookingModalTitle"
+  >
+    <button
+      type="button"
+      class="booking-modal-close"
+      id="closeBookingModal"
+      aria-label="Close booking form"
+    >×</button>
+
+    <span class="eyebrow">LET'S WORK TOGETHER</span>
+    <h2 id="bookingModalTitle">Book a Service</h2>
+    <p class="muted">
+      Tell us about your business and what you would like to achieve.
+      Your request will be reviewed by our team.
+    </p>
+
+    <form id="bookingForm">
+      <div class="booking-field">
+        <label for="bookingService">Selected service</label>
+        <select id="bookingService" required>
+          <option value="">Loading services...</option>
+        </select>
+      </div>
+
+      <div class="booking-field">
+        <label for="bookingName">Full name</label>
+        <input id="bookingName" type="text" maxlength="120" required>
+      </div>
+
+      <div class="booking-field">
+        <label for="bookingEmail">Email address</label>
+        <input id="bookingEmail" type="email" maxlength="254" required>
+      </div>
+
+      <div class="booking-field">
+        <label for="bookingBusiness">Business name (optional)</label>
+        <input
+          id="bookingBusiness"
+          type="text"
+          maxlength="200"
+          placeholder="Your business name"
+        >
+      </div>
+
+      <div class="booking-field">
+        <label for="bookingMessage">Tell us about your goals</label>
+        <textarea
+          id="bookingMessage"
+          rows="4"
+          maxlength="3000"
+          placeholder="What challenge would you like help with?"
+        ></textarea>
+      </div>
+
+      <p id="bookingFormMessage" role="status" aria-live="polite"></p>
+
+      <button class="button primary" id="submitBooking" type="submit">
+        Submit Booking Request →
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- BOOKING SUCCESS MODAL -->
+<div class="booking-modal" id="bookingSuccessModal" hidden>
+  <div
+    class="booking-modal-panel booking-success-panel"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="bookingSuccessTitle"
+  >
+    <div class="success-icon" aria-hidden="true">✓</div>
+    <h2 id="bookingSuccessTitle">Request Submitted!</h2>
+    <p>
+      Your booking request has been submitted successfully. Please wait
+      patiently while our team reviews it and decides whether to accept
+      or reject your request.
+    </p>
+    <p>
+      You can check for updates in the <strong>My Bookings</strong>
+      section of your client dashboard.
+    </p>
+    <button
+      type="button"
+      class="button primary"
+      id="bookingSuccessDone"
+    >View My Bookings</button>
+  </div>
+</div>
+
+
     <div class="footer">© <span id="currentYear"></span> WealthTheShaper</div>
   </main>
 </div>
