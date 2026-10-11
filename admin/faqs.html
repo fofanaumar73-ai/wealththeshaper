@@ -1,0 +1,715 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQs | WealthTheShaper Admin</title>
+
+  <style>
+    :root {
+      --red: #e32636;
+      --bg: #080808;
+      --panel: #151515;
+      --text: #ffffff;
+      --muted: #b6b6bd;
+      --border: rgba(255,255,255,.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, sans-serif;
+    }
+
+    .layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 245px;
+      flex-shrink: 0;
+      padding: 25px 16px;
+      background: #101010;
+      border-right: 1px solid var(--border);
+    }
+
+    .brand {
+      font-size: 19px;
+      font-weight: 800;
+      margin: 0 0 30px;
+    }
+
+    .brand span { color: var(--red); }
+
+    .nav-label {
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 2px;
+      margin: 24px 10px 12px;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 12px;
+      margin: 5px 0;
+      border-radius: 9px;
+      color: #d0d0d0;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .sidebar a:hover,
+    .sidebar a.active {
+      color: #fff;
+      background: rgba(227,38,54,.15);
+    }
+
+    .sidebar a.active {
+      border-left: 3px solid var(--red);
+    }
+
+    .main {
+      flex: 1;
+      min-width: 0;
+      padding: 32px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    h1 { margin: 0 0 8px; font-size: 29px; }
+
+    .muted { color: var(--muted); line-height: 1.6; }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat, .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px;
+    }
+
+    .stat p { margin: 0 0 12px; color: var(--muted); }
+
+    .stat strong { font-size: 27px; }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, .8fr);
+      gap: 20px;
+      align-items: start;
+    }
+
+    .panel h2 { margin: 0 0 18px; font-size: 19px; }
+
+    label {
+      display: block;
+      font-size: 13px;
+      color: #dedee3;
+      margin-bottom: 8px;
+    }
+
+    input[type="text"],
+    textarea,
+    input[type="number"] {
+      width: 100%;
+      background: #0b0b0b;
+      color: white;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 12px;
+      font: inherit;
+      margin-bottom: 17px;
+    }
+
+    textarea { min-height: 125px; resize: vertical; }
+
+    input:focus, textarea:focus {
+      outline: 1px solid var(--red);
+      border-color: var(--red);
+    }
+
+    .check-row {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin: 0 0 18px;
+      color: #ddd;
+      font-size: 13px;
+    }
+
+    .check-row input { accent-color: var(--red); }
+
+    button {
+      border: 0;
+      border-radius: 8px;
+      padding: 11px 15px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .primary {
+      background: var(--red);
+      color: #fff;
+    }
+
+    .secondary {
+      background: #292929;
+      color: #fff;
+      border: 1px solid var(--border);
+    }
+
+    .danger {
+      background: rgba(227,38,54,.12);
+      color: #ff7a85;
+      border: 1px solid rgba(227,38,54,.3);
+    }
+
+    button:disabled { opacity: .55; cursor: wait; }
+
+    .form-actions {
+      display: flex;
+      gap: 9px;
+      flex-wrap: wrap;
+    }
+
+    .notice {
+      display: none;
+      padding: 13px 15px;
+      margin-bottom: 20px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      line-height: 1.5;
+    }
+
+    .faq-list { display: grid; gap: 12px; }
+
+    .faq-item {
+      background: #101010;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      padding: 16px;
+    }
+
+    .faq-item h3 {
+      margin: 0 0 10px;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .faq-answer {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .faq-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-top: 13px;
+    }
+
+    .pill {
+      padding: 5px 9px;
+      border-radius: 20px;
+      background: #292929;
+      color: #ddd;
+      font-size: 11px;
+    }
+
+    .pill.published {
+      color: #8de0ad;
+      background: rgba(40,180,90,.12);
+    }
+
+    .pill.hidden {
+      color: #ffbd80;
+      background: rgba(255,160,50,.12);
+    }
+
+    .item-actions {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .item-actions button {
+      padding: 8px 11px;
+      font-size: 12px;
+    }
+
+    .empty {
+      color: var(--muted);
+      text-align: center;
+      padding: 30px 12px;
+      border: 1px dashed var(--border);
+      border-radius: 10px;
+    }
+
+    .menu-toggle {
+      display: none;
+      background: #222;
+      color: #fff;
+      font-size: 20px;
+    }
+
+    @media (max-width: 1000px) {
+      .content-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 700px) {
+      .sidebar {
+        display: none;
+        position: fixed;
+        z-index: 10;
+        inset: 0 auto 0 0;
+        overflow-y: auto;
+        width: 260px;
+      }
+
+      .sidebar.open { display: block; }
+      .main { padding: 20px 14px; }
+      .menu-toggle { display: inline-block; }
+      .stats { grid-template-columns: 1fr; }
+      .topbar { align-items: flex-start; }
+      h1 { font-size: 25px; }
+    }
+  </style>
+</head>
+
+<body>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">WEALTH<span>THESHAPER</span></div>
+
+    <div class="nav-label">MAIN MENU</div>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="bookings.html">Bookings</a>
+    <a href="services.html">Services</a>
+    <a href="projects.html">Projects</a>
+    <a href="faqs.html" class="active">FAQs</a>
+    <a href="testimonials.html">Testimonials</a>
+    <a href="website-content.html">Website Content</a>
+    <a href="settings.html">Settings</a>
+
+    <div class="nav-label">WEBSITE</div>
+    <a href="../index.html">← Back to Website</a>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <h1>Frequently Asked Questions</h1>
+        <p class="muted">Create and manage the questions shown on your storefront.</p>
+      </div>
+      <button class="menu-toggle" id="menuToggle" type="button"
+              aria-label="Toggle navigation">☰</button>
+    </div>
+
+    <div class="notice" id="notice" role="status" aria-live="polite"></div>
+
+    <div class="stats">
+      <div class="stat">
+        <p>Total FAQs</p>
+        <strong id="totalCount">0</strong>
+      </div>
+      <div class="stat">
+        <p>Published</p>
+        <strong id="publishedCount">0</strong>
+      </div>
+      <div class="stat">
+        <p>Drafts</p>
+        <strong id="draftCount">0</strong>
+      </div>
+    </div>
+
+    <div class="content-grid">
+      <section class="panel">
+        <h2 id="formTitle">Add a New FAQ</h2>
+
+        <form id="faqForm">
+          <input type="hidden" id="faqId">
+
+          <label for="question">Question</label>
+          <input id="question" type="text" maxlength="500"
+                 placeholder="e.g. What services do you offer?" required>
+
+          <label for="answer">Answer</label>
+          <textarea id="answer" maxlength="10000"
+                    placeholder="Write a clear answer..." required></textarea>
+
+          <label for="displayOrder">Display order</label>
+          <input id="displayOrder" type="number" min="0" step="1" value="0" required>
+
+          <label class="check-row">
+            <input id="isPublished" type="checkbox" checked>
+            Publish this FAQ on the storefront
+          </label>
+
+          <div class="form-actions">
+            <button class="primary" id="saveButton" type="submit">Save FAQ</button>
+            <button class="secondary" id="cancelButton" type="button"
+                    hidden>Cancel Edit</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="panel">
+        <h2>Saved FAQs</h2>
+        <p class="muted">Published FAQs appear in the storefront slider.</p>
+        <div id="faqList" class="faq-list">
+          <div class="empty">Loading FAQs...</div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function () {
+  "use strict";
+
+  const SUPABASE_URL = "https://leneltfdgtjkyziqulol.supabase.co";
+  const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_vEZoz6jKtXzMhlxVH27O9A_kuibGnl2";
+
+  const supabase = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+  const $ = id => document.getElementById(id);
+
+  const form = $("faqForm");
+  const faqList = $("faqList");
+  const notice = $("notice");
+  const saveButton = $("saveButton");
+
+  let allFAQs = [];
+  let isAdmin = false;
+
+  function showNotice(message, isError = false) {
+    notice.textContent = message;
+    notice.style.display = "block";
+    notice.style.borderColor = isError
+      ? "rgba(227,38,54,.6)"
+      : "rgba(80,200,120,.45)";
+    notice.style.color = isError ? "#ff9aa3" : "#a5efbd";
+  }
+
+  async function verifyAdmin() {
+    const { data: sessionData, error: sessionError } =
+      await supabase.auth.getSession();
+
+    if (sessionError || !sessionData.session) {
+      window.location.href = "login.html";
+      return false;
+    }
+
+    const { data, error } = await supabase.rpc(
+      "is_wealththeshaper_admin"
+    );
+
+    if (error || data !== true) {
+      document.body.innerHTML = `
+        <main style="background:#080808;color:white;padding:40px;
+                     font-family:Arial,sans-serif;min-height:100vh">
+          <h2>Access denied</h2>
+          <p>This page is available to authorized administrators only.</p>
+          <a href="login.html" style="color:#e32636">Return to login</a>
+        </main>`;
+      return false;
+    }
+
+    isAdmin = true;
+    return true;
+  }
+
+  function updateStats() {
+    $("totalCount").textContent = allFAQs.length;
+    $("publishedCount").textContent =
+      allFAQs.filter(faq => faq.is_published).length;
+    $("draftCount").textContent =
+      allFAQs.filter(faq => !faq.is_published).length;
+  }
+
+  function makeButton(label, className, handler) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = className;
+    button.textContent = label;
+    button.addEventListener("click", handler);
+    return button;
+  }
+
+  function renderFAQs() {
+    updateStats();
+    faqList.replaceChildren();
+
+    if (allFAQs.length === 0) {
+      const empty = document.createElement("div");
+      empty.className = "empty";
+      empty.textContent = "No FAQs yet. Add your first question using the form.";
+      faqList.appendChild(empty);
+      return;
+    }
+
+    allFAQs.forEach((faq, index) => {
+      const card = document.createElement("article");
+      card.className = "faq-item";
+
+      const question = document.createElement("h3");
+      question.textContent = faq.question;
+
+      const answer = document.createElement("div");
+      answer.className = "faq-answer";
+      answer.textContent = faq.answer;
+
+      const meta = document.createElement("div");
+      meta.className = "faq-meta";
+
+      const order = document.createElement("span");
+      order.className = "pill";
+      order.textContent = "Order: " + faq.display_order;
+
+      const status = document.createElement("span");
+      status.className = "pill " +
+        (faq.is_published ? "published" : "hidden");
+      status.textContent = faq.is_published ? "Published" : "Draft";
+
+      meta.append(order, status);
+
+      const actions = document.createElement("div");
+      actions.className = "item-actions";
+
+      actions.appendChild(makeButton("Edit", "secondary", () => {
+        $("faqId").value = faq.id;
+        $("question").value = faq.question || "";
+        $("answer").value = faq.answer || "";
+        $("displayOrder").value = faq.display_order ?? 0;
+        $("isPublished").checked = Boolean(faq.is_published);
+        $("formTitle").textContent = "Edit FAQ";
+        saveButton.textContent = "Update FAQ";
+        $("cancelButton").hidden = false;
+        $("question").focus();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }));
+
+      actions.appendChild(makeButton(
+        faq.is_published ? "Unpublish" : "Publish",
+        "secondary",
+        () => togglePublished(faq)
+      ));
+
+      if (index > 0) {
+        actions.appendChild(makeButton("Move Up", "secondary", () =>
+          changeOrder(faq, allFAQs[index - 1], -1)
+        ));
+      }
+
+      if (index < allFAQs.length - 1) {
+        actions.appendChild(makeButton("Move Down", "secondary", () =>
+          changeOrder(faq, allFAQs[index + 1], 1)
+        ));
+      }
+
+      actions.appendChild(makeButton("Delete", "danger", () =>
+        deleteFAQ(faq)
+      ));
+
+      card.append(question, answer, meta, actions);
+      faqList.appendChild(card);
+    });
+  }
+
+  async function loadFAQs() {
+    faqList.textContent = "Loading FAQs...";
+
+    const { data, error } = await supabase
+      .from("faqs")
+      .select("id, question, answer, display_order, is_published, created_at, updated_at")
+      .order("display_order", { ascending: true });
+
+    if (error) {
+      console.error("FAQ load failed:", error);
+      faqList.textContent =
+        "Could not load FAQs. Check the browser console and Supabase permissions.";
+      showNotice("Failed to load FAQs: " + error.message, true);
+      return;
+    }
+
+    allFAQs = data || [];
+    renderFAQs();
+  }
+
+  function resetForm() {
+    form.reset();
+    $("faqId").value = "";
+    $("displayOrder").value = allFAQs.length
+      ? Math.max(...allFAQs.map(faq => Number(faq.display_order) || 0)) + 1
+      : 0;
+    $("isPublished").checked = true;
+    $("formTitle").textContent = "Add a New FAQ";
+    saveButton.textContent = "Save FAQ";
+    $("cancelButton").hidden = true;
+  }
+
+  form.addEventListener("submit", async event => {
+    event.preventDefault();
+    if (!isAdmin) return;
+
+    const id = $("faqId").value;
+    const question = $("question").value.trim();
+    const answer = $("answer").value.trim();
+    const displayOrder = Number($("displayOrder").value);
+
+    if (!question || !answer || !Number.isInteger(displayOrder) ||
+        displayOrder < 0) {
+      showNotice("Enter a question, answer and valid display order.", true);
+      return;
+    }
+
+    const payload = {
+      question,
+      answer,
+      display_order: displayOrder,
+      is_published: $("isPublished").checked,
+      updated_at: new Date().toISOString()
+    };
+
+    saveButton.disabled = true;
+    saveButton.textContent = id ? "Updating..." : "Saving...";
+
+    try {
+      const result = id
+        ? await supabase.from("faqs").update(payload).eq("id", id)
+        : await supabase.from("faqs").insert(payload);
+
+      if (result.error) throw result.error;
+
+      showNotice(id ? "FAQ updated successfully." : "FAQ added successfully.");
+      await loadFAQs();
+      resetForm();
+    } catch (error) {
+      console.error("FAQ save failed:", error);
+      showNotice("Could not save FAQ: " + error.message, true);
+    } finally {
+      saveButton.disabled = false;
+      saveButton.textContent = $("faqId").value ? "Update FAQ" : "Save FAQ";
+    }
+  });
+
+  async function togglePublished(faq) {
+    const { error } = await supabase
+      .from("faqs")
+      .update({
+        is_published: !faq.is_published,
+        updated_at: new Date().toISOString()
+      })
+      .eq("id", faq.id);
+
+    if (error) {
+      showNotice("Could not change publication status: " + error.message, true);
+      return;
+    }
+
+    showNotice(faq.is_published ? "FAQ unpublished." : "FAQ published.");
+    await loadFAQs();
+  }
+
+  async function deleteFAQ(faq) {
+    if (!confirm("Delete this FAQ permanently?")) return;
+
+    const { error } = await supabase
+      .from("faqs")
+      .delete()
+      .eq("id", faq.id);
+
+    if (error) {
+      showNotice("Could not delete FAQ: " + error.message, true);
+      return;
+    }
+
+    showNotice("FAQ deleted.");
+    if ($("faqId").value === faq.id) resetForm();
+    await loadFAQs();
+  }
+
+  async function changeOrder(faq, otherFAQ, direction) {
+    const firstOrder = Number(faq.display_order) || 0;
+    const secondOrder = Number(otherFAQ.display_order) || 0;
+
+    const firstUpdate = await supabase
+      .from("faqs")
+      .update({
+        display_order: secondOrder,
+        updated_at: new Date().toISOString()
+      })
+      .eq("id", faq.id);
+
+    if (firstUpdate.error) {
+      showNotice("Could not reorder FAQ: " + firstUpdate.error.message, true);
+      return;
+    }
+
+    const secondUpdate = await supabase
+      .from("faqs")
+      .update({
+        display_order: firstOrder,
+        updated_at: new Date().toISOString()
+      })
+      .eq("id", otherFAQ.id);
+
+    if (secondUpdate.error) {
+      showNotice(
+        "First order change saved, but the second failed: " +
+        secondUpdate.error.message,
+        true
+      );
+      await loadFAQs();
+      return;
+    }
+
+    await loadFAQs();
+    showNotice("FAQ order updated.");
+  }
+
+  $("cancelButton").addEventListener("click", resetForm);
+
+  $("menuToggle").addEventListener("click", () => {
+    $("sidebar").classList.toggle("open");
+  });
+
+  async function init() {
+    if (!await verifyAdmin()) return;
+    resetForm();
+    await loadFAQs();
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>
