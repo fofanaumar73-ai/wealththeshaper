@@ -431,6 +431,58 @@
       .welcome { padding: 21px; }
       .booking-top { flex-direction: column; }
     }
+
+    
+/* Fixed notification bell and hamburger */
+.client-top-actions {
+  position: fixed;
+  top: 12px;
+  right: 14px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.notification-bell,
+.menu-toggle {
+  position: static;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: 12px;
+}
+
+.notification-bell {
+  background: #242424;
+  color: #fff;
+  border: 1px solid var(--border);
+  cursor: pointer;
+}
+
+.notification-panel {
+  position: absolute;
+  top: 54px;
+  right: 0;
+  z-index: 1001;
+}
+
+@media (max-width: 760px) {
+  .client-top-actions {
+    top: 10px;
+    right: 10px;
+    gap: 8px;
+  }
+
+  .main {
+    padding-top: 70px;
+  }
+}
+
   </style>
 </head>
 
@@ -465,16 +517,33 @@
       
 <div class="client-top-actions">
   <div class="notification-wrap">
-    <button
-      class="notification-bell"
-      id="notificationBell"
-      type="button"
-      aria-label="Notifications"
-      aria-expanded="false"
-    >
-      ♡
-      <span id="notificationCount" class="notification-count" hidden>0</span>
-    </button>
+    
+<button
+  class="notification-bell"
+  id="notificationBell"
+  type="button"
+  aria-label="Notifications"
+  aria-expanded="false"
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="23"
+    height="23"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
+    <path d="M10 21h4"/>
+  </svg>
+
+  <span id="notificationCount" class="notification-count" hidden>0</span>
+</button>
+
 
     <section
       id="notificationPanel"
