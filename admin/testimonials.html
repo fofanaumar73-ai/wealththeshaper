@@ -689,6 +689,7 @@ stars.setAttribute("aria-label", `${rating} out of 5 stars`);
       client_role: $("clientRole").value.trim() || null,
       company_name: $("companyName").value.trim() || null,
       testimonial: testimonialText,
+      rating: Number($("rating").value),
       image_url: imageUrl || null,
       display_order: displayOrder,
       is_published: $("isPublished").checked,
