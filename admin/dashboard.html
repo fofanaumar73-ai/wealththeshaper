@@ -349,6 +349,158 @@
   }
 }
 
+    
+/* Admin notification bell */
+.admin-top-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  position: relative;
+}
+
+.admin-notification-wrap {
+  position: relative;
+}
+
+.admin-notification-bell {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  color: #fff;
+  background: #151519;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.admin-notification-bell:hover {
+  border-color: var(--red);
+  background: rgba(227, 38, 54, .12);
+}
+
+.admin-notification-count {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 19px;
+  height: 19px;
+  padding: 2px 5px;
+  border-radius: 20px;
+  background: var(--red);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.admin-notification-count[hidden],
+.admin-notification-panel[hidden] {
+  display: none;
+}
+
+.admin-notification-panel {
+  position: absolute;
+  top: 56px;
+  right: 0;
+  z-index: 1100;
+  width: min(360px, calc(100vw - 32px));
+  max-height: 65vh;
+  overflow-y: auto;
+  background: #151519;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 18px 45px rgba(0,0,0,.5);
+  animation: adminNotificationEnter .2s ease;
+}
+
+.admin-notification-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.admin-notification-heading h2 {
+  font-size: 17px;
+  margin-bottom: 6px;
+}
+
+.admin-notification-heading p {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.admin-notification-heading button {
+  background: transparent;
+  border: 0;
+  color: #fff;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.admin-notification-item {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+}
+
+.admin-notification-item.unread {
+  border-left: 3px solid var(--red);
+  background: rgba(227,38,54,.09);
+}
+
+.admin-notification-item h3 {
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.admin-notification-item p {
+  font-size: 13px;
+  color: #d0d0d0;
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.admin-notification-item time {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.admin-notification-empty {
+  padding: 18px 16px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+@keyframes adminNotificationEnter {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 850px) {
+  .topbar {
+    padding-right: 0;
+  }
+
+  .admin-top-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-notification-panel {
+    animation: none;
+  }
+}
+
 
   </style>
 </head>
@@ -401,14 +553,57 @@
 
 
   <main class="main" id="dashboardMain">
-    <header class="topbar">
-      <div>
-        <h1>Dashboard Overview</h1>
-        <p>Welcome to your WealthTheShaper administration panel.</p>
-      </div>
+    
+<header class="topbar">
+  <div>
+    <h1>Dashboard Overview</h1>
+    <p>Welcome to your WealthTheShaper administration panel.</p>
+  </div>
 
-      <div class="admin-badge">ADMIN PORTAL</div>
-    </header>
+  <div class="admin-top-actions">
+    <div class="admin-notification-wrap">
+      <button
+        class="admin-notification-bell"
+        id="adminNotificationBell"
+        type="button"
+        aria-label="Admin notifications"
+        aria-expanded="false"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg"
+             width="23" height="23" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor"
+             stroke-width="1.8" stroke-linecap="round"
+             stroke-linejoin="round" aria-hidden="true">
+          <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
+          <path d="M10 21h4"/>
+        </svg>
+        <span id="adminNotificationCount"
+              class="admin-notification-count" hidden>0</span>
+      </button>
+
+      <section id="adminNotificationPanel"
+               class="admin-notification-panel" hidden
+               aria-label="Admin notifications">
+        <div class="admin-notification-heading">
+          <div>
+            <h2>Notifications</h2>
+            <p>New booking requests and updates</p>
+          </div>
+          <button id="closeAdminNotifications"
+                  type="button"
+                  aria-label="Close notifications">×</button>
+        </div>
+
+        <div id="adminNotificationList">
+          <p class="admin-notification-empty">Loading notifications...</p>
+        </div>
+      </section>
+    </div>
+
+    <div class="admin-badge">ADMIN PORTAL</div>
+  </div>
+</header>
+
 
     <div class="notice">
       <strong>Setup in progress</strong><br>
