@@ -2398,51 +2398,95 @@ function restartTestimonialTimer() {
   }
 }
 
+
 async function loadPublicTestimonials() {
   if (!testimonialContainer) return;
 
   testimonialContainer.textContent = "Loading testimonials...";
 
-  const { data, error } = await supabase
-    .from("testimonials")
-    .select(`
-      id,
-      client_name,
-      client_role,
-      company_name,
-      testimonial,
-      rating,
-      display_order,
-      is_published
-    `)
-    .eq("is_published", true)
-    .order("display_order", { ascending: true });
+  try {
+    // 1. Fetch testimonials published by the admin
+    const {
+      data: adminTestimonials,
+      error: adminError
+    } = await supabase
+      .from("testimonials")
+      .select(`
+        id,
+        client_name,
+        client_role,
+        company_name,
+        testimonial,
+        rating,
+        display_order,
+        is_published
+      `)
+      .eq("is_published", true)
+      .order("display_order", { ascending: true });
 
-  if (error) {
-    console.error("Could not load testimonials:", error);
+    if (adminError) throw adminError;
+
+    // 2. Fetch client reviews approved by the admin
+    const {
+      data: clientReviews,
+      error: reviewsError
+    } = await supabase
+      .from("reviews")
+      .select(`
+        id,
+        rating,
+        review_text,
+        created_at,
+        bookings (
+          client_name,
+          business_name
+        )
+      `)
+      .eq("status", "approved")
+      .order("created_at", { ascending: false });
+
+    if (reviewsError) throw reviewsError;
+
+    // 3. Convert both sources into the slider's existing format
+    const formattedAdminTestimonials = (adminTestimonials || []).map(item => ({
+      id: `admin-${item.id}`,
+      testimonial: item.testimonial,
+      rating: item.rating,
+      client_name: item.client_name || "Client",
+      client_role: item.client_role || "",
+      company_name: item.company_name || "",
+      source: "admin"
+    }));
+
+    const formattedClientReviews = (clientReviews || []).map(item => ({
+      id: `review-${item.id}`,
+      testimonial: item.review_text,
+      rating: item.rating,
+      client_name: item.bookings?.client_name || "Client",
+      client_role: "",
+      company_name: item.bookings?.business_name || "",
+      source: "client"
+    }));
+
+    // 4. Combine both lists into one slider
+    publicTestimonials = [
+      ...formattedAdminTestimonials,
+      ...formattedClientReviews
+    ];
+
+    testimonialIndex = 0;
+
+    renderPublicTestimonial();
+    restartTestimonialTimer();
+
+  } catch (error) {
+    console.error("Could not load testimonials and reviews:", error);
 
     testimonialContainer.textContent =
       "Testimonials are temporarily unavailable.";
-
-    return;
   }
-
-  publicTestimonials = data || [];
-  testimonialIndex = 0;
-
-  renderPublicTestimonial();
-  restartTestimonialTimer();
 }
 
-testimonialPrev?.addEventListener("click", () => {
-  changeTestimonial(-1);
-  restartTestimonialTimer();
-});
-
-testimonialNext?.addEventListener("click", () => {
-  changeTestimonial(1);
-  restartTestimonialTimer();
-});
 
 loadPublicTestimonials();
 
