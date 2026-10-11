@@ -567,6 +567,7 @@ stars.setAttribute("aria-label", `${rating} out of 5 stars`);
         $("clientRole").value = item.client_role || "";
         $("companyName").value = item.company_name || "";
         $("testimonialText").value = item.testimonial || "";
+        $("rating").value = String(item.rating || 5);
         $("imageUrl").value = item.image_url || "";
         $("displayOrder").value = item.display_order ?? 0;
         $("isPublished").checked = Boolean(item.is_published);
