@@ -464,7 +464,8 @@
 
       try {
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
-          redirectTo: window.location.origin + "/client/reset-password.html"
+          redirectTo:
+  "https://fofanaumar73-ai.github.io/wealththeshaper/client/reset-password.html"
         });
 
         if (error) throw error;
