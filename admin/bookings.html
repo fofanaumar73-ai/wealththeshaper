@@ -349,6 +349,45 @@
       <div id="bookingNotice" class="notice">
         Bookings will appear here once the database connection is added.
       </div>
+      
+<section class="panel" id="bookingDetailsPanel" style="display:none;">
+  <div class="topbar">
+    <div>
+      <h2 style="margin:0 0 6px;">Booking Details</h2>
+      <div class="muted">Review the request and manage internal notes.</div>
+    </div>
+    <button
+      class="secondary-button"
+      onclick="document.getElementById('bookingDetailsPanel').style.display='none'">
+      Close
+    </button>
+  </div>
+
+  <p><strong>Client:</strong> <span id="detailClient"></span></p>
+  <p><strong>Email:</strong> <span id="detailEmail"></span></p>
+  <p><strong>Business:</strong> <span id="detailBusiness"></span></p>
+  <p><strong>Service:</strong> <span id="detailService"></span></p>
+  <p><strong>Status:</strong> <span id="detailStatus"></span></p>
+
+  <div style="margin:18px 0;">
+    <strong>Client's Message</strong>
+    <p id="detailMessage" class="muted"></p>
+  </div>
+
+  <label for="adminNotes"><strong>Internal Admin Notes</strong></label>
+  <textarea
+    id="adminNotes"
+    rows="5"
+    placeholder="Add internal notes about this booking..."></textarea>
+
+  <button
+    class="primary-button"
+    id="saveNotesButton"
+    style="margin-top:12px;">
+    Save notes
+  </button>
+</section>
+
 
       <div class="table-wrap" style="margin-top:18px;">
         <table>
