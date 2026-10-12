@@ -2401,6 +2401,7 @@ const faqPrev = document.getElementById("faqPrev");
 const faqNext = document.getElementById("faqNext");
 const faqDots = document.getElementById("faqDots");
 
+
 function renderFAQ() {
   if (!faqContainer) return;
 
@@ -2418,15 +2419,17 @@ function renderFAQ() {
   const faq = faqItems[faqIndex];
 
   faqContainer.innerHTML = `
-  faqContainer.style.animation = "none";
-void faqContainer.offsetWidth;
-faqContainer.style.animation = "";
     <span class="wt-slide-label">
       QUESTION ${String(faqIndex + 1).padStart(2, "0")}
     </span>
     <h3></h3>
     <p></p>
   `;
+
+  // Restart the animation whenever the FAQ changes.
+  faqContainer.style.animation = "none";
+  void faqContainer.offsetWidth;
+  faqContainer.style.animation = "";
 
   faqContainer.querySelector("h3").textContent = faq.question;
   faqContainer.querySelector("p").textContent = faq.answer;
@@ -2451,6 +2454,7 @@ faqContainer.style.animation = "";
     });
   }
 }
+
 
 function changeFAQ(direction) {
   if (faqItems.length < 2) return;
