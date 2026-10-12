@@ -1,0 +1,538 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manage Projects | WealthTheShaper</title>
+
+<style>
+:root {
+  --red: #e32636;
+  --bg: #080808;
+  --panel: #151515;
+  --text: #fff;
+  --muted: #b6b6bd;
+  --border: rgba(255,255,255,.12);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, sans-serif;
+}
+
+main { max-width: 1000px; margin: auto; padding: 30px 18px; }
+
+h1, h2 { margin-top: 0; }
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  padding: 24px;
+  margin-bottom: 22px;
+}
+
+.muted { color: var(--muted); line-height: 1.6; }
+
+label {
+  display: block;
+  margin: 18px 0 7px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+input:not([type="checkbox"]):not([type="file"]),
+textarea, select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: #0b0b0b;
+  color: white;
+  font: inherit;
+}
+
+textarea { resize: vertical; }
+
+input[type="file"] {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  color: var(--muted);
+}
+
+button, .button {
+  border: 0;
+  border-radius: 25px;
+  padding: 12px 18px;
+  background: var(--red);
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+button:disabled { opacity: .6; cursor: wait; }
+
+.secondary {
+  background: #292929;
+  border: 1px solid var(--border);
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.preview-grid, .project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.preview-grid img, .project-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 9px;
+  background: #222;
+}
+
+.project-card {
+  border: 1px solid var(--border);
+  padding: 15px;
+  border-radius: 12px;
+  min-width: 0;
+}
+
+.project-card h3 { margin: 10px 0; overflow-wrap: anywhere; }
+
+.project-card p { overflow-wrap: anywhere; }
+
+.status { color: #ff6572; font-size: 13px; }
+
+#message { white-space: pre-wrap; }
+
+@media (max-width: 500px) {
+  .panel { padding: 17px; }
+}
+</style>
+</head>
+
+<body>
+<main>
+  <p><a class="button secondary" href="dashboard.html">← Admin Dashboard</a>
+  <a class="button secondary" href="../index.html">View Website</a></p>
+
+  <header>
+    <h1>Projects Management</h1>
+    <p class="muted">Add case studies, upload project images, and control which projects appear publicly.</p>
+  </header>
+
+  <section class="panel">
+    <h2 id="formHeading">Add a Project</h2>
+
+    <form id="projectForm">
+      <label for="title">Project title *</label>
+      <input id="title" maxlength="150" required>
+
+      <label for="slug">Project URL slug *</label>
+      <input id="slug" maxlength="150"
+        pattern="[a-z0-9]+(-[a-z0-9]+)*"
+        placeholder="brand-positioning-project" required>
+
+      <label for="category">Category</label>
+      <input id="category" maxlength="100"
+        placeholder="Business Growth Strategy">
+
+      <label for="shortDescription">Short description</label>
+      <textarea id="shortDescription" rows="3" maxlength="1000"></textarea>
+
+      <label for="challenge">The challenge</label>
+      <textarea id="challenge" rows="4" maxlength="5000"></textarea>
+
+      <label for="strategy">The strategy</label>
+      <textarea id="strategy" rows="5" maxlength="5000"></textarea>
+
+      <label for="outcome">Outcome or results</label>
+      <textarea id="outcome" rows="4" maxlength="5000"
+        placeholder="Use verified results only."></textarea>
+
+      <label for="projectUrl">External project link (optional)</label>
+      <input id="projectUrl" type="url" placeholder="https://example.com">
+
+      <label for="coverImage">Cover image (choose from your device)</label>
+      <input id="coverImage" type="file" accept="image/jpeg,image/png,image/webp">
+      <div id="coverPreview" class="preview-grid"></div>
+
+      <label for="galleryImages">Gallery images (select multiple)</label>
+      <input id="galleryImages" type="file"
+        accept="image/jpeg,image/png,image/webp" multiple>
+      <div id="galleryPreview" class="preview-grid"></div>
+
+      <label for="displayOrder">Display order</label>
+      <input id="displayOrder" type="number" min="0" max="10000" value="0" required>
+
+      <label>
+        <input id="published" type="checkbox">
+        Publish this project publicly
+      </label>
+
+      <div class="form-actions">
+        <button id="saveButton" type="submit">Save Project</button>
+        <button id="cancelButton" class="secondary" type="button">Clear Form</button>
+      </div>
+
+      <p id="message" class="muted" role="status"></p>
+    </form>
+  </section>
+
+  <section class="panel">
+    <h2>Existing Projects</h2>
+    <div id="projectsList" class="project-grid">
+      <p class="muted">Loading projects...</p>
+    </div>
+  </section>
+</main>
+
+<script type="module">
+import { createClient } from
+  "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+const supabase = createClient(
+  "https://leneltfdgtjkyziqulol.supabase.co",
+  "sb_publishable_vEZoz6jKtXzMhlxVH27O9A_kuibGnl2"
+);
+
+const $ = id => document.getElementById(id);
+const form = $("projectForm");
+let editingId = null;
+let existingCoverPath = null;
+let existingGalleryPaths = [];
+
+const bucket = "project-images";
+
+async function checkAdmin() {
+  const { data: { session }, error: sessionError } =
+    await supabase.auth.getSession();
+
+  if (sessionError || !session) {
+    location.replace("login.html");
+    return false;
+  }
+
+  const { data: isAdmin, error } =
+    await supabase.rpc("is_wealththeshaper_admin");
+
+  if (error || isAdmin !== true) {
+    await supabase.auth.signOut();
+    location.replace("login.html");
+    return false;
+  }
+
+  return true;
+}
+
+function previewFiles(input, container) {
+  container.replaceChildren();
+
+  [...input.files].forEach(file => {
+    if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)
+        || file.size > 5 * 1024 * 1024) {
+      $("message").textContent =
+        "Use JPG, PNG or WebP images, each no larger than 5 MB.";
+      input.value = "";
+      container.replaceChildren();
+      return;
+    }
+
+    const img = document.createElement("img");
+    img.alt = file.name;
+    img.src = URL.createObjectURL(file);
+    img.title = file.name;
+    container.appendChild(img);
+  });
+}
+
+$("coverImage").addEventListener("change", () =>
+  previewFiles($("coverImage"), $("coverPreview"))
+);
+
+$("galleryImages").addEventListener("change", () =>
+  previewFiles($("galleryImages"), $("galleryPreview"))
+);
+
+async function uploadImage(file, slug) {
+  const extension = file.type === "image/jpeg" ? "jpg"
+    : file.type === "image/png" ? "png" : "webp";
+
+  const path = `${slug}/${crypto.randomUUID()}.${extension}`;
+
+  const { error } = await supabase.storage
+    .from(bucket)
+    .upload(path, file, { contentType: file.type, upsert: false });
+
+  if (error) throw error;
+  return path;
+}
+
+async function getImageUrl(path) {
+  if (!path) return null;
+
+  const { data, error } = await supabase.storage
+    .from(bucket)
+    .createSignedUrl(path, 3600);
+
+  if (error) {
+    console.error("Could not create image URL:", error);
+    return null;
+  }
+
+  return data.signedUrl;
+}
+
+async function loadProjects() {
+  const { data, error } = await supabase
+    .from("projects")
+    .select("*")
+    .order("display_order", { ascending: true });
+
+  if (error) {
+    console.error(error);
+    $("projectsList").textContent = "Could not load projects.";
+    return;
+  }
+
+  $("projectsList").replaceChildren();
+
+  for (const project of data || []) {
+    const card = document.createElement("article");
+    card.className = "project-card";
+
+    const image = document.createElement("img");
+    image.alt = project.title;
+
+    // Support both newly uploaded storage paths and older full URLs.
+    image.src = project.cover_image_url?.startsWith("http")
+      ? project.cover_image_url
+      : await getImageUrl(project.cover_image_url);
+
+    const title = document.createElement("h3");
+    title.textContent = project.title;
+
+    const status = document.createElement("p");
+    status.className = "status";
+    status.textContent = project.is_published ? "Published" : "Draft";
+
+    const description = document.createElement("p");
+    description.className = "muted";
+    description.textContent = project.short_description || "";
+
+    const edit = document.createElement("button");
+    edit.type = "button";
+    edit.className = "secondary";
+    edit.textContent = "Edit";
+    edit.addEventListener("click", () => editProject(project));
+
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.style.marginTop = "8px";
+    remove.textContent = "Delete";
+    remove.addEventListener("click", () => deleteProject(project));
+
+    card.append(image, title, status, description, edit, remove);
+    $("projectsList").appendChild(card);
+  }
+
+  if (!data?.length) {
+    $("projectsList").textContent = "No projects have been added yet.";
+  }
+}
+
+function editProject(project) {
+  editingId = project.id;
+  existingCoverPath = project.cover_image_url || null;
+
+  const gallery = project.gallery_images || [];
+  existingGalleryPaths = gallery.map(item =>
+    typeof item === "string" ? item : item.path
+  ).filter(Boolean);
+
+  $("formHeading").textContent = "Edit Project";
+  $("title").value = project.title || "";
+  $("slug").value = project.slug || "";
+  $("category").value = project.category || "";
+  $("shortDescription").value = project.short_description || "";
+  $("challenge").value = project.challenge || "";
+  $("strategy").value = project.strategy || "";
+  $("outcome").value = project.outcome || "";
+  $("projectUrl").value = project.project_url || "";
+  $("displayOrder").value = project.display_order ?? 0;
+  $("published").checked = Boolean(project.is_published);
+
+  $("coverImage").value = "";
+  $("galleryImages").value = "";
+  $("coverPreview").replaceChildren();
+  $("galleryPreview").replaceChildren();
+
+  if (existingCoverPath) {
+    const img = document.createElement("img");
+    img.alt = "Current cover image";
+    img.src = existingCoverPath.startsWith("http")
+      ? existingCoverPath : "";
+    if (!img.src) getImageUrl(existingCoverPath).then(url => {
+      if (url) img.src = url;
+    });
+    $("coverPreview").appendChild(img);
+  }
+
+  $("message").textContent =
+    "Existing gallery images are retained unless you select replacements.";
+  form.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+async function deleteProject(project) {
+  if (!confirm(`Delete "${project.title}" permanently?`)) return;
+
+  const { error } = await supabase
+    .from("projects")
+    .delete()
+    .eq("id", project.id);
+
+  if (error) {
+    alert("Could not delete project: " + error.message);
+    return;
+  }
+
+  await loadProjects();
+  $("message").textContent = "Project deleted.";
+}
+
+$("cancelButton").addEventListener("click", () => {
+  form.reset();
+  editingId = null;
+  existingCoverPath = null;
+  existingGalleryPaths = [];
+  $("formHeading").textContent = "Add a Project";
+  $("coverPreview").replaceChildren();
+  $("galleryPreview").replaceChildren();
+  $("displayOrder").value = 0;
+  $("message").textContent = "";
+});
+
+form.addEventListener("submit", async event => {
+  event.preventDefault();
+
+  const button = $("saveButton");
+  button.disabled = true;
+  button.textContent = "Saving...";
+  $("message").textContent = "";
+
+  const uploadedPaths = [];
+
+  try {
+    const title = $("title").value.trim();
+    const slug = $("slug").value.trim();
+
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) {
+      throw new Error("Use lowercase letters, numbers and hyphens for the slug.");
+    }
+
+    const coverFile = $("coverImage").files[0];
+    const galleryFiles = [...$("galleryImages").files];
+
+    let coverPath = existingCoverPath;
+    let galleryPaths = [...existingGalleryPaths];
+
+    if (coverFile) {
+      coverPath = await uploadImage(coverFile, slug);
+      uploadedPaths.push(coverPath);
+    }
+
+    if (galleryFiles.length) {
+      const newPaths = [];
+
+      for (const file of galleryFiles) {
+        const path = await uploadImage(file, slug);
+        uploadedPaths.push(path);
+        newPaths.push(path);
+      }
+
+      galleryPaths = newPaths;
+    }
+
+    const project = {
+      title,
+      slug,
+      category: $("category").value.trim(),
+      short_description: $("shortDescription").value.trim(),
+      cover_image_url: coverPath,
+      gallery_images: galleryPaths,
+      challenge: $("challenge").value.trim(),
+      strategy: $("strategy").value.trim(),
+      outcome: $("outcome").value.trim(),
+      project_url: $("projectUrl").value.trim() || null,
+      display_order: Number($("displayOrder").value),
+      is_published: $("published").checked,
+      updated_at: new Date().toISOString()
+    };
+
+    let result;
+
+    if (editingId) {
+      result = await supabase.from("projects")
+        .update(project).eq("id", editingId);
+    } else {
+      result = await supabase.from("projects").insert(project);
+    }
+
+    if (result.error) throw result.error;
+
+    $("message").textContent = "Project saved successfully!";
+    form.reset();
+    editingId = null;
+    existingCoverPath = null;
+    existingGalleryPaths = [];
+    $("formHeading").textContent = "Add a Project";
+    $("coverPreview").replaceChildren();
+    $("galleryPreview").replaceChildren();
+    $("displayOrder").value = 0;
+
+    await loadProjects();
+
+  } catch (error) {
+    console.error(error);
+
+    // Remove newly uploaded files if saving the database record failed.
+    if (uploadedPaths.length) {
+      const { error: cleanupError } = await supabase.storage
+        .from(bucket).remove(uploadedPaths);
+
+      if (cleanupError) console.error("Image cleanup failed:", cleanupError);
+    }
+
+    $("message").textContent =
+      error.message || "Could not save project.";
+  } finally {
+    button.disabled = false;
+    button.textContent = "Save Project";
+  }
+});
+
+if (await checkAdmin()) {
+  await loadProjects();
+} else {
+  document.body.replaceChildren();
+}
+</script>
+</body>
+</html>
