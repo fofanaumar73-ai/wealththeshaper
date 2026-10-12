@@ -2798,11 +2798,6 @@ async function renderProjectSlide() {
   const actions = document.createElement("div");
   actions.className = "projects-slide-actions";
 
-  const viewLink = document.createElement("a");
-  viewLink.className = "projects-view-link";
-  viewLink.href =
-    "project-details.html?slug=" + encodeURIComponent(project.slug);
-  viewLink.textContent = "VIEW PROJECT ↗";
 
   const learnLink = document.createElement("a");
   learnLink.className = "projects-learn-link";
