@@ -2659,7 +2659,15 @@ async function loadPublicTestimonials() {
       .eq("is_published", true)
       .order("display_order", { ascending: true });
 
-    if (adminError) throw adminError;
+    if (adminError) {
+  console.error("ADMIN TESTIMONIAL QUERY FAILED:", adminError);
+  throw adminError;
+}
+
+console.log(
+  "ADMIN TESTIMONIALS LOADED:",
+  adminTestimonials?.length ?? 0
+);
 
     // 2. Fetch client reviews approved by the admin
     const {
