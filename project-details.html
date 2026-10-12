@@ -251,7 +251,7 @@
           cover.onerror = () => { cover.hidden = true; };
         }
 
-        let images = data.project_images || [];
+        let images = data.gallery_images || [];
 
         if (typeof images === "string") {
           try { images = JSON.parse(images); }
