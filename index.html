@@ -2970,6 +2970,26 @@ async function loadPublicProjects() {
 loadPublicProjects();
 
     })();
+
+  
+/* Activate WealthTheShaper WhatsApp button */
+const whatsappButton = document.getElementById("whatsappButton");
+
+if (whatsappButton) {
+  whatsappButton.addEventListener("click", function () {
+    const whatsappNumber = "2347080210742";
+
+    const message = encodeURIComponent(
+      "Hello WealthTheShaper, I would like to make an enquiry about your services."
+    );
+
+    const whatsappURL =
+      `https://wa.me/${whatsappNumber}?text=${message}`;
+
+    window.open(whatsappURL, "_blank", "noopener,noreferrer");
+  });
+}
+
   </script>
 
 </body>
