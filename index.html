@@ -2805,7 +2805,7 @@ async function renderProjectSlide() {
     "project-details.html?slug=" + encodeURIComponent(project.slug);
   learnLink.textContent = "LEARN MORE";
 
-  actions.append(viewLink, learnLink);
+  actions.append(learnLink);
   content.append(category, title, description, actions);
   slide.append(image, content);
   projectsSlider.appendChild(slide);
