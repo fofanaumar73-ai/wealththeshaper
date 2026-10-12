@@ -2688,7 +2688,15 @@ console.log(
       .eq("status", "approved")
       .order("created_at", { ascending: false });
 
-    if (reviewsError) throw reviewsError;
+   if (reviewsError) {
+  console.error("CLIENT REVIEWS QUERY FAILED:", reviewsError);
+  throw reviewsError;
+}
+
+console.log(
+  "CLIENT REVIEWS LOADED:",
+  clientReviews?.length ?? 0
+);
 
     // 3. Convert both sources into the slider's existing format
     const formattedAdminTestimonials = (adminTestimonials || []).map(item => ({
