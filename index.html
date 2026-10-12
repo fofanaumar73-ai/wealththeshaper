@@ -1384,6 +1384,168 @@
   }
 }
 
+    
+/* =========================================
+   WEALTHTHESHAPER PROJECTS SLIDESHOW
+========================================= */
+
+.projects-slider {
+  position: relative;
+  width: 100%;
+  min-height: 390px;
+  overflow: hidden;
+  border-radius: 18px;
+  background: #111;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.projects-message {
+  min-height: 390px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  color: #bbb;
+  text-align: center;
+}
+
+.projects-slide {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 390px;
+  opacity: 1;
+  transition: opacity 0.7s ease;
+}
+
+.projects-slide.is-changing {
+  opacity: 0;
+}
+
+.projects-slide-image {
+  width: 100%;
+  height: 390px;
+  object-fit: cover;
+  display: block;
+  background: #1b1b1b;
+}
+
+.projects-slide-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 38px;
+  color: #fff;
+}
+
+.projects-slide-category {
+  color: #ff4545;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.projects-slide-content h3 {
+  font-size: clamp(23px, 3vw, 36px);
+  line-height: 1.2;
+  margin: 0 0 16px;
+}
+
+.projects-slide-content p {
+  color: #c5c5c5;
+  line-height: 1.8;
+  margin: 0 0 24px;
+}
+
+.projects-slide-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.projects-slide-actions a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 20px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+  transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.projects-slide-actions a:hover {
+  transform: translateY(-2px);
+}
+
+.projects-view-link {
+  color: #fff;
+  background: #e32636;
+}
+
+.projects-learn-link {
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.projects-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 9px;
+  margin-top: 22px;
+}
+
+.projects-dot {
+  width: 9px;
+  height: 9px;
+  border: 0;
+  border-radius: 50%;
+  padding: 0;
+  cursor: pointer;
+  background: #777;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.projects-dot.active {
+  background: #e32636;
+  transform: scale(1.3);
+}
+
+@media (max-width: 700px) {
+  .projects-slider {
+    min-height: 0;
+  }
+
+  .projects-slide {
+    grid-template-columns: 1fr;
+  }
+
+  .projects-slide-image {
+    height: 240px;
+  }
+
+  .projects-slide-content {
+    padding: 26px 22px;
+  }
+
+  .projects-slide-content h3 {
+    font-size: 25px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .projects-slide,
+  .projects-slide-actions a,
+  .projects-dot {
+    transition: none;
+  }
+}
+
+
   </style>
 </head>
 
