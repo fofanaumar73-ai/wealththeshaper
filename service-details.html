@@ -412,7 +412,14 @@
     </div>
   </footer>
 
-  <script>
+  <script type="module">
+import { createClient } from
+  "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+const supabase = createClient(
+  "https://leneltfdgtjkyziqulol.supabase.co",
+  "sb_publishable_vEZoz6jKtXzMhlxVH27O9A_kuibGnl2"
+);
     const serviceDetails = {
       "business-growth-diagnosis": {
         title: "Business Growth Diagnosis",
@@ -465,29 +472,94 @@
       }
     };
 
-    const params = new URLSearchParams(window.location.search);
-    const serviceKey = params.get("service") || "business-growth-diagnosis";
-    const service = serviceDetails[serviceKey] || serviceDetails["business-growth-diagnosis"];
+    
+const params = new URLSearchParams(window.location.search);
+const serviceKey = params.get("service") || "business-growth-diagnosis";
 
-    document.getElementById("service-title").textContent = service.title;
-    document.getElementById("service-intro").textContent = service.intro;
-    document.getElementById("service-overview").textContent = service.overview;
-    document.getElementById("service-challenge").textContent = service.challenge;
-    document.getElementById("service-approach").textContent = service.approach;
-    document.getElementById("service-benefits").textContent = service.benefits;
-    document.getElementById("service-process").textContent = service.process;
-    document.getElementById("closing-title").textContent =
-      "Ready to explore " + service.title + "?";
-    document.getElementById("closing-description").textContent =
-      "Let's discuss your goals and explore how " + service.title +
-      " could support your business growth journey.";
+function setServiceDetails(service) {
+  document.getElementById("service-title").textContent = service.title;
+  document.getElementById("service-intro").textContent =
+    service.description || service.intro || "";
 
-    document.getElementById("booking-button").href =
-      "client/login.html?service=" + encodeURIComponent(serviceKey) +
-      "&next=booking";
+  // Keep the existing detailed content for the five original services.
+  const predefined = serviceDetails[service.slug];
 
-    document.getElementById("year").textContent = new Date().getFullYear();
-    document.title = service.title + " | WealthTheShaper";
+  document.getElementById("service-overview").textContent =
+    predefined?.overview || service.description || "";
+
+  document.getElementById("service-challenge").textContent =
+    predefined?.challenge || service.description || "";
+
+  document.getElementById("service-approach").textContent =
+    predefined?.approach || service.description || "";
+
+  document.getElementById("service-benefits").textContent =
+    predefined?.benefits || service.description || "";
+
+  document.getElementById("service-process").textContent =
+    predefined?.process || service.description || "";
+
+  document.getElementById("closing-title").textContent =
+    "Ready to explore " + service.title + "?";
+
+  document.getElementById("closing-description").textContent =
+    "Let's discuss your goals and explore how " + service.title +
+    " could support your business growth journey.";
+
+  document.getElementById("booking-button").href =
+    "client/login.html?service=" + encodeURIComponent(service.slug) +
+    "&next=booking";
+
+  document.getElementById("year").textContent =
+    new Date().getFullYear();
+
+  document.title = service.title + " | WealthTheShaper";
+}
+
+async function loadServiceDetails() {
+  try {
+    const { data: service, error } = await supabase
+      .from("services")
+      .select("title, slug, description, is_published")
+      .eq("slug", serviceKey)
+      .eq("is_published", true)
+      .maybeSingle();
+
+    if (error) throw error;
+
+    if (service) {
+      setServiceDetails(service);
+      return;
+    }
+
+    // Fall back to predefined content for original services.
+    const predefined = serviceDetails[serviceKey];
+
+    if (predefined) {
+      setServiceDetails({
+        ...predefined,
+        slug: serviceKey,
+        description: predefined.intro
+      });
+      return;
+    }
+
+    document.getElementById("service-title").textContent =
+      "Service Not Available";
+
+    document.getElementById("service-intro").textContent =
+      "This service may be unpublished or no longer available.";
+
+  } catch (error) {
+    console.error("Could not load service details:", error);
+
+    document.getElementById("service-intro").textContent =
+      "We couldn't load this service right now. Please refresh the page.";
+  }
+}
+
+loadServiceDetails();
+
   </script>
 
 </body>
