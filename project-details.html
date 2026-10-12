@@ -241,7 +241,7 @@
 
         title.textContent = data.title || "Project Details";
         category.textContent = data.category || "Selected Work";
-        description.textContent = data.description || "";
+       description.textContent = data.short_description || "";
 
         const coverUrl = data.cover_image_url || "";
         if (coverUrl) {
