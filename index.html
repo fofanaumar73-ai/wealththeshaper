@@ -2418,6 +2418,9 @@ function renderFAQ() {
   const faq = faqItems[faqIndex];
 
   faqContainer.innerHTML = `
+  faqContainer.style.animation = "none";
+void faqContainer.offsetWidth;
+faqContainer.style.animation = "";
     <span class="wt-slide-label">
       QUESTION ${String(faqIndex + 1).padStart(2, "0")}
     </span>
