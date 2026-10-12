@@ -2714,12 +2714,23 @@ async function loadPublicTestimonials() {
     renderPublicTestimonial();
     restartTestimonialTimer();
 
-  } catch (error) {
-    console.error("Could not load testimonials and reviews:", error);
+ 
+} catch (error) {
+  console.error(
+    "Could not load testimonials and reviews:",
+    error
+  );
 
-    testimonialContainer.textContent =
-      "Testimonials are temporarily unavailable.";
-  }
+  console.error("Error details:", {
+    message: error.message,
+    code: error.code,
+    details: error.details,
+    hint: error.hint
+  });
+
+  testimonialContainer.textContent =
+    "Testimonials are temporarily unavailable.";
+}
 }
 
 
