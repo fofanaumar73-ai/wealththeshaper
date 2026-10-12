@@ -2410,31 +2410,28 @@ if (servicesGrid) {
       }
     });
 
-    /* =========================
-       WHATSAPP
-       Add the client's real number later.
-    ========================== */
-    const whatsappButton = document.getElementById("whatsappButton");
+   
+/* =========================
+   WHATSAPP
+========================== */
 
-    whatsappButton.addEventListener("click", () => {
-      // Replace this placeholder with the real WhatsApp number
-      // in international format, without +, spaces or dashes.
-      const whatsappNumber = "";
+const whatsappButton = document.getElementById("whatsappButton");
 
-      if (!/^\d{10,15}$/.test(whatsappNumber)) {
-        alert("The WhatsApp contact will be activated when the business number is added.");
-        return;
-      }
+if (whatsappButton) {
+  whatsappButton.addEventListener("click", () => {
+    const whatsappNumber = "2347080210742";
 
-      const message =
-        "Hello WealthTheShaper, I would like to discuss your business growth services.";
+    const message =
+      "Hello WealthTheShaper, I would like to discuss your business growth services.";
 
-      const whatsappURL =
-        "https://wa.me/" + whatsappNumber +
-        "?text=" + encodeURIComponent(message);
+    const whatsappURL =
+      "https://wa.me/" + whatsappNumber +
+      "?text=" + encodeURIComponent(message);
 
-      window.open(whatsappURL, "_blank", "noopener,noreferrer");
-    });
+    window.open(whatsappURL, "_blank", "noopener,noreferrer");
+  });
+}
+
 
     /* =========================
        FOOTER YEAR
