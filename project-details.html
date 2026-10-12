@@ -1,0 +1,290 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#111111">
+  <title>Project Details | WealthTheShaper</title>
+  <style>
+    :root {
+      --red: #e51b2b;
+      --black: #111;
+      --muted: #aaa;
+      --panel: #1b1b1b;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--black);
+      color: #fff;
+      font-family: Arial, sans-serif;
+      line-height: 1.7;
+    }
+
+    a { color: inherit; }
+
+    .container {
+      width: min(1080px, 90%);
+      margin: auto;
+    }
+
+    header {
+      border-bottom: 1px solid #303030;
+      padding: 22px 0;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .brand {
+      text-decoration: none;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .brand span { color: var(--red); }
+
+    .back {
+      color: #ddd;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    main { padding: 65px 0 80px; }
+
+    .eyebrow {
+      color: var(--red);
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-size: clamp(34px, 6vw, 60px);
+      line-height: 1.1;
+      margin: 14px 0;
+    }
+
+    .category { color: var(--muted); }
+
+    .description {
+      color: #ddd;
+      max-width: 760px;
+      white-space: pre-line;
+    }
+
+    .cover {
+      width: 100%;
+      max-height: 580px;
+      object-fit: cover;
+      border-radius: 16px;
+      margin: 28px 0;
+      background: var(--panel);
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 25px;
+    }
+
+    .gallery img {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      border-radius: 12px;
+      background: var(--panel);
+    }
+
+    .button {
+      display: inline-block;
+      background: var(--red);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 7px;
+      text-decoration: none;
+      font-weight: bold;
+      margin: 10px 10px 0 0;
+    }
+
+    .message {
+      padding: 24px;
+      background: var(--panel);
+      border-radius: 12px;
+      color: #ddd;
+    }
+
+    footer {
+      padding: 24px 0;
+      border-top: 1px solid #303030;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 600px) {
+      .nav { align-items: flex-start; flex-direction: column; }
+      main { padding-top: 40px; }
+      .gallery { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="index.html">WEALTH<span>THE</span>SHAPER</a>
+      <a class="back" href="index.html#projects">← Back to Projects</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="eyebrow">Selected Work / Case Study</div>
+    <h1 id="project-title">Loading project...</h1>
+    <p class="category" id="project-category"></p>
+    <p class="description" id="project-description"></p>
+
+    <img id="project-cover" class="cover" alt="" hidden>
+
+    <section>
+      <h2>Project Gallery</h2>
+      <div id="project-gallery" class="gallery"></div>
+    </section>
+
+    <div id="project-actions"></div>
+    <p id="project-message" class="message" hidden></p>
+  </main>
+
+  <footer>
+    <div class="container">© <span id="year"></span> WealthTheShaper. All rights reserved.</div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    document.getElementById("year").textContent =
+      new Date().getFullYear();
+
+    // Use the same public Supabase URL and anon/publishable key
+    // as your existing index.html.
+    const SUPABASE_URL = "PASTE_YOUR_SUPABASE_URL";
+    const SUPABASE_KEY = "PASTE_YOUR_SUPABASE_ANON_OR_PUBLISHABLE_KEY";
+
+    const title = document.getElementById("project-title");
+    const category = document.getElementById("project-category");
+    const description = document.getElementById("project-description");
+    const cover = document.getElementById("project-cover");
+    const gallery = document.getElementById("project-gallery");
+    const actions = document.getElementById("project-actions");
+    const message = document.getElementById("project-message");
+
+    function showMessage(text) {
+      message.hidden = false;
+      message.textContent = text;
+    }
+
+    function addImage(url, alt, parent) {
+      if (!url || typeof url !== "string") return;
+
+      const image = document.createElement("img");
+      image.src = url;
+      image.alt = alt || "Project image";
+      image.loading = "lazy";
+      image.onerror = () => image.remove();
+      parent.appendChild(image);
+    }
+
+    async function loadProject() {
+      const slug = new URLSearchParams(location.search).get("slug");
+
+      if (!slug) {
+        title.textContent = "Project not specified";
+        showMessage("Please return to the Projects section and select a project.");
+        return;
+      }
+
+      if (
+        SUPABASE_URL.startsWith("PASTE_") ||
+        SUPABASE_KEY.startsWith("PASTE_")
+      ) {
+        title.textContent = "Setup required";
+        showMessage("Add the same public Supabase credentials used by your homepage.");
+        return;
+      }
+
+      try {
+        const db = window.supabase.createClient(
+          SUPABASE_URL,
+          SUPABASE_KEY
+        );
+
+        const { data, error } = await db
+          .from("projects")
+          .select("*")
+          .eq("slug", slug)
+          .eq("status", "published")
+          .maybeSingle();
+
+        if (error) throw error;
+
+        if (!data) {
+          title.textContent = "Project not found";
+          showMessage("This project may be unpublished or no longer available.");
+          return;
+        }
+
+        title.textContent = data.title || "Project Details";
+        category.textContent = data.category || "Selected Work";
+        description.textContent = data.description || "";
+
+        const coverUrl = data.cover_image_url || "";
+        if (coverUrl) {
+          cover.src = coverUrl;
+          cover.alt = data.title || "Project cover";
+          cover.hidden = false;
+          cover.onerror = () => { cover.hidden = true; };
+        }
+
+        let images = data.project_images || [];
+
+        if (typeof images === "string") {
+          try { images = JSON.parse(images); }
+          catch { images = []; }
+        }
+
+        if (!Array.isArray(images)) images = [];
+
+        images.forEach((item) => {
+          const url = typeof item === "string"
+            ? item
+            : item?.url || item?.image_url || "";
+
+          addImage(url, data.title, gallery);
+        });
+
+        if (data.project_link) {
+          const link = document.createElement("a");
+          link.className = "button";
+          link.href = data.project_link;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          link.textContent = "Visit Project ↗";
+          actions.appendChild(link);
+        }
+      } catch (error) {
+        console.error("Project details could not be loaded:", error);
+        title.textContent = "Unable to load project";
+        showMessage("We couldn't load this project. Please try again later.");
+      }
+    }
+
+    loadProject();
+  </script>
+</body>
+</html>
