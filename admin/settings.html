@@ -426,6 +426,58 @@
     } finally {
       saveButton.disabled = false;
     }
+   });
+
+  // PUBLISH POLICY BUTTON
+  publishButton.addEventListener("click", async () => {
+    if (!isAdmin || isLoading) return;
+
+    const title = titleInput.value.trim();
+    const content = contentInput.value.trim();
+
+    if (!title || !content) {
+      status.textContent =
+        "Please enter both a page title and policy content.";
+      return;
+    }
+
+    if (!confirm("Are you sure you want to publish this policy?")) {
+      return;
+    }
+
+    publishButton.disabled = true;
+    saveButton.disabled = true;
+    status.textContent = "Publishing policy...";
+
+    try {
+      const { data: { user }, error: userError } =
+        await supabase.auth.getUser();
+
+      if (userError || !user) {
+        throw userError || new Error("Your session has expired.");
+      }
+
+      const { error } = await supabase.from("legal_policies").upsert({
+        slug: currentPolicy,
+        title,
+        content,
+        is_published: true,
+        updated_at: new Date().toISOString(),
+        updated_by: user.id
+      }, { onConflict: "slug" });
+
+      if (error) throw error;
+
+      status.textContent =
+        "Policy published successfully! It is now marked as published.";
+    } catch (error) {
+      console.error("Could not publish policy:", error);
+      status.textContent =
+        "Could not publish the policy: " + error.message;
+    } finally {
+      publishButton.disabled = false;
+      saveButton.disabled = false;
+    }
   });
 
   previewButton.addEventListener("click", () => {
@@ -436,6 +488,8 @@
         "Please allow pop-ups to preview this policy.";
       return;
     }
+
+    
 
     const heading = preview.document.createElement("h1");
     heading.textContent = titleInput.value;
