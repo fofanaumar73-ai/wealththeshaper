@@ -2654,6 +2654,172 @@ loadPublicTestimonials();
 
 
   loadPublicServices();
+
+    
+/* =========================================
+   WEALTHTHESHAPER PROJECTS SLIDESHOW
+========================================= */
+
+const projectsSlider = document.getElementById("projects-slider");
+const projectsDots = document.getElementById("projects-dots");
+
+let publicProjects = [];
+let projectIndex = 0;
+let projectTimer = null;
+
+function getProjectImageUrl(path) {
+  if (!path) return "";
+
+  // Support a full URL if one is already stored.
+  if (/^https?:\/\//i.test(path)) return path;
+
+  // Private bucket: create a temporary URL for the stored image.
+  return supabase.storage
+    .from("project-images")
+    .createSignedUrl(path, 3600)
+    .then(({ data, error }) => {
+      if (error) {
+        console.error("Could not load project image:", error);
+        return "";
+      }
+
+      return data?.signedUrl || "";
+    });
+}
+
+async function renderProjectSlide() {
+  if (!projectsSlider) return;
+
+  if (!publicProjects.length) {
+    projectsSlider.innerHTML =
+      '<p class="projects-message">Projects will appear here soon.</p>';
+
+    if (projectsDots) projectsDots.replaceChildren();
+    return;
+  }
+
+  const project = publicProjects[projectIndex];
+
+  projectsSlider.replaceChildren();
+
+  const slide = document.createElement("article");
+  slide.className = "projects-slide";
+
+  const image = document.createElement("img");
+  image.className = "projects-slide-image";
+  image.alt = project.title || "Project cover";
+  image.loading = "eager";
+
+  const content = document.createElement("div");
+  content.className = "projects-slide-content";
+
+  const category = document.createElement("span");
+  category.className = "projects-slide-category";
+  category.textContent = project.category || "Selected Project";
+
+  const title = document.createElement("h3");
+  title.textContent = project.title;
+
+  const description = document.createElement("p");
+  description.textContent = project.short_description || "";
+
+  const actions = document.createElement("div");
+  actions.className = "projects-slide-actions";
+
+  const viewLink = document.createElement("a");
+  viewLink.className = "projects-view-link";
+  viewLink.href =
+    "project-details.html?slug=" + encodeURIComponent(project.slug);
+  viewLink.textContent = "VIEW PROJECT ↗";
+
+  const learnLink = document.createElement("a");
+  learnLink.className = "projects-learn-link";
+  learnLink.href =
+    "project-details.html?slug=" + encodeURIComponent(project.slug);
+  learnLink.textContent = "LEARN MORE";
+
+  actions.append(viewLink, learnLink);
+  content.append(category, title, description, actions);
+  slide.append(image, content);
+  projectsSlider.appendChild(slide);
+
+  const imageUrl = await getProjectImageUrl(project.cover_image_url);
+
+  // Prevent a slower image request from replacing a newer slide.
+  if (publicProjects[projectIndex]?.id === project.id) {
+    if (imageUrl) {
+      image.src = imageUrl;
+    } else {
+      image.alt = "Project image unavailable";
+      image.style.display = "none";
+    }
+  }
+
+  if (projectsDots) {
+    projectsDots.replaceChildren();
+
+    publicProjects.forEach((item, index) => {
+      const dot = document.createElement("button");
+      dot.type = "button";
+      dot.className =
+        "projects-dot" + (index === projectIndex ? " active" : "");
+      dot.setAttribute("aria-label", "Show project " + (index + 1));
+
+      dot.addEventListener("click", () => {
+        projectIndex = index;
+        renderProjectSlide();
+        restartProjectTimer();
+      });
+
+      projectsDots.appendChild(dot);
+    });
+  }
+}
+
+function nextProject() {
+  if (publicProjects.length < 2) return;
+
+  projectIndex = (projectIndex + 1) % publicProjects.length;
+  renderProjectSlide();
+}
+
+function restartProjectTimer() {
+  clearInterval(projectTimer);
+
+  if (publicProjects.length > 1) {
+    projectTimer = setInterval(nextProject, 5000);
+  }
+}
+
+async function loadPublicProjects() {
+  if (!projectsSlider) return;
+
+  try {
+    const { data, error } = await supabase
+      .from("projects")
+      .select(
+        "id, title, slug, category, short_description, cover_image_url, display_order, is_published"
+      )
+      .eq("is_published", true)
+      .order("display_order", { ascending: true });
+
+    if (error) throw error;
+
+    publicProjects = data || [];
+    projectIndex = 0;
+
+    await renderProjectSlide();
+    restartProjectTimer();
+  } catch (error) {
+    console.error("Could not load projects:", error);
+
+    projectsSlider.textContent =
+      "Projects are temporarily unavailable. Please try again later.";
+  }
+}
+
+loadPublicProjects();
+
     })();
   </script>
 
