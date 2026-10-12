@@ -1,0 +1,294 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Legal Policies | WealthTheShaper</title>
+  <meta name="description" content="Read the legal policies of WealthTheShaper.">
+
+  <style>
+    :root {
+      --cream: #fbf6ed;
+      --cream-light: #fffdf8;
+      --purple: #6941a5;
+      --purple-dark: #43246f;
+      --black: #19151e;
+      --muted: #716b75;
+      --border: #e9dfd2;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--black);
+      background:
+        radial-gradient(
+          circle at top left,
+          #f0e5fb 0,
+          transparent 35%
+        ),
+        linear-gradient(
+          135deg,
+          var(--cream),
+          var(--cream-light),
+          #f8f0e5
+        );
+    }
+
+    header {
+      padding: 24px 7%;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255, 253, 248, 0.75);
+    }
+
+    .brand {
+      color: var(--black);
+      font-size: 21px;
+      font-weight: 800;
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+
+    .brand span {
+      color: var(--purple);
+    }
+
+    main {
+      width: min(900px, 90%);
+      margin: 65px auto;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 28px;
+      color: var(--purple);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .back-link:hover {
+      color: var(--purple-dark);
+      text-decoration: underline;
+    }
+
+    .policy-card {
+      padding: clamp(25px, 5vw, 55px);
+      background: rgba(255, 253, 248, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      box-shadow: 0 18px 55px rgba(43, 28, 56, 0.07);
+    }
+
+    .eyebrow {
+      color: var(--purple);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 14px 0;
+      color: var(--purple-dark);
+      font-size: clamp(32px, 5vw, 48px);
+      line-height: 1.15;
+      overflow-wrap: anywhere;
+    }
+
+    .updated {
+      margin-bottom: 30px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .policy-content {
+      color: var(--black);
+      font-size: 16px;
+      line-height: 1.9;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .message {
+      padding: 20px;
+      border-radius: 12px;
+      background: #f1e9fa;
+      color: var(--purple-dark);
+      line-height: 1.7;
+    }
+
+    footer {
+      padding: 25px 7%;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      text-align: center;
+      font-size: 13px;
+    }
+
+    footer a {
+      color: var(--purple);
+      text-decoration: none;
+    }
+
+    @media (max-width: 600px) {
+      main {
+        margin: 35px auto;
+      }
+
+      .policy-card {
+        border-radius: 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <a class="brand" href="index.html">
+      Wealth<span>TheShaper</span>
+    </a>
+  </header>
+
+  <main>
+    <a class="back-link" href="index.html">
+      ← Back to Home
+    </a>
+
+    <article class="policy-card">
+      <div class="eyebrow">WealthTheShaper · Legal</div>
+
+      <h1 id="policy-title">Loading policy...</h1>
+
+      <p class="updated" id="policy-updated"></p>
+
+      <div
+        class="policy-content"
+        id="policy-content"
+        aria-live="polite"
+      >
+        Please wait while we load this policy.
+      </div>
+    </article>
+  </main>
+
+  <footer>
+    © <span id="year"></span> WealthTheShaper.
+    All rights reserved.
+    <a href="index.html">Visit our website</a>
+  </footer>
+
+  <script type="module">
+    import {
+      createClient
+    } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+    const SUPABASE_URL =
+      "https://leneltfdgtjkyziqulol.supabase.co";
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_vEZoz6jKtXzMhlxVH27O9A_kuibGnl2";
+
+    const supabase = createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY
+    );
+
+    const titleElement =
+      document.getElementById("policy-title");
+
+    const contentElement =
+      document.getElementById("policy-content");
+
+    const updatedElement =
+      document.getElementById("policy-updated");
+
+    const policyNames = {
+      privacy_policy: "Privacy Policy",
+      terms_of_service: "Terms of Service",
+      cookie_policy: "Cookie Policy",
+      disclaimer: "Disclaimer"
+    };
+
+    document.getElementById("year").textContent =
+      new Date().getFullYear();
+
+    async function loadPolicy() {
+      const params = new URLSearchParams(
+        window.location.search
+      );
+
+      const slug = params.get("slug");
+
+      if (!slug || !Object.hasOwn(policyNames, slug)) {
+        showMessage(
+          "This policy link is invalid. Please return to our homepage."
+        );
+        titleElement.textContent = "Policy Not Found";
+        return;
+      }
+
+      titleElement.textContent = policyNames[slug];
+      document.title = policyNames[slug] +
+        " | WealthTheShaper";
+
+      try {
+        const { data, error } = await supabase
+          .from("legal_policies")
+          .select("title, content, updated_at")
+          .eq("slug", slug)
+          .eq("is_published", true)
+          .maybeSingle();
+
+        if (error) throw error;
+
+        if (!data) {
+          titleElement.textContent = policyNames[slug];
+          showMessage(
+            "This policy is not available yet. Please check back later."
+          );
+          return;
+        }
+
+        titleElement.textContent = data.title;
+
+        // Render as text, never as HTML.
+        contentElement.textContent = data.content;
+
+        updatedElement.textContent = data.updated_at
+          ? "Last updated: " +
+            new Date(data.updated_at).toLocaleDateString(
+              "en-GB",
+              {
+                day: "numeric",
+                month: "long",
+                year: "numeric"
+              }
+            )
+          : "";
+      } catch (error) {
+        console.error("Policy loading error:", error);
+
+        titleElement.textContent = "Unable to Load Policy";
+
+        showMessage(
+          "We could not load this policy right now. Please refresh the page and try again."
+        );
+      }
+    }
+
+    function showMessage(message) {
+      contentElement.textContent = message;
+      updatedElement.textContent = "";
+    }
+
+    loadPolicy();
+  </script>
+</body>
+</html>
