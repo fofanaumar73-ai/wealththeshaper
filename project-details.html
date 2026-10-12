@@ -149,7 +149,24 @@
     <div class="eyebrow">Selected Work / Case Study</div>
     <h1 id="project-title">Loading project...</h1>
     <p class="category" id="project-category"></p>
-    <p class="description" id="project-description"></p>
+    
+<p class="description" id="project-description"></p>
+
+<section class="case-study-section" id="challenge-section" hidden>
+  <h2>The Challenge</h2>
+  <p id="project-challenge"></p>
+</section>
+
+<section class="case-study-section" id="strategy-section" hidden>
+  <h2>Our Strategy</h2>
+  <p id="project-strategy"></p>
+</section>
+
+<section class="case-study-section" id="outcome-section" hidden>
+  <h2>The Outcome</h2>
+  <p id="project-outcome"></p>
+</section>
+
 
     <img id="project-cover" class="cover" alt="" hidden>
 
@@ -242,6 +259,20 @@
         title.textContent = data.title || "Project Details";
         category.textContent = data.category || "Selected Work";
        description.textContent = data.short_description || "";
+        
+const challenge = document.getElementById("project-challenge");
+const strategy = document.getElementById("project-strategy");
+const outcome = document.getElementById("project-outcome");
+
+challenge.textContent = data.challenge || "";
+document.getElementById("challenge-section").hidden = !data.challenge;
+
+strategy.textContent = data.strategy || "";
+document.getElementById("strategy-section").hidden = !data.strategy;
+
+outcome.textContent = data.outcome || "";
+document.getElementById("outcome-section").hidden = !data.outcome;
+
 
         const coverUrl = data.cover_image_url || "";
         if (coverUrl) {
