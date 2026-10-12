@@ -2555,6 +2555,9 @@ function renderPublicTestimonial() {
   const rating = Math.max(1, Math.min(5, Number(item.rating) || 5));
 
   testimonialContainer.replaceChildren();
+  testimonialContainer.style.animation = "none";
+void testimonialContainer.offsetWidth;
+testimonialContainer.style.animation = "";
 
   const label = document.createElement("span");
   label.className = "wt-slide-label";
