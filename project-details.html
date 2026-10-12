@@ -228,8 +228,8 @@
           .from("projects")
           .select("*")
           .eq("slug", slug)
-          .eq("status", "published")
-          .maybeSingle();
+.eq("is_published", true)
+.maybeSingle();
 
         if (error) throw error;
 
