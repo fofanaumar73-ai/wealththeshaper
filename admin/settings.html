@@ -259,69 +259,195 @@
     </p>
   </section>
 
-  <script>
-    const policyOptions = document.querySelectorAll(".policy-option");
-    const editorTitle = document.getElementById("editor-title");
-    const titleInput = document.getElementById("policy-title");
-    const contentInput = document.getElementById("policy-content");
-    const status = document.getElementById("policy-status");
+  
+<script type="module">
+  import { createClient } from
+    "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
-    const policyNames = {
-      privacy_policy: "Privacy Policy",
-      terms_of_service: "Terms of Service",
-      cookie_policy: "Cookie Policy",
-      disclaimer: "Disclaimer"
-    };
+  const SUPABASE_URL =
+    "https://leneltfdgtjkyziqulol.supabase.co";
 
-    let currentPolicy = "privacy_policy";
+  const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_vEZoz6jKtXzMhlxVH27O9A_kuibGnl2";
 
-    policyOptions.forEach(button => {
-      button.addEventListener("click", () => {
-        currentPolicy = button.dataset.policy;
+  const supabase = createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
 
-        policyOptions.forEach(option => {
-          option.classList.toggle("active", option === button);
-        });
+  const policyOptions = document.querySelectorAll(".policy-option");
+  const editorTitle = document.getElementById("editor-title");
+  const titleInput = document.getElementById("policy-title");
+  const contentInput = document.getElementById("policy-content");
+  const status = document.getElementById("policy-status");
+  const saveButton = document.getElementById("save-policy");
+  const previewButton = document.getElementById("preview-policy");
 
-        editorTitle.textContent = policyNames[currentPolicy];
-        titleInput.value = policyNames[currentPolicy];
-        contentInput.value = "";
+  const policyNames = {
+    privacy_policy: "Privacy Policy",
+    terms_of_service: "Terms of Service",
+    cookie_policy: "Cookie Policy",
+    disclaimer: "Disclaimer"
+  };
 
-        status.textContent =
-          "Selected " + policyNames[currentPolicy] +
-          ". Database loading will be added next.";
+  let currentPolicy = "privacy_policy";
+  let isAdmin = false;
+  let isLoading = false;
+
+  async function initializeSettings() {
+    status.textContent = "Checking administrator access...";
+
+    const { data: { session }, error: sessionError } =
+      await supabase.auth.getSession();
+
+    if (sessionError || !session) {
+      status.textContent =
+        "Your admin session has expired. Sign in again and reopen Settings.";
+      saveButton.disabled = true;
+      return;
+    }
+
+    const { data: adminResult, error: adminError } =
+      await supabase.rpc("is_wealththeshaper_admin");
+
+    if (adminError || adminResult !== true) {
+      status.textContent =
+        "Administrator access could not be verified.";
+      saveButton.disabled = true;
+      console.error("Admin check failed:", adminError);
+      return;
+    }
+
+    isAdmin = true;
+    await loadPolicy(currentPolicy);
+  }
+
+  async function loadPolicy(slug) {
+    if (!isAdmin) return;
+
+    isLoading = true;
+    saveButton.disabled = true;
+    status.textContent = "Loading policy...";
+
+    try {
+      const { data, error } = await supabase
+        .from("legal_policies")
+        .select("slug, title, content, is_published, updated_at")
+        .eq("slug", slug)
+        .maybeSingle();
+
+      if (error) throw error;
+
+      titleInput.value = data?.title || policyNames[slug];
+      contentInput.value = data?.content || "";
+
+      status.textContent = data
+        ? (data.is_published ? "Published" : "Draft") +
+          " · Last saved: " +
+          new Date(data.updated_at).toLocaleString()
+        : "This policy has not been saved yet.";
+
+    } catch (error) {
+      console.error("Could not load policy:", error);
+      status.textContent =
+        "Could not load this policy. Check the browser console.";
+    } finally {
+      isLoading = false;
+      saveButton.disabled = false;
+    }
+  }
+
+  policyOptions.forEach(button => {
+    button.addEventListener("click", async () => {
+      if (isLoading) return;
+
+      currentPolicy = button.dataset.policy;
+
+      policyOptions.forEach(option => {
+        option.classList.toggle("active", option === button);
       });
+
+      editorTitle.textContent = policyNames[currentPolicy];
+      await loadPolicy(currentPolicy);
     });
+  });
 
-    document.getElementById("preview-policy").addEventListener("click", () => {
-      const preview = window.open("", "_blank");
+  saveButton.addEventListener("click", async () => {
+    if (!isAdmin || isLoading) return;
 
-      if (!preview) {
-        status.textContent =
-          "Please allow pop-ups to preview this policy.";
-        return;
+    const title = titleInput.value.trim();
+    const content = contentInput.value.trim();
+
+    if (!title || !content) {
+      status.textContent =
+        "Please enter both a page title and policy content.";
+      return;
+    }
+
+    saveButton.disabled = true;
+    status.textContent = "Saving policy...";
+
+    try {
+      const { data: { user }, error: userError } =
+        await supabase.auth.getUser();
+
+      if (userError || !user) {
+        throw userError || new Error("Your session has expired.");
       }
 
-      const heading = document.createElement("h1");
-      heading.textContent = titleInput.value;
+      const { error } = await supabase
+        .from("legal_policies")
+        .upsert({
+          slug: currentPolicy,
+          title,
+          content,
+          updated_at: new Date().toISOString(),
+          updated_by: user.id
+        }, {
+          onConflict: "slug"
+        });
 
-      const content = document.createElement("pre");
-      content.textContent = contentInput.value;
-      content.style.whiteSpace = "pre-wrap";
-      content.style.fontFamily = "Arial, sans-serif";
-      content.style.lineHeight = "1.7";
+      if (error) throw error;
 
-      preview.document.title = titleInput.value;
-      preview.document.body.style.cssText =
-        "max-width:800px;margin:40px auto;padding:20px;" +
-        "font-family:Arial,sans-serif;line-height:1.7;";
-      preview.document.body.replaceChildren(heading, content);
-    });
-
-    document.getElementById("save-policy").addEventListener("click", () => {
       status.textContent =
-        "Not saved yet. We'll connect this button to Supabase next.";
-    });
-  </script>
+        "Policy saved successfully as a draft. It is not published yet.";
+
+    } catch (error) {
+      console.error("Could not save policy:", error);
+      status.textContent =
+        "Could not save the policy: " + error.message;
+    } finally {
+      saveButton.disabled = false;
+    }
+  });
+
+  previewButton.addEventListener("click", () => {
+    const preview = window.open("", "_blank");
+
+    if (!preview) {
+      status.textContent =
+        "Please allow pop-ups to preview this policy.";
+      return;
+    }
+
+    const heading = preview.document.createElement("h1");
+    heading.textContent = titleInput.value;
+
+    const content = preview.document.createElement("pre");
+    content.textContent = contentInput.value;
+    content.style.cssText =
+      "white-space:pre-wrap;font:16px/1.8 Arial,sans-serif;";
+
+    preview.document.title = titleInput.value;
+    preview.document.body.style.cssText =
+      "max-width:800px;margin:40px auto;padding:20px;" +
+      "font-family:Arial,sans-serif;line-height:1.7;";
+
+    preview.document.body.replaceChildren(heading, content);
+  });
+
+  initializeSettings();
+</script>
+
 </body>
 </html>
