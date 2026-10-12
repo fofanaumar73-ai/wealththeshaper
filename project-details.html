@@ -260,14 +260,30 @@
 
         if (!Array.isArray(images)) images = [];
 
-        images.forEach((item) => {
-          const url = typeof item === "string"
-            ? item
-            : item?.url || item?.image_url || "";
+        for (const item of images) {
+  const path = typeof item === "string"
+    ? item
+    : item?.url || item?.image_url || item?.path || "";
 
-          addImage(url, data.title, gallery);
-        });
+  if (!path) continue;
 
+  let imageUrl = path;
+
+  if (!/^https?:\/\//i.test(path)) {
+    const { data: imageData, error: imageError } = await db.storage
+      .from("project-images")
+      .createSignedUrl(path, 3600);
+
+    if (imageError) {
+      console.error("Could not load gallery image:", imageError);
+      continue;
+    }
+
+    imageUrl = imageData?.signedUrl || "";
+  }
+
+  addImage(imageUrl, data.title, gallery);
+}
         if (data.project_link) {
           const link = document.createElement("a");
           link.className = "button";
