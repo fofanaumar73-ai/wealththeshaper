@@ -1576,6 +1576,37 @@
   }
 }
 
+    
+/* =========================================
+   SMOOTH FAQ & TESTIMONIAL SLIDERS
+========================================= */
+
+#faqsContainer,
+#testimonialsContainer {
+  overflow: hidden;
+  animation: wtContentGlideIn 850ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  will-change: transform, opacity;
+}
+
+@keyframes wtContentGlideIn {
+  from {
+    opacity: 0.55;
+    transform: translateX(35px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #faqsContainer,
+  #testimonialsContainer {
+    animation: none;
+  }
+}
+
 
   </style>
 </head>
