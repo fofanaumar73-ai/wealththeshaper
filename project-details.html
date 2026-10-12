@@ -135,6 +135,73 @@
       main { padding-top: 40px; }
       .gallery { grid-template-columns: 1fr; }
     }
+    
+/* =========================================
+   STICKY HEADER — DESKTOP AND MOBILE
+========================================= */
+
+html {
+  scroll-padding-top: 90px;
+}
+
+body {
+  margin-top: 0;
+}
+
+body > header {
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  top: 0 !important;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 99999 !important;
+  background: #080808 !important;
+  isolation: isolate;
+}
+
+/* Keep header contents aligned */
+body > header .nav {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+/* Laptop and desktop */
+@media (min-width: 769px) {
+  body > header {
+    padding-top: 14px;
+    padding-bottom: 14px;
+  }
+}
+
+/* Mobile phones and tablets */
+@media (max-width: 768px) {
+  body > header {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  body > header .nav {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  body > header .brand {
+    font-size: 16px;
+  }
+
+  body > header .back {
+    font-size: 13px;
+  }
+
+  html {
+    scroll-padding-top: 75px;
+  }
+}
+
   </style>
 </head>
 <body>
