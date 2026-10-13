@@ -1890,6 +1890,24 @@
   }
 
 }
+    
+/* Continuous basketball-style bounce */
+
+.growth-circle {
+  animation: growthBasketBounce 1.2s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes growthBasketBounce {
+  0% {
+    transform: translateY(-35px);
+  }
+
+  100% {
+    transform: translateY(35px);
+  }
+}
+
 
   </style>
 </head>
