@@ -1832,44 +1832,29 @@
 /* Slow up-and-down movement */
 
 
+
 @keyframes growthFloat {
-  0% {
+  0%, 35%, 100% {
     transform: translateY(0);
   }
 
-  12% {
-    transform: translateY(35px);
+  45% {
+    transform: translateY(45px);
   }
 
-  24% {
+  55% {
     transform: translateY(0);
   }
 
-  38% {
-    transform: translateY(-18px);
+  65% {
+    transform: translateY(-12px);
   }
 
-  48%,
-  62% {
-    transform: translateY(0);
-  }
-
-  74% {
-    transform: translateY(35px);
-  }
-
-  86% {
-    transform: translateY(0);
-  }
-
-  93% {
-    transform: translateY(-8px);
-  }
-
-  100% {
+  75% {
     transform: translateY(0);
   }
 }
+
 
 
 /* Mobile adjustments */
