@@ -1911,24 +1911,18 @@
     
 /* PREMIUM TESTIMONIAL INSIDE HERO */
 
-.hero-testimonial {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  max-width: 680px;
-  margin: 0 auto 30px;
-}
-
-.hero-testimonial .wt-testimonial-wrap {
-  gap: 9px;
-  margin: 0;
-}
-
 .hero-testimonial .wt-testimonial-card {
-  min-height: 0;
-  padding: 18px 20px;
-  border: 1px solid rgba(255, 55, 75, 0.48);
-  border-radius: 18px;
+  flex: 1 1 0;
+  min-width: 0;
+  width: 100%;
+  height: 145px;
+  min-height: 145px;
+  max-height: 145px;
+  padding: 14px 16px;
+  border: 1px solid rgba(255, 55, 75, 0.7);
+  border-radius: 0 !important;
+  box-sizing: border-box;
+  overflow: hidden;
   background: linear-gradient(
     135deg,
     rgba(35, 15, 18, 0.82),
@@ -1941,71 +1935,11 @@
   -webkit-backdrop-filter: blur(16px);
 }
 
-.hero-testimonial .wt-slide-label {
-  font-size: 10px;
-  letter-spacing: 1.6px;
-}
-
-.hero-testimonial .wt-stars {
-  font-size: 16px;
-  letter-spacing: 2px;
-  margin-bottom: 6px;
-}
-
-.hero-testimonial .wt-testimonial-card h3 {
-  font-size: clamp(14px, 2.2vw, 17px);
-  line-height: 1.55;
-  margin: 5px 0;
-}
-
-.hero-testimonial .wt-testimonial-card p {
-  font-size: 12px;
-  line-height: 1.5;
-  margin: 4px 0;
-}
-
-.hero-testimonial .wt-testimonial-card .wt-reviewer {
-  margin-top: 10px !important;
-  color: #fff;
-  font-size: 13px;
-}
-
 .hero-testimonial .wt-glass-arrow {
-  flex-basis: 34px;
+  flex: 0 0 34px;
   width: 34px;
   height: 34px;
-  font-size: 13px;
-  border-color: rgba(255, 65, 85, 0.5);
-}
-
-.hero-testimonial .wt-slider-dots {
-  margin-top: 12px;
-}
-
-.hero-testimonial .wt-slider-dot {
-  width: 7px;
-  height: 7px;
-}
-
-@media (max-width: 680px) {
-  .hero-testimonial {
-    margin-bottom: 24px;
-  }
-
-  .hero-testimonial .wt-testimonial-card {
-    padding: 15px 13px;
-  }
-
-  .hero-testimonial .wt-testimonial-wrap {
-    gap: 6px;
-  }
-
-  .hero-testimonial .wt-glass-arrow {
-    flex-basis: 28px;
-    width: 28px;
-    height: 28px;
-    font-size: 11px;
-  }
+  border-radius: 0 !important;
 }
 
     /* HERO TESTIMONIAL — FIXED RECTANGULAR CARD */
