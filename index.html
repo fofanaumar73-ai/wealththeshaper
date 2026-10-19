@@ -2008,6 +2008,42 @@
   }
 }
 
+    /* HERO TESTIMONIAL — FIXED RECTANGULAR CARD */
+.hero-testimonial .wt-testimonial-card {
+  height: 145px;
+  min-height: 145px;
+  max-height: 145px;
+  padding: 14px 16px;
+  border-radius: 0;
+  border: 1px solid rgba(255, 55, 75, 0.7);
+  box-shadow:
+    0 0 18px rgba(227, 38, 54, 0.25),
+    inset 0 0 12px rgba(227, 38, 54, 0.05);
+  overflow: hidden;
+}
+
+/* Keep the hero testimonial compact */
+.hero-testimonial .wt-testimonial-wrap {
+  gap: 8px;
+}
+
+.hero-testimonial .wt-glass-arrow {
+  flex-shrink: 0;
+  border-radius: 0;
+}
+
+.hero-testimonial .wt-testimonial-card .wt-reviewer {
+  margin-top: 6px !important;
+}
+
+@media (max-width: 600px) {
+  .hero-testimonial .wt-testimonial-card {
+    height: 155px;
+    min-height: 155px;
+    max-height: 155px;
+    padding: 12px;
+  }
+}
 
   </style>
 </head>
@@ -3047,6 +3083,21 @@ function changeTestimonial(direction) {
     % publicTestimonials.length;
 
   renderPublicTestimonial();
+}
+
+    // Make the hero testimonial arrows clickable
+if (testimonialPrev) {
+  testimonialPrev.addEventListener("click", () => {
+    changeTestimonial(-1);
+    restartTestimonialTimer();
+  });
+}
+
+if (testimonialNext) {
+  testimonialNext.addEventListener("click", () => {
+    changeTestimonial(1);
+    restartTestimonialTimer();
+  });
 }
 
 function restartTestimonialTimer() {
