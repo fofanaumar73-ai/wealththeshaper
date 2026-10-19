@@ -3110,6 +3110,18 @@ function restartTestimonialTimer() {
   }
 }
 
+    // HERO TESTIMONIAL ARROW CONTROLS
+testimonialPrev?.addEventListener("click", function (event) {
+  event.preventDefault();
+  changeTestimonial(-1);
+  restartTestimonialTimer();
+});
+
+testimonialNext?.addEventListener("click", function (event) {
+  event.preventDefault();
+  changeTestimonial(1);
+  restartTestimonialTimer();
+});
 
 async function loadPublicTestimonials() {
   if (!testimonialContainer) return;
