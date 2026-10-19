@@ -3038,11 +3038,12 @@ const testimonialNext =
 const testimonialDots =
   document.getElementById("testimonialDots");
 
+
 function renderPublicTestimonial() {
   if (!testimonialContainer) return;
 
   if (publicTestimonials.length === 0) {
-    testimonialContainer.innerHTML = "";
+    testimonialContainer.replaceChildren();
 
     const empty = document.createElement("p");
     empty.className = "wt-slider-empty";
@@ -3055,12 +3056,14 @@ function renderPublicTestimonial() {
   }
 
   const item = publicTestimonials[testimonialIndex];
+  const fullReview = item.testimonial || "";
   const rating = Math.max(1, Math.min(5, Number(item.rating) || 5));
 
   testimonialContainer.replaceChildren();
+
   testimonialContainer.style.animation = "none";
-void testimonialContainer.offsetWidth;
-testimonialContainer.style.animation = "";
+  void testimonialContainer.offsetWidth;
+  testimonialContainer.style.animation = "";
 
   const label = document.createElement("span");
   label.className = "wt-slide-label";
@@ -3072,7 +3075,31 @@ testimonialContainer.style.animation = "";
   stars.setAttribute("aria-label", `${rating} out of 5 stars`);
 
   const review = document.createElement("h3");
-  review.textContent = item.testimonial || "";
+  review.className = "wt-review-preview";
+
+  // Show a short preview for longer reviews.
+  const previewLimit = 150;
+  const isLongReview = fullReview.length > previewLimit;
+
+  review.textContent = isLongReview
+    ? fullReview.slice(0, previewLimit).trimEnd() + "…"
+    : fullReview;
+
+  testimonialContainer.append(label, stars, review);
+
+  if (isLongReview) {
+    const readMore = document.createElement("button");
+    readMore.type = "button";
+    readMore.className = "wt-read-more";
+    readMore.textContent = "Read more";
+    readMore.setAttribute("aria-label", "Read the full client review");
+
+    readMore.addEventListener("click", () => {
+      openFullTestimonial(item, rating);
+    });
+
+    testimonialContainer.appendChild(readMore);
+  }
 
   const name = document.createElement("p");
   name.className = "wt-reviewer";
@@ -3083,7 +3110,7 @@ testimonialContainer.style.animation = "";
     .filter(Boolean)
     .join(" · ");
 
-  testimonialContainer.append(label, stars, review, name);
+  testimonialContainer.appendChild(name);
 
   if (role.textContent) {
     testimonialContainer.appendChild(role);
@@ -3096,7 +3123,8 @@ testimonialContainer.style.animation = "";
       const dot = document.createElement("button");
       dot.type = "button";
       dot.className =
-        "wt-slider-dot" + (index === testimonialIndex ? " active" : "");
+        "wt-slider-dot" +
+        (index === testimonialIndex ? " active" : "");
 
       dot.setAttribute(
         "aria-label",
@@ -3113,6 +3141,79 @@ testimonialContainer.style.animation = "";
     });
   }
 }
+
+// Open the complete review without changing the slider underneath.
+function openFullTestimonial(item, rating) {
+  pauseTestimonialSlider();
+
+  const overlay = document.createElement("div");
+  overlay.className = "wt-review-modal";
+  overlay.setAttribute("role", "dialog");
+  overlay.setAttribute("aria-modal", "true");
+  overlay.setAttribute("aria-label", "Full client review");
+
+  const content = document.createElement("div");
+  content.className = "wt-review-modal-content";
+
+  const label = document.createElement("span");
+  label.className = "wt-slide-label";
+  label.textContent = "CLIENT REVIEW";
+
+  const stars = document.createElement("div");
+  stars.className = "wt-stars";
+  stars.textContent = "★".repeat(rating) + "☆".repeat(5 - rating);
+
+  const heading = document.createElement("h3");
+  heading.textContent = item.client_name || "Client";
+
+  const fullText = document.createElement("p");
+  fullText.textContent = item.testimonial || "";
+
+  const role = document.createElement("p");
+  role.textContent = [item.client_role, item.company_name]
+    .filter(Boolean)
+    .join(" · ");
+
+  const closeButton = document.createElement("button");
+  closeButton.type = "button";
+  closeButton.className = "wt-review-close";
+  closeButton.textContent = "Close review";
+
+  function closeReview() {
+    document.removeEventListener("keydown", handleEscape);
+    overlay.remove();
+    restartTestimonialTimer();
+  }
+
+  function handleEscape(event) {
+    if (event.key === "Escape") {
+      closeReview();
+    }
+  }
+
+  closeButton.addEventListener("click", closeReview);
+
+  overlay.addEventListener("click", (event) => {
+    if (event.target === overlay) {
+      closeReview();
+    }
+  });
+
+  document.addEventListener("keydown", handleEscape);
+
+  content.append(label, stars, heading, fullText);
+
+  if (role.textContent) {
+    content.appendChild(role);
+  }
+
+  content.appendChild(closeButton);
+  overlay.appendChild(content);
+  document.body.appendChild(overlay);
+
+  closeButton.focus();
+}
+
 
 function changeTestimonial(direction) {
   if (publicTestimonials.length < 2) return;
