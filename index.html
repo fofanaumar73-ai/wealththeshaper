@@ -2459,8 +2459,35 @@ backdrop-filter: blur(3px);
     font-size: 11px;
   }
 }
+    /* WealthTheShaper Logo Positioning */
 
+/* Laptop and desktop */
+.animated-logo {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-left: auto;
+  flex-shrink: 0;
+}
 
+.animated-logo img {
+  display: block;
+  width: 65px;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .animated-logo {
+    margin-left: auto;
+    justify-content: flex-end;
+  }
+
+  .animated-logo img {
+    width: 48px;
+  }
+}
 
   </style>
 </head>
