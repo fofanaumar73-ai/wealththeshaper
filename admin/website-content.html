@@ -14,12 +14,9 @@
   --text: #fff;
   --muted: #aaaab4;
   --border: rgba(255,255,255,.11);
+  --green: #36c98f;
 }
-
-* {
-  box-sizing: border-box;
-}
-
+* { box-sizing: border-box; }
 body {
   margin: 0;
   padding: 26px;
@@ -27,12 +24,7 @@ body {
   color: var(--text);
   font-family: Arial, sans-serif;
 }
-
-.page {
-  max-width: 1050px;
-  margin: 0 auto;
-}
-
+.page { max-width: 1050px; margin: 0 auto; }
 .header {
   display: flex;
   justify-content: space-between;
@@ -40,27 +32,19 @@ body {
   gap: 20px;
   margin-bottom: 24px;
 }
-
-h1 {
-  margin: 0 0 8px;
-  font-size: clamp(25px, 4vw, 34px);
-}
-
+h1 { margin: 0 0 8px; font-size: clamp(25px,4vw,34px); }
 .intro, .hint {
   color: var(--muted);
   line-height: 1.65;
   font-size: 14px;
 }
-
 .badge {
   padding: 9px 12px;
   border: 1px solid rgba(227,38,54,.4);
   border-radius: 30px;
   color: #ff8993;
   font-size: 11px;
-  white-space: nowrap;
 }
-
 .notice {
   background: rgba(227,38,54,.08);
   border: 1px solid rgba(227,38,54,.28);
@@ -70,11 +54,7 @@ h1 {
   line-height: 1.6;
   margin-bottom: 20px;
 }
-
-.notice strong {
-  color: #ff6674;
-}
-
+.notice strong { color: #ff6674; }
 .section {
   background: var(--panel);
   border: 1px solid var(--border);
@@ -82,39 +62,21 @@ h1 {
   padding: 22px;
   margin-bottom: 18px;
 }
-
-.section h2 {
-  font-size: 18px;
-  margin: 0 0 6px;
-}
-
-.section > .hint {
-  margin: 0 0 20px;
-}
-
+.section h2 { font-size: 18px; margin: 0 0 6px; }
+.section > .hint { margin: 0 0 20px; }
 .grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(2,minmax(0,1fr));
   gap: 16px;
 }
-
 .field {
   min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 7px;
 }
-
-.field.full {
-  grid-column: 1 / -1;
-}
-
-label {
-  font-size: 13px;
-  font-weight: 700;
-  color: #ededf2;
-}
-
+.field.full { grid-column: 1 / -1; }
+label { font-size: 13px; font-weight: 700; }
 input, textarea {
   width: 100%;
   padding: 12px 13px;
@@ -124,24 +86,17 @@ input, textarea {
   color: #fff;
   font: inherit;
   font-size: 14px;
-  outline: none;
 }
-
 input:focus, textarea:focus {
+  outline: 2px solid rgba(227,38,54,.4);
   border-color: var(--red);
-  box-shadow: 0 0 0 3px rgba(227,38,54,.12);
 }
-
 textarea {
   min-height: 100px;
   resize: vertical;
   line-height: 1.55;
 }
-
-input[type="file"] {
-  padding: 10px;
-}
-
+input[type=file] { padding: 10px; }
 .image-preview {
   width: 100%;
   max-width: 360px;
@@ -152,13 +107,11 @@ input[type="file"] {
   background: #08080a;
   margin-top: 5px;
 }
-
 .image-status {
   font-size: 12px;
   color: var(--muted);
   line-height: 1.5;
 }
-
 .actions {
   display: flex;
   flex-wrap: wrap;
@@ -166,7 +119,6 @@ input[type="file"] {
   align-items: center;
   margin-top: 22px;
 }
-
 button, .link-button {
   border: 0;
   border-radius: 9px;
@@ -179,60 +131,34 @@ button, .link-button {
   align-items: center;
   justify-content: center;
 }
-
-.save {
-  background: var(--red);
-  color: #fff;
-}
-
+.save { background: var(--red); color: #fff; }
+.save:hover { background: #c91d2d; }
+.save:disabled { opacity: .6; cursor: wait; }
 .secondary {
   background: #222228;
   color: #fff;
   border: 1px solid var(--border);
 }
-
 .status {
   min-height: 20px;
   font-size: 13px;
-  color: var(--muted);
   line-height: 1.5;
 }
-
-.status.error {
-  color: #ff7b86;
-}
-
+.status.success { color: var(--green); }
+.status.error { color: #ff7b86; }
 .footnote {
   font-size: 12px;
   color: var(--muted);
   line-height: 1.6;
   margin-top: 12px;
 }
-
-@media (max-width: 650px) {
-  body {
-    padding: 18px 12px;
-  }
-
-  .header {
-    flex-direction: column;
-  }
-
-  .grid {
-    grid-template-columns: 1fr;
-  }
-
-  .field.full {
-    grid-column: auto;
-  }
-
-  .section {
-    padding: 17px;
-  }
-
-  .image-preview {
-    max-width: 100%;
-  }
+@media(max-width:650px) {
+  body { padding: 18px 12px; }
+  .header { flex-direction: column; }
+  .grid { grid-template-columns: 1fr; }
+  .field.full { grid-column: auto; }
+  .section { padding: 17px; }
+  .image-preview { max-width: 100%; }
 }
 </style>
 </head>
@@ -244,174 +170,166 @@ button, .link-button {
   <div>
     <h1>Website Content</h1>
     <p class="intro">
-      Manage the homepage hero, About section,
-      contact links, and footer description.
+      Manage your homepage hero, About section, contact links and footer.
     </p>
   </div>
   <span class="badge">WEALTHTHESHAPER · ADMIN</span>
 </header>
 
 <div class="notice">
-  <strong>Your current website is preserved.</strong>
-  These fields start with demo text. Image files are
-  only previewed when selected. Your live website will
-  not change until we connect saving to Supabase.
+  <strong>Your existing website is preserved.</strong>
+  Saved content will be loaded here when available. If no saved content
+  exists, the original editor defaults remain. Selecting a new image
+  uploads it only when you save.
 </div>
 
 <form id="contentForm">
 
 <section class="section">
-  <h2>Hero Section</h2>
-  <p class="hint">
-    Edit the headline, introduction, button, and hero image.
-  </p>
+<h2>Hero section</h2>
+<p class="hint">Edit your main headline, introduction and call-to-action.</p>
 
-  <div class="grid">
-    <div class="field full">
-      <label for="heroHeadline">Hero headline</label>
-      <textarea id="heroHeadline" required>I Help Brands Become Impossible to Ignore.</textarea>
-    </div>
-
-    <div class="field full">
-      <label for="heroIntro">Hero introduction</label>
-      <textarea id="heroIntro">I help businesses build a clear path to profitable growth by connecting strategy, positioning, marketing and sales.</textarea>
-    </div>
-
-    <div class="field">
-      <label for="heroButtonText">Main button text</label>
-      <input id="heroButtonText" value="Explore How I Help">
-    </div>
-
-    <div class="field">
-      <label for="heroButtonUrl">Button destination</label>
-      <input id="heroButtonUrl" value="#services">
-    </div>
-
-    <div class="field full">
-      <label for="heroImage">Replace hero background image</label>
-      <input id="heroImage" type="file" accept="image/*">
-      <img id="heroImagePreview" class="image-preview" alt="Hero image preview" hidden>
-      <span id="heroImageStatus" class="image-status">
-        No replacement selected. Existing image remains unchanged.
-      </span>
-    </div>
+<div class="grid">
+  <div class="field full">
+    <label for="heroHeadline">Hero headline</label>
+    <textarea id="heroHeadline" name="heroHeadline" required>I Help Brands Become Impossible to Ignore.</textarea>
   </div>
-</section>
 
-<section class="section">
-  <h2>About Section</h2>
-  <p class="hint">
-    Edit the About description and the separate portrait card.
-  </p>
-
-  <div class="grid">
-    <div class="field">
-      <label for="aboutEyebrow">Small heading</label>
-      <input id="aboutEyebrow" value="ABOUT WEALTHTHESHAPER">
-    </div>
-
-    <div class="field">
-      <label for="aboutHeadline">About headline</label>
-      <textarea id="aboutHeadline">More Than Visibility. A Clearer Path to Growth.</textarea>
-    </div>
-
-    <div class="field full">
-      <label for="aboutParagraph1">First paragraph</label>
-      <textarea id="aboutParagraph1">Every business has potential. But unlocking that potential requires more than simply getting attention. It requires the right strategy, positioning, offers and systems.</textarea>
-    </div>
-
-    <div class="field full">
-      <label for="aboutParagraph2">Second paragraph</label>
-      <textarea id="aboutParagraph2">WealthTheShaper helps businesses understand what is holding them back, communicate their value clearly and build a more intentional path to profitable growth.</textarea>
-    </div>
-
-    <div class="field">
-      <label for="aboutImageEyebrow">Portrait card heading</label>
-      <input id="aboutImageEyebrow" value="THE STRATEGY BEHIND THE GROWTH">
-    </div>
-
-    <div class="field">
-      <label for="aboutImageTitle">Portrait card title</label>
-      <input id="aboutImageTitle" value="Growth should be intentional.">
-    </div>
-
-    <div class="field">
-      <label for="aboutImageLocation">Location text</label>
-      <input id="aboutImageLocation" value="Lagos, Nigeria">
-    </div>
-
-    <div class="field">
-      <label for="aboutImage">Replace About portrait</label>
-      <input id="aboutImage" type="file" accept="image/*">
-      <img id="aboutImagePreview" class="image-preview" alt="About portrait preview" hidden>
-      <span id="aboutImageStatus" class="image-status">
-        No replacement selected. Existing portrait remains unchanged.
-      </span>
-    </div>
-
-    <div class="field full">
-      <label for="aboutButtonText">About button text</label>
-      <input id="aboutButtonText" value="Explore How I Help">
-    </div>
+  <div class="field full">
+    <label for="heroIntro">Hero introduction</label>
+    <textarea id="heroIntro" name="heroIntro" required>I help businesses build a clear path to profitable growth by connecting strategy, positioning, marketing and sales.</textarea>
   </div>
-</section>
-
-<section class="section">
-  <h2>Contact and Social Links</h2>
-  <p class="hint">
-    Use full URLs for social profiles. Include the country code for WhatsApp.
-  </p>
-
-  <div class="grid">
-    <div class="field">
-      <label for="contactEmail">Business email</label>
-      <input id="contactEmail" type="email" value="Wealthyhubgroup@gmail.com">
-    </div>
-
-    <div class="field">
-      <label for="whatsappNumber">WhatsApp number</label>
-      <input id="whatsappNumber" value="+2347080210742">
-    </div>
-
-    <div class="field">
-      <label for="instagramUrl">Instagram profile URL</label>
-      <input id="instagramUrl" type="url" placeholder="https://instagram.com/...">
-    </div>
-
-    <div class="field">
-      <label for="tiktokUrl">TikTok profile URL</label>
-      <input id="tiktokUrl" type="url" placeholder="https://www.tiktok.com/@...">
-    </div>
-
-    <div class="field full">
-      <label for="otherSocialUrl">Other social/contact URL (optional)</label>
-      <input id="otherSocialUrl" type="url" placeholder="https://...">
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <h2>Footer Description</h2>
-  <p class="hint">Edit the short description shown in the website footer.</p>
 
   <div class="field">
-    <label for="footerDescription">Footer description</label>
-    <textarea id="footerDescription">We help brands become impossible to ignore through business growth strategy, clear positioning and commercial systems built for sustainable growth.</textarea>
+    <label for="heroButtonText">Main button text</label>
+    <input id="heroButtonText" name="heroButtonText" value="Explore Services" required>
   </div>
+
+  <div class="field">
+    <label for="heroButtonUrl">Main button destination</label>
+    <input id="heroButtonUrl" name="heroButtonUrl" value="#services" required>
+  </div>
+
+  <div class="field full">
+    <label for="heroImage">Choose hero background image from your device</label>
+    <input id="heroImage" name="heroImage" type="file" accept="image/*">
+    <img id="heroImagePreview" class="image-preview" alt="Hero preview" hidden>
+    <span id="heroImageStatus" class="image-status">
+      No replacement selected. Existing image remains unchanged.
+    </span>
+  </div>
+</div>
+</section>
+
+<section class="section">
+<h2>About section</h2>
+<p class="hint">Manage the About text and the separate portrait card.</p>
+
+<div class="grid">
+  <div class="field">
+    <label for="aboutEyebrow">Small heading</label>
+    <input id="aboutEyebrow" name="aboutEyebrow" value="ABOUT WEALTHTHESHAPER">
+  </div>
+
+  <div class="field">
+    <label for="aboutHeadline">About headline</label>
+    <textarea id="aboutHeadline" name="aboutHeadline">More Than Visibility. A Clearer Path to Growth.</textarea>
+  </div>
+
+  <div class="field full">
+    <label for="aboutParagraph1">First paragraph</label>
+    <textarea id="aboutParagraph1" name="aboutParagraph1">Every business has potential. But unlocking that potential requires more than simply getting attention. It requires the right strategy, positioning, offers and systems.</textarea>
+  </div>
+
+  <div class="field full">
+    <label for="aboutParagraph2">Second paragraph</label>
+    <textarea id="aboutParagraph2" name="aboutParagraph2">WealthTheShaper helps businesses understand what is holding them back, communicate their value clearly and build a more intentional path to profitable growth.</textarea>
+  </div>
+
+  <div class="field">
+    <label for="aboutImageEyebrow">Portrait card small heading</label>
+    <input id="aboutImageEyebrow" name="aboutImageEyebrow" value="THE STRATEGY BEHIND THE GROWTH">
+  </div>
+
+  <div class="field">
+    <label for="aboutImageTitle">Portrait card title</label>
+    <input id="aboutImageTitle" name="aboutImageTitle" value="Growth should be intentional.">
+  </div>
+
+  <div class="field">
+    <label for="aboutImageLocation">Portrait card location</label>
+    <input id="aboutImageLocation" name="aboutImageLocation" value="Lagos, Nigeria">
+  </div>
+
+  <div class="field">
+    <label for="aboutImage">Choose About portrait from your device</label>
+    <input id="aboutImage" name="aboutImage" type="file" accept="image/*">
+    <img id="aboutImagePreview" class="image-preview" alt="About portrait preview" hidden>
+    <span id="aboutImageStatus" class="image-status">
+      No replacement selected. Existing image remains unchanged.
+    </span>
+  </div>
+
+  <div class="field full">
+    <label for="aboutButtonText">About button text</label>
+    <input id="aboutButtonText" name="aboutButtonText" value="Explore How I Help">
+  </div>
+</div>
+</section>
+
+<section class="section">
+<h2>Contact and social links</h2>
+<p class="hint">Use full profile URLs and include the WhatsApp country code.</p>
+
+<div class="grid">
+  <div class="field">
+    <label for="contactEmail">Business email</label>
+    <input id="contactEmail" name="contactEmail" type="email" value="Wealthyhubgroup@gmail.com">
+  </div>
+
+  <div class="field">
+    <label for="whatsappNumber">WhatsApp number</label>
+    <input id="whatsappNumber" name="whatsappNumber" value="+2347080210742">
+  </div>
+
+  <div class="field">
+    <label for="instagramUrl">Instagram profile URL</label>
+    <input id="instagramUrl" name="instagramUrl" type="url" value="https://www.instagram.com/thewealththeshaper/">
+  </div>
+
+  <div class="field">
+    <label for="tiktokUrl">TikTok profile URL</label>
+    <input id="tiktokUrl" name="tiktokUrl" type="url" value="https://www.tiktok.com/@wealththeshaper">
+  </div>
+
+  <div class="field full">
+    <label for="otherSocialUrl">Other social or contact URL (optional)</label>
+    <input id="otherSocialUrl" name="otherSocialUrl" type="url" placeholder="https://...">
+  </div>
+</div>
+</section>
+
+<section class="section">
+<h2>Footer description</h2>
+<div class="grid">
+  <div class="field full">
+    <label for="footerDescription">Footer description</label>
+    <textarea id="footerDescription" name="footerDescription">Helping brands become impossible to ignore through business growth, strategic positioning and commercial strategy.</textarea>
+  </div>
+</div>
 </section>
 
 <div class="actions">
-  <button type="submit" class="save">Save Content</button>
-  <button type="reset" class="secondary" id="resetButton">Reset Demo Values</button>
+  <button type="submit" class="save" id="saveButton">Save Content</button>
+  <button type="button" class="secondary" id="reloadButton">Reload Saved Content</button>
   <a class="link-button secondary" href="../index.html">View Website</a>
 </div>
 
 <p id="statusMessage" class="status" role="status" aria-live="polite"></p>
-
 <p class="footnote">
-  This is the first editor version. Image previews work locally,
-  but saving and uploading are not connected yet. We will connect
-  Supabase before allowing changes to affect the live website.
+  Saved content is stored in Supabase. This editor does not yet connect
+  the saved values to the public homepage; we will connect index.html
+  in the next step.
 </p>
 
 </form>
@@ -432,7 +350,18 @@ const supabase = createClient(
   SUPABASE_PUBLISHABLE_KEY
 );
 
-// Protect this editor with the existing admin authentication.
+const form = document.getElementById("contentForm");
+const statusMessage = document.getElementById("statusMessage");
+const saveButton = document.getElementById("saveButton");
+
+let savedContent = {};
+const localImageUrls = new Map();
+
+function setStatus(message, kind = "") {
+  statusMessage.textContent = message;
+  statusMessage.className = `status ${kind}`.trim();
+}
+
 async function protectContentEditor() {
   document.documentElement.style.visibility = "hidden";
 
@@ -444,29 +373,94 @@ async function protectContentEditor() {
 
     if (sessionError || !session) {
       window.location.replace("login.html");
-      return;
+      return false;
     }
 
-    const { data: isAdmin, error: adminError } =
-      await supabase.rpc("is_wealththeshaper_admin");
+    const {
+      data: isAdmin,
+      error: adminError
+    } = await supabase.rpc("is_wealththeshaper_admin");
 
     if (adminError || isAdmin !== true) {
       await supabase.auth.signOut();
       window.location.replace("login.html");
-      return;
+      return false;
     }
 
     document.documentElement.style.visibility = "visible";
+    return true;
   } catch (error) {
     console.error("Admin access check failed:", error);
     window.location.replace("login.html");
+    return false;
   }
 }
 
-protectContentEditor();
+const fields = [
+  "heroHeadline",
+  "heroIntro",
+  "heroButtonText",
+  "heroButtonUrl",
+  "aboutEyebrow",
+  "aboutHeadline",
+  "aboutParagraph1",
+  "aboutParagraph2",
+  "aboutImageEyebrow",
+  "aboutImageTitle",
+  "aboutImageLocation",
+  "aboutButtonText",
+  "contactEmail",
+  "whatsappNumber",
+  "instagramUrl",
+  "tiktokUrl",
+  "otherSocialUrl",
+  "footerDescription"
+];
 
-const form = document.getElementById("contentForm");
-const statusMessage = document.getElementById("statusMessage");
+function readFormValues() {
+  const values = {};
+
+  for (const name of fields) {
+    values[name] = document.getElementById(name).value.trim();
+  }
+
+  values.heroImageUrl = savedContent.heroImageUrl || "";
+  values.aboutImageUrl = savedContent.aboutImageUrl || "";
+
+  return values;
+}
+
+function fillForm(content) {
+  for (const name of fields) {
+    if (
+      Object.prototype.hasOwnProperty.call(content, name) &&
+      typeof content[name] === "string"
+    ) {
+      document.getElementById(name).value = content[name];
+    }
+  }
+
+  savedContent = { ...content };
+
+  showSavedImage("heroImageUrl", "heroImagePreview", "heroImageStatus");
+  showSavedImage("aboutImageUrl", "aboutImagePreview", "aboutImageStatus");
+}
+
+function showSavedImage(key, previewId, statusId) {
+  const imageUrl = savedContent[key] || "";
+  const preview = document.getElementById(previewId);
+  const status = document.getElementById(statusId);
+
+  if (imageUrl) {
+    preview.src = imageUrl;
+    preview.hidden = false;
+    status.textContent = "Saved image currently stored in Supabase.";
+  } else {
+    preview.removeAttribute("src");
+    preview.hidden = true;
+    status.textContent = "No saved replacement. Existing website image remains unchanged.";
+  }
+}
 
 const imageInputs = [
   {
@@ -481,81 +475,204 @@ const imageInputs = [
   }
 ];
 
-const localImageUrls = new Map();
+for (const item of imageInputs) {
+  const input = document.getElementById(item.input);
+  const preview = document.getElementById(item.preview);
+  const status = document.getElementById(item.status);
 
-imageInputs.forEach(({ input, preview, status }) => {
-  const inputElement = document.getElementById(input);
+  input.addEventListener("change", () => {
+    const file = input.files?.[0];
 
-  inputElement.addEventListener("change", () => {
-    const file = inputElement.files?.[0];
-    const previewElement = document.getElementById(preview);
-    const statusElement = document.getElementById(status);
-
-    if (localImageUrls.has(input)) {
-      URL.revokeObjectURL(localImageUrls.get(input));
-      localImageUrls.delete(input);
+    if (localImageUrls.has(item.input)) {
+      URL.revokeObjectURL(localImageUrls.get(item.input));
+      localImageUrls.delete(item.input);
     }
 
     if (!file) {
-      previewElement.hidden = true;
-      previewElement.removeAttribute("src");
-      statusElement.textContent =
-        "No replacement selected. Existing image remains unchanged.";
+      showSavedImage(
+        item.input === "heroImage" ? "heroImageUrl" : "aboutImageUrl",
+        item.preview,
+        item.status
+      );
       return;
     }
 
     if (!file.type.startsWith("image/")) {
-      inputElement.value = "";
-      statusElement.textContent = "Please choose an image file.";
+      input.value = "";
+      setStatus("Please select a valid image file.", "error");
       return;
     }
 
     if (file.size > 8 * 1024 * 1024) {
-      inputElement.value = "";
-      statusElement.textContent =
-        "Choose an image smaller than 8 MB.";
+      input.value = "";
+      setStatus("Please select an image smaller than 8 MB.", "error");
       return;
     }
 
-    const url = URL.createObjectURL(file);
-    localImageUrls.set(input, url);
-    previewElement.src = url;
-    previewElement.hidden = false;
+    const localUrl = URL.createObjectURL(file);
+    localImageUrls.set(item.input, localUrl);
 
-    statusElement.textContent =
-      `${file.name} selected. Preview only; not uploaded yet.`;
+    preview.src = localUrl;
+    preview.hidden = false;
+    status.textContent = `${file.name} selected. It will upload when you save.`;
+    setStatus("");
   });
-});
+}
 
-form.addEventListener("submit", event => {
+async function uploadImage(file, name) {
+  const safeName = file.name
+    .toLowerCase()
+    .replace(/[^a-z0-9._-]/g, "-");
+
+  const path = `homepage/${name}-${Date.now()}-${safeName}`;
+
+  const { error: uploadError } = await supabase.storage
+    .from("website-content-images")
+    .upload(path, file, {
+      cacheControl: "3600",
+      upsert: false,
+      contentType: file.type
+    });
+
+  if (uploadError) throw uploadError;
+
+  const { data } = supabase.storage
+    .from("website-content-images")
+    .getPublicUrl(path);
+
+  return data.publicUrl;
+}
+
+async function loadSavedContent() {
+  setStatus("Loading saved content...");
+
+  const { data, error } = await supabase
+    .from("website_content")
+    .select("content")
+    .eq("id", "homepage")
+    .maybeSingle();
+
+  if (error) {
+    console.error("Could not load website content:", error);
+    setStatus(
+      "Could not load saved content. Check your Supabase table and access policies.",
+      "error"
+    );
+    return;
+  }
+
+  if (data?.content && typeof data.content === "object") {
+    fillForm(data.content);
+    setStatus("Saved website content loaded.", "success");
+  } else {
+    savedContent = {};
+    setStatus(
+      "No saved content yet. The editor defaults are ready; saving will create the first record."
+    );
+  }
+}
+
+form.addEventListener("submit", async event => {
   event.preventDefault();
 
-  statusMessage.textContent =
-    "Changes have not been saved. We need to connect the Supabase content table and image storage before saving can be enabled.";
+  saveButton.disabled = true;
+  saveButton.textContent = "Saving...";
+  setStatus("Saving your content and uploading selected images...");
 
-  statusMessage.className = "status error";
-});
+  try {
+    const {
+      data: { session },
+      error: sessionError
+    } = await supabase.auth.getSession();
 
-document.getElementById("resetButton").addEventListener("click", () => {
-  imageInputs.forEach(({ input, preview, status }) => {
-    if (localImageUrls.has(input)) {
-      URL.revokeObjectURL(localImageUrls.get(input));
-      localImageUrls.delete(input);
+    if (sessionError || !session) {
+      throw new Error("Your session has expired. Please sign in again.");
     }
 
-    const image = document.getElementById(preview);
-    image.hidden = true;
-    image.removeAttribute("src");
+    const { data: isAdmin, error: adminError } =
+      await supabase.rpc("is_wealththeshaper_admin");
 
-    document.getElementById(status).textContent =
-      "No replacement selected. Existing image remains unchanged.";
-  });
+    if (adminError || isAdmin !== true) {
+      throw new Error("Administrator access could not be verified.");
+    }
 
-  statusMessage.textContent =
-    "Demo values restored in this editor. The live website was not changed.";
+    const content = readFormValues();
 
-  statusMessage.className = "status";
+    const heroFile = document.getElementById("heroImage").files?.[0];
+    const aboutFile = document.getElementById("aboutImage").files?.[0];
+
+    if (heroFile) {
+      content.heroImageUrl = await uploadImage(heroFile, "hero");
+    }
+
+    if (aboutFile) {
+      content.aboutImageUrl = await uploadImage(aboutFile, "about");
+    }
+
+    const { error: saveError } = await supabase
+      .from("website_content")
+      .upsert(
+        {
+          id: "homepage",
+          content,
+          updated_at: new Date().toISOString()
+        },
+        { onConflict: "id" }
+      );
+
+    if (saveError) throw saveError;
+
+    savedContent = { ...content };
+
+    for (const item of imageInputs) {
+      const fileInput = document.getElementById(item.input);
+
+      if (localImageUrls.has(item.input)) {
+        URL.revokeObjectURL(localImageUrls.get(item.input));
+        localImageUrls.delete(item.input);
+      }
+
+      fileInput.value = "";
+    }
+
+    showSavedImage("heroImageUrl", "heroImagePreview", "heroImageStatus");
+    showSavedImage("aboutImageUrl", "aboutImagePreview", "aboutImageStatus");
+
+    setStatus(
+      "Content saved successfully! Your public homepage still needs to be connected to these saved values.",
+      "success"
+    );
+  } catch (error) {
+    console.error("Save failed:", error);
+    setStatus(
+      error.message || "Could not save content. Please try again.",
+      "error"
+    );
+  } finally {
+    saveButton.disabled = false;
+    saveButton.textContent = "Save Content";
+  }
 });
+
+document.getElementById("reloadButton").addEventListener("click", async () => {
+  for (const item of imageInputs) {
+    if (localImageUrls.has(item.input)) {
+      URL.revokeObjectURL(localImageUrls.get(item.input));
+      localImageUrls.delete(item.input);
+    }
+
+    document.getElementById(item.input).value = "";
+  }
+
+  await loadSavedContent();
+});
+
+const authorized = await protectContentEditor();
+
+if (authorized) {
+  await loadSavedContent();
+}
 </script>
 </body>
 </html>
+
