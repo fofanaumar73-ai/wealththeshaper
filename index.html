@@ -3240,12 +3240,24 @@ if (testimonialNext) {
   });
 }
 
+let testimonialPaused = false;
+
+function pauseTestimonialSlider() {
+  testimonialPaused = true;
+}
+
+function resumeTestimonialSlider() {
+  testimonialPaused = false;
+}
+
 function restartTestimonialTimer() {
   clearInterval(testimonialTimer);
 
   if (publicTestimonials.length > 1) {
     testimonialTimer = setInterval(() => {
-      changeTestimonial(1);
+      if (!testimonialPaused) {
+        changeTestimonial(1);
+      }
     }, 3000);
   }
 }
