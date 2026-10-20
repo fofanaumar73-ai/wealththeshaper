@@ -3789,6 +3789,133 @@ console.log(
 loadPublicTestimonials();
 
 
+/* =========================================
+   LOAD SAVED WEBSITE CONTENT
+========================================= */
+
+async function loadWebsiteContent() {
+  try {
+    const { data, error } = await supabase
+      .from("website_content")
+      .select("content")
+      .eq("id", "homepage")
+      .maybeSingle();
+
+    if (error) throw error;
+
+    // No saved record? Keep the existing homepage unchanged.
+    if (!data || !data.content) return;
+
+    const c = data.content;
+
+    function setText(selector, value) {
+      const element = document.querySelector(selector);
+      if (element && typeof value === "string" && value.trim()) {
+        element.textContent = value;
+      }
+    }
+
+    function setLink(selector, value) {
+      const element = document.querySelector(selector);
+      if (element && typeof value === "string" && value.trim()) {
+        element.href = value.trim();
+      }
+    }
+
+    // HERO
+    const heroHeading = document.querySelector(".hero-content h1");
+
+    if (heroHeading && c.heroHeadline) {
+      const headline = c.heroHeadline.trim();
+
+      // Preserve the existing accent styling where possible.
+      if (headline.includes("Become")) {
+        const parts = headline.split("Become");
+        const accent = document.createElement("span");
+
+        accent.textContent = parts.slice(1).join("Become");
+        heroHeading.replaceChildren(
+          document.createTextNode(parts[0] + "Become"),
+          accent
+        );
+      } else {
+        heroHeading.textContent = headline;
+      }
+    }
+
+    setText(".hero-description", c.heroIntro);
+    setText(".hero-actions .btn-primary", c.heroButtonText);
+    setLink(".hero-actions .btn-primary", c.heroButtonUrl);
+
+    if (c.heroImageUrl) {
+      document.documentElement.style.setProperty(
+        "--hero-background-image",
+        `url("${c.heroImageUrl.replace(/["\\]/g, "")}")`
+      );
+    }
+
+    // ABOUT SECTION
+    setText("#about .about-copy > .eyebrow", c.aboutEyebrow);
+    setText("#about .about-copy h2", c.aboutHeadline);
+    setText("#about .about-copy p:nth-of-type(1)", c.aboutParagraph1);
+    setText("#about .about-copy p:nth-of-type(2)", c.aboutParagraph2);
+
+    setText(".about-visual-content .eyebrow", c.aboutImageEyebrow);
+    setText(".about-visual-content h3", c.aboutImageTitle);
+    setText(".about-visual-content .muted", c.aboutImageLocation);
+
+    if (c.aboutImageUrl) {
+      const aboutVisual = document.querySelector(".about-visual");
+
+      if (aboutVisual) {
+        aboutVisual.style.backgroundImage =
+          `linear-gradient(rgba(0,0,0,.25), rgba(0,0,0,.7)), ` +
+          `url("${c.aboutImageUrl.replace(/["\\]/g, "")}")`;
+        aboutVisual.style.backgroundSize = "cover";
+        aboutVisual.style.backgroundPosition = "center";
+      }
+    }
+
+    setText("#about .about-copy .btn-primary", c.aboutButtonText);
+
+    // CONTACT EMAIL
+    if (c.contactEmail) {
+      document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
+        link.href = `mailto:${c.contactEmail.trim()}`;
+        if (link.closest(".footer-links")) {
+          link.textContent = c.contactEmail.trim();
+        }
+      });
+    }
+
+    // SOCIAL LINKS
+    const socials = document.querySelectorAll(".social-links a");
+
+    if (socials[0] && c.instagramUrl) {
+      socials[0].href = c.instagramUrl;
+    }
+
+    if (socials[1] && c.tiktokUrl) {
+      socials[1].href = c.tiktokUrl;
+    }
+
+    // WHATSAPP: used by the existing floating WhatsApp button
+    if (c.whatsappNumber) {
+      window.wealthTheShaperWhatsAppNumber =
+        c.whatsappNumber.replace(/\D/g, "");
+    }
+
+    // FOOTER
+    setText(".footer-description", c.footerDescription);
+
+  } catch (error) {
+    // A content-loading problem must not break the existing homepage.
+    console.error("Could not load saved website content:", error);
+  }
+}
+
+loadWebsiteContent();
+
 
   loadPublicServices();
 
