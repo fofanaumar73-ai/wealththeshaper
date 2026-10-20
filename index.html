@@ -2147,55 +2147,63 @@
 }
 
     
-/* Two-column hero testimonial layout */
-.hero-testimonial #testimonialsContainer {
-  display: grid;
-  grid-template-columns: minmax(125px, 0.8fr) minmax(0, 2fr);
-  grid-template-rows: auto 1fr;
-  column-gap: 20px;
-  row-gap: 8px;
+
+/* WEALTHTHESHAPER HERO TESTIMONIAL: TWO COLUMNS */
+.hero-testimonial #testimonialsContainer.wt-testimonial-card {
+  display: grid !important;
+  grid-template-columns: minmax(110px, 0.8fr) minmax(0, 1.7fr);
+  grid-template-rows: auto auto auto auto;
+  column-gap: 16px;
+  row-gap: 4px;
+  align-content: start;
   align-items: start;
   justify-content: stretch;
-  text-align: left;
+  height: 145px !important;
+  min-height: 145px !important;
+  max-height: 145px !important;
+  padding: 12px !important;
+  overflow: hidden !important;
   box-sizing: border-box;
-  overflow: hidden;
+  text-align: left;
 }
 
-/* Left column: heading and stars */
-.hero-testimonial #testimonialsContainer .wt-slide-label {
+/* Heading and stars remain at the top-left */
+.hero-testimonial #testimonialsContainer > .wt-slide-label {
   grid-column: 1;
   grid-row: 1;
   margin: 0;
 }
 
-.hero-testimonial #testimonialsContainer .wt-stars {
+.hero-testimonial #testimonialsContainer > .wt-stars {
   grid-column: 1;
   grid-row: 2;
   margin: 0;
 }
 
-/* Right column: review text */
-.hero-testimonial #testimonialsContainer .wt-review-preview {
+/* Review uses the empty space on the right */
+.hero-testimonial #testimonialsContainer > .wt-review-preview {
   grid-column: 2;
   grid-row: 1 / span 2;
-  align-self: start;
+  width: 100%;
+  min-width: 0;
+  max-height: 70px;
+  margin: 0;
+  overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
-  overflow: hidden;
-  width: 100%;
-  min-width: 0;
-  margin: 0;
-  color: #fff;
-  line-height: 1.5;
+  line-height: 1.4;
   overflow-wrap: anywhere;
+  color: #fff;
 }
 
-/* Read more stays beside the review */
-.hero-testimonial #testimonialsContainer .wt-read-more {
+/* Read more sits below the review */
+.hero-testimonial #testimonialsContainer > .wt-read-more {
   grid-column: 2;
   grid-row: 3;
   justify-self: start;
+  align-self: start;
+  display: inline-block;
   margin: 0;
   padding: 3px 0;
   color: #ff5969;
@@ -2205,28 +2213,24 @@
   cursor: pointer;
 }
 
-/* Client details stay in the left column */
-.hero-testimonial #testimonialsContainer .wt-reviewer {
+/* Name and role remain underneath the left-side stars */
+.hero-testimonial #testimonialsContainer > .wt-reviewer {
   grid-column: 1;
-  margin: 8px 0 0;
+  grid-row: 3;
+  margin: 5px 0 0;
   color: #fff;
   font-weight: 700;
 }
 
 .hero-testimonial #testimonialsContainer > p:not(.wt-reviewer) {
   grid-column: 1;
+  grid-row: 4;
   margin: 0;
-  color: rgba(255,255,255,.75);
-  font-size: 12px;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 11px;
+  overflow-wrap: anywhere;
 }
 
-/* Stack neatly on small screens */
-@media (max-width: 480px) {
-  .hero-testimonial #testimonialsContainer {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
-    column-gap: 12px;
-  }
-}
 
 
   </style>
