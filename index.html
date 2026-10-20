@@ -2460,6 +2460,61 @@ backdrop-filter: blur(3px);
   }
 }
 
+    
+/* HERO LOGO POSITIONING */
+.hero .container {
+  position: relative;
+}
+
+.hero-side-logo {
+  position: absolute;
+  top: 52%;
+  right: 5%;
+  transform: translateY(-50%);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.hero-side-logo .animated-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-side-logo .animated-logo img {
+  display: block;
+  width: clamp(100px, 15vw, 200px);
+  height: auto;
+  object-fit: contain;
+}
+
+/* Keep the hero text above the background */
+.hero .hero-content {
+  position: relative;
+  z-index: 3;
+}
+
+/* MOBILE POSITIONING */
+@media (max-width: 600px) {
+  .hero-side-logo {
+    top: auto;
+    right: 16px;
+    bottom: 24px;
+    transform: none;
+  }
+
+  .hero-side-logo .animated-logo img {
+    width: 72px;
+  }
+
+  .hero .hero-content {
+    padding-bottom: 100px;
+  }
+}
+
 
   </style>
 </head>
