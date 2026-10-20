@@ -3261,6 +3261,29 @@ function restartTestimonialTimer() {
     }, 3000);
   }
 }
+    
+/* Pause slider while viewers interact with reviews */
+
+testimonialContainer?.addEventListener("mouseenter", () => {
+  pauseTestimonialSlider();
+});
+
+testimonialContainer?.addEventListener("mouseleave", () => {
+  resumeTestimonialSlider();
+});
+
+testimonialContainer?.addEventListener("touchstart", () => {
+  pauseTestimonialSlider();
+}, { passive: true });
+
+testimonialContainer?.addEventListener("touchend", () => {
+  setTimeout(() => {
+    if (!document.querySelector(".wt-review-modal")) {
+      resumeTestimonialSlider();
+    }
+  }, 5000);
+}, { passive: true });
+
 
     // HERO TESTIMONIAL ARROW CONTROLS
 testimonialPrev?.addEventListener("click", function (event) {
