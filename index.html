@@ -3120,6 +3120,8 @@ function renderPublicTestimonial() {
 
   const item = publicTestimonials[testimonialIndex];
   const fullReview = item.testimonial || "";
+  console.log("Current testimonial data:", item);
+console.log("Review text:", item.testimonial);
   const rating = Math.max(1, Math.min(5, Number(item.rating) || 5));
 
   testimonialContainer.replaceChildren();
