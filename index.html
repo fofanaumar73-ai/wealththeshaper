@@ -2083,6 +2083,69 @@
   }
 }
 
+    
+/* Keep the testimonial content in a stable layout */
+.hero-testimonial #testimonialsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 6px;
+  box-sizing: border-box;
+  overflow: hidden;
+  text-align: left;
+}
+
+/* Keep the heading and stars at the top */
+.hero-testimonial #testimonialsContainer .wt-slide-label,
+.hero-testimonial #testimonialsContainer .wt-stars {
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+/* Make the review text visible and predictable */
+.hero-testimonial #testimonialsContainer .wt-review-preview {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  width: 100%;
+  min-width: 0;
+  margin: 4px 0;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+  color: #fff;
+}
+
+/* Keep the Read more button visible */
+.hero-testimonial #testimonialsContainer .wt-read-more {
+  position: relative;
+  z-index: 2;
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 3px 0;
+  color: #ff5969;
+  background: transparent;
+  border: 0;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Keep client details separate from the review */
+.hero-testimonial #testimonialsContainer .wt-reviewer {
+  flex: 0 0 auto;
+  margin: 4px 0 0;
+  color: #fff;
+  font-weight: 700;
+}
+
+.hero-testimonial #testimonialsContainer > p:not(.wt-reviewer) {
+  flex: 0 0 auto;
+  margin: 0;
+  color: rgba(255,255,255,.75);
+  font-size: 12px;
+}
+
 
   </style>
 </head>
