@@ -158,6 +158,123 @@ header {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
+    
+/* WealthTheShaper footer */
+.site-footer {
+  background: #d7192d;
+  color: #ffffff;
+  padding: 55px 7% 20px;
+  border-top: none;
+  text-align: left;
+  font-size: 14px;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1.4fr 1fr;
+  gap: 35px;
+}
+
+.footer-logo {
+  display: inline-block;
+  margin-bottom: 15px;
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.7px;
+  text-decoration: none;
+}
+
+.footer-logo span {
+  color: #19151e;
+}
+
+.footer-brand p {
+  max-width: 280px;
+  color: #ffffff;
+  line-height: 1.8;
+}
+
+.footer-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.footer-column h3 {
+  margin: 0 0 8px;
+  color: #ffffff;
+  font-size: 15px;
+}
+
+.footer-column a,
+.footer-bottom a {
+  color: #ffffff;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+  transition: opacity 0.2s ease;
+}
+
+.footer-column a:hover,
+.footer-bottom a:hover {
+  opacity: 0.75;
+  text-decoration: underline;
+}
+
+.footer-social-heading {
+  margin-top: 12px !important;
+}
+
+.footer-socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.footer-bottom {
+  max-width: 1200px;
+  margin: 40px auto 0;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.footer-bottom p {
+  margin: 0;
+  color: #ffffff;
+  line-height: 1.7;
+}
+
+@media (max-width: 850px) {
+  .footer-container {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 35px 25px;
+  }
+}
+
+@media (max-width: 500px) {
+  .site-footer {
+    padding: 40px 6% 20px;
+  }
+
+  .footer-container {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .footer-bottom {
+    align-items: flex-start;
+    flex-direction: column;
+    margin-top: 30px;
+  }
+}
+
 
   </style>
 </head>
@@ -191,11 +308,77 @@ header {
     </article>
   </main>
 
-  <footer>
-    © <span id="year"></span> WealthTheShaper.
-    All rights reserved.
-    <a href="index.html">Visit our website</a>
-  </footer>
+  
+<footer class="site-footer">
+  <div class="footer-container">
+
+    <div class="footer-brand">
+      <a class="footer-logo" href="index.html">
+        Wealth<span>TheShaper</span>
+      </a>
+
+      <p>
+        Helping brands become impossible to ignore through
+        business growth and commercial strategy.
+      </p>
+    </div>
+
+    <div class="footer-column">
+      <h3>Quick Links</h3>
+      <a href="index.html">Home</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#services">Services</a>
+      <a href="index.html#contact">Contact</a>
+    </div>
+
+    <div class="footer-column">
+      <h3>Get in Touch</h3>
+      <a href="mailto:Wealthyhubgroup@gmail.com">
+        Wealthyhubgroup@gmail.com
+      </a>
+
+      <h3 class="footer-social-heading">Follow Us</h3>
+      <div class="footer-socials">
+        <a href="https://www.instagram.com/"
+           target="_blank" rel="noopener noreferrer">
+          Instagram
+        </a>
+
+        <a href="https://www.tiktok.com/"
+           target="_blank" rel="noopener noreferrer">
+          TikTok
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-column">
+      <h3>Legal</h3>
+      <a href="policy.html?slug=privacy_policy">
+        Privacy Policy
+      </a>
+      <a href="policy.html?slug=terms_of_service">
+        Terms of Service
+      </a>
+      <a href="policy.html?slug=cookie_policy">
+        Cookie Policy
+      </a>
+      <a href="policy.html?slug=disclaimer">
+        Disclaimer
+      </a>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <p>
+      © <span id="year"></span> WealthTheShaper.
+      All rights reserved.
+    </p>
+
+    <a href="index.html">Back to Home ↑</a>
+  </div>
+</footer>
+
 
   <script type="module">
     import {
