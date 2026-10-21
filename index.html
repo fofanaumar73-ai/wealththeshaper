@@ -3738,6 +3738,10 @@ if (testimonialNext) {
     }
   };
 }
+    async function loadPublicTestimonials() {
+  if (!testimonialContainer) return;
+  testimonialContainer.textContent = "Loading testimonials...";
+  try {
 
     // 1. Fetch testimonials published by the admin
     const {
@@ -3767,7 +3771,7 @@ console.log(
   "ADMIN TESTIMONIALS LOADED:",
   adminTestimonials?.length ?? 0
 );
-     try {
+     
 
     // 2. Fetch client reviews approved by the admin
     const {
