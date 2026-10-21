@@ -3684,41 +3684,6 @@ function changeTestimonial(direction) {
   renderPublicTestimonial();
 }
 
-  
-
-/* HERO TESTIMONIAL ARROW CONTROLS */
-
-if (testimonialPrev) {
-  testimonialPrev.onclick = function (event) {
-    event.preventDefault();
-    event.stopPropagation();
-
-    if (publicTestimonials.length < 2) return;
-
-    testimonialIndex =
-      (testimonialIndex - 1 + publicTestimonials.length) %
-      publicTestimonials.length;
-
-    renderPublicTestimonial();
-    restartTestimonialTimer();
-  };
-}
-
-if (testimonialNext) {
-  testimonialNext.onclick = function (event) {
-    event.preventDefault();
-    event.stopPropagation();
-
-    if (publicTestimonials.length < 2) return;
-
-    testimonialIndex =
-      (testimonialIndex + 1) % publicTestimonials.length;
-
-    renderPublicTestimonial();
-    restartTestimonialTimer();
-  };
-}
-
     
 /* Pause slider while viewers interact with reviews */
 
@@ -3743,25 +3708,37 @@ testimonialContainer?.addEventListener("touchend", () => {
 }, { passive: true });
 
 
-    // HERO TESTIMONIAL ARROW CONTROLS
-testimonialPrev?.addEventListener("click", function (event) {
-  event.preventDefault();
-  changeTestimonial(-1);
-  restartTestimonialTimer();
-});
+   
+/* HERO TESTIMONIAL ARROW CONTROLS */
 
-testimonialNext?.addEventListener("click", function (event) {
-  event.preventDefault();
-  changeTestimonial(1);
-  restartTestimonialTimer();
-});
+if (testimonialPrev) {
+  testimonialPrev.onclick = (event) => {
+    event.preventDefault();
+    testimonialIndex =
+      (testimonialIndex - 1 + publicTestimonials.length) %
+      publicTestimonials.length;
 
-async function loadPublicTestimonials() {
-  if (!testimonialContainer) return;
+    if (publicTestimonials.length > 1) {
+      renderPublicTestimonial();
+      restartTestimonialTimer();
+    }
+  };
+}
 
-  testimonialContainer.textContent = "Loading testimonials...";
+if (testimonialNext) {
+  testimonialNext.onclick = (event) => {
+    event.preventDefault();
 
-  try {
+    if (publicTestimonials.length > 1) {
+      testimonialIndex =
+        (testimonialIndex + 1) % publicTestimonials.length;
+
+      renderPublicTestimonial();
+      restartTestimonialTimer();
+    }
+  };
+}
+
     // 1. Fetch testimonials published by the admin
     const {
       data: adminTestimonials,
