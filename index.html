@@ -3461,6 +3461,27 @@ loadFAQs();
 let publicTestimonials = [];
 let testimonialIndex = 0;
 let testimonialTimer = null;
+    
+function pauseTestimonialSlider() {
+  if (testimonialTimer) {
+    clearInterval(testimonialTimer);
+    testimonialTimer = null;
+  }
+}
+
+function resumeTestimonialSlider() {
+  if (publicTestimonials.length < 2 || testimonialTimer) return;
+
+  testimonialTimer = setInterval(() => {
+    changeTestimonial(1);
+  }, 5000);
+}
+
+function restartTestimonialTimer() {
+  pauseTestimonialSlider();
+  resumeTestimonialSlider();
+}
+
 
 const testimonialContainer =
   document.getElementById("testimonialsContainer");
