@@ -2627,6 +2627,79 @@ backdrop-filter: blur(3px);
   }
 }
 
+    
+/* WealthTheShaper — Social Links Fix */
+.social-links {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  flex-wrap: wrap !important;
+  gap: 22px !important;
+  margin-top: 14px;
+}
+
+.social-links > a.instagram-icon-link,
+.social-links > a.tiktok-icon-link {
+  display: inline-flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+  width: 76px !important;
+  min-width: 76px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  color: #ffffff !important;
+  font-family: inherit;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  line-height: 1.4 !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  box-sizing: border-box !important;
+  white-space: nowrap !important;
+}
+
+.social-links > a.instagram-icon-link > svg,
+.social-links > a.tiktok-icon-link > svg {
+  display: block !important;
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  max-width: 36px !important;
+  flex: 0 0 36px !important;
+  margin: 0 auto !important;
+}
+
+.social-links > a.instagram-icon-link > span,
+.social-links > a.tiktok-icon-link > span {
+  display: block !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+}
+
+.social-links > a:hover {
+  opacity: 0.85;
+  transform: translateY(-2px);
+  transition: 0.2s ease;
+}
+
+@media (max-width: 500px) {
+  .social-links {
+    gap: 18px !important;
+  }
+
+  .social-links > a.instagram-icon-link,
+  .social-links > a.tiktok-icon-link {
+    width: 70px !important;
+    min-width: 70px !important;
+  }
+}
+
 
   </style>
 </head>
