@@ -2537,6 +2537,26 @@ backdrop-filter: blur(3px);
   opacity: 0.8;
 }
 
+    
+.instagram-icon-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.instagram-icon {
+  width: 28px;
+  height: 28px;
+  display: block;
+  flex-shrink: 0;
+}
+
+.instagram-icon-link:hover {
+  opacity: 0.8;
+}
+
   </style>
 </head>
 
@@ -2970,12 +2990,42 @@ backdrop-filter: blur(3px);
           </ul>
 
           <div class="social-links">
-            <a
-              href="https://www.instagram.com/thewealththeshaper/"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Instagram"
-            >IG</a>
+           
+<a class="instagram-icon-link"
+   href="https://www.instagram.com/thewealththeshaper/"
+   target="_blank"
+   rel="noopener noreferrer"
+   aria-label="WealthTheShaper on Instagram">
+
+  <svg class="instagram-icon"
+       viewBox="0 0 24 24"
+       xmlns="http://www.w3.org/2000/svg"
+       aria-hidden="true">
+    <defs>
+      <linearGradient id="instagramGradient"
+                      x1="0" y1="1" x2="1" y2="0">
+        <stop offset="0%" stop-color="#FFDC80"/>
+        <stop offset="35%" stop-color="#F77737"/>
+        <stop offset="65%" stop-color="#E1306C"/>
+        <stop offset="100%" stop-color="#833AB4"/>
+      </linearGradient>
+    </defs>
+
+    <rect x="2" y="2" width="20" height="20" rx="5.5"
+          fill="url(#instagramGradient)"/>
+
+    <rect x="6.5" y="6.5" width="11" height="11" rx="3.5"
+          fill="none" stroke="#FFFFFF" stroke-width="1.8"/>
+
+    <circle cx="12" cy="12" r="2.7"
+            fill="none" stroke="#FFFFFF" stroke-width="1.8"/>
+
+    <circle cx="17.5" cy="6.8" r="1.1" fill="#FFFFFF"/>
+  </svg>
+
+  <span>Instagram</span>
+</a>
+
 
             
 <a class="tiktok-icon-link"
